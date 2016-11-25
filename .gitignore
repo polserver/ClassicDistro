@@ -61,6 +61,8 @@ MUL/*
 # Other files
 core-changes.txt
 objtypes.txt
+packethooks.txt
+packets.zip
 data/
 
 # POL binaries and cfg
@@ -79,3 +81,5 @@ runecl.exe
 # Misc files
 
 scripts/eCompile_commands.txt
+scripts/ecompile.cfg.example
+scripts/modules/*
