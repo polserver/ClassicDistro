@@ -1,0 +1,62 @@
+use uo;
+use vitals;
+use attributes;
+
+program chrcast_acircle( parms )
+  var circle := 2;
+  var delivery := "notarget";
+  var noto := "heplful";
+  var result := maincast(parms, delivery, circle, noto, 601);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+
+
+var spellweaving := Cint(GetEffectiveSkill(caster, SKILLID_SPELLWEAVING));
+var animallore := Cint(GetEffectiveSkill(caster, SKILLID_ANIMALLORE));
+var int := GetIntelligence(caster);
+
+var bonus := 0;
+
+if(caster.ip)
+	bonus := int/5;
+endif
+
+if(Cint(GetObjProperty(caster, "#arcanecircle")))
+	SendSysMessage(caster, "You are already under the influence of this spell.",3,40);
+	return 0;
+endif
+
+var power := 0;
+
+foreach altar in ListItemsAtLocation( caster.x, caster.y, caster.z, caster.realm );
+    if(altar.objtype == 0xFEA)
+    power := 1;
+    endif
+endforeach
+
+if(power == 0)
+    SendSysMessage(caster, "You must be standing in the middle of an altar to cast this spell.",3,40);
+    return 0;
+endif
+
+
+
+var duration := (spellweaving + animallore + bonus);
+SetAttributeTemporaryMod( caster, ATTRIBUTEID_SPELLWEAVING, 500 );
+PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
+Playsoundeffect(caster, 0x5C1);
+SetObjProperty(caster, "#arcanecircle", 1);
+Detach();
+sleep(duration);
+PlaySoundEffect(caster, SFX_SPELL_BLESS);
+PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
+SendSysMessage(caster, "The arcane circle spell has warn off.",3,40);
+SetAttributeTemporaryMod( caster, ATTRIBUTEID_SPELLWEAVING, 0 );
+EraseObjProperty(caster, "#arcanecircle");
+
+endprogram
+
