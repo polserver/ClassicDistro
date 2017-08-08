@@ -128,9 +128,14 @@ program targetbug(who, text)
 							// Needed for book shelves that spawn books
 							// Any bookcase that was named LibraryBookcase by ServUO was given
 							// the BookSpawn member in the cfg files.
-							if(bookspawn)
-								SetObjProperty(createdthing, "Spawn", 1);
-							endif
+							//
+							// Commented out do to control script causing excess server load.
+							// Shard devs can decide if they want all book shelves that are 
+							// the full shelf graphic to spawn books or they can use the command
+							// spawnshelf to set certain shelves with the full book graphic to spawn.
+							//if(bookspawn)
+							//	SetObjProperty(createdthing, "Spawn", "Yes");
+							//endif
 							///////////////////////////////////////////////////////////////////////////////
 							SetObjProperty(createdthing, "Permanent", 1);
 							createdthing.movable := 0;

@@ -1,19 +1,25 @@
 use uo;
 use os;
 use util;
+use file;
 use datafile;
 
 program shelfstock(bookshelf);
-  var globalshelves;
-  var shelf;
   print("Book Spawner is running.");
   sleep(3);
   while(1)
-    if(!GetGlobalProperty("BookSpawnPause"))
-		if(GetObjProperty(bookshelf, "Spawn"));
+	if(!GetGlobalProperty("BookSpawnPause"))
+		if(GetObjProperty(bookshelf, "Spawn") == "Yes");
 			print("Spawning book shelf at " + bookshelf.x + " " + bookshelf.y + " " + bookshelf.z + " in " + bookshelf.realm + ".");
 			addbooks(bookshelf);
-		  sleep(600);
+			sleep(600);
+		elseif(!GetObjProperty(bookshelf, "Spawn") == "No")
+			SetObjProperty(bookshelf, "Spawn", "No");
+			break;
+		else
+			var script_name := GetProcess(GetPID()).name;
+			LogToFile("::log/shelfspawn.log", "["+script_name+"]: Shelf at "+bookshelf.x+", "+bookshelf.y+", "+bookshelf.z+", "+bookshelf.realm+" not spawning correctly.", LOG_DATETIME);
+			break;
 		endif
     else
       print("Book Spawner is Paused.");

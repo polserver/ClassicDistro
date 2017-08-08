@@ -84,7 +84,7 @@ Distro change log
 
 ??-Jul-2017	Yukiko	Changed		Made some minor fixes, changes, and updates to some files but I don't remember when or what was changed. It happens.
 
-22-Jul-2017	Yukiko Added		The "decorate the facets" package to the Distro. Also added was the clilocs package because it is needed by the facet decoration package. It also might prove useful later in future work on the Distro.
+22-Jul-2017	Yukiko	Added		The "decorate the facets" package to the Distro. Also added was the clilocs package because it is needed by the facet decoration package. It also might prove useful later in future work on the Distro.
 
 23-Jul-2017	Yukiko	Updated		The doors itemdesc file to include new doors that weren't in the file including sliding doors. I also added addition single tile book shelves to the carpentry itemdesc file.
 
@@ -100,3 +100,35 @@ Distro change log
 
 25-Jul-2017	Yukiko	Added		The way resistances are handled by equip and unequip scrpts. Damage.inc does not use the resistance members to handle resistances but rather places a CProp on the mobile which contains a dictionary of resistances. I added a check for resistance members on items and then passed the value to ModifyResistance in damage.inc
 
+25-Jul-2017	Yukiko	Fixed		Forgot to include damage.inc in equip.inc
+
+25-Jul-2017	Yukiko	Fixed		Both portcullises (portculli?) had the same name. Changed to portcullisEW and portcullisNS.
+
+26-Jul-2017	Yukiko	Decided		These are the official Distro spell locations for the spells built-in the client:
+
+								  1 -  64	Normal spell ID's
+								 65 -  99	Reserved for special NPC spells until overridden by client side requirements.
+								100 - 116	Necromancy Spell ID's - implemented
+								200 - 209	Chivalry Spell ID's - To be done
+								400 - 405	Bushido Spell ID's - To be done
+								500 - 507	Ninjitsu Spell ID's - To be done
+								600 - 615	Spellweaving Spell ID's - To be done
+								677 - 692	Mysticism Spell ID's - To be done
+								700 - 705	Bard Mastery Spell ID's - To be determined whether this will be added
+								706 - 743	Skill Mastery Spell ID's - To be determined whether this will be added
+
+26-Jul-2017	Yukiko	Decided		These are, or will be as soon as I get them entered, the official rune colours for runes marked in the associated realms (facets):
+								Felucca - 0x0
+								Trammel - 0x32
+								Ilshenar - 0x501
+								Malas - 0x44E
+								Tokuno - 0x482
+								Termur - 0x852
+
+31-Jul-2017	Yukiko	Added		Added the Runic Atlas to the Distro contributed by ThisIsMe. Also added itemUtil.inc from ThisIsMe's shard. It's required for the Runic Atlas and I presume for the Rune Book that ThisIsMe is redesigning and will most likely be added to the Distro. I'll have to decide how to handle that if it is added so that old style rune books aren't broken, just in case they exist in someone's server.
+
+31-Jul-2017	Yukiko	Changed		Previously rune destination info was stored as individual CProps for x, y, z, realm destinations. I changed it to a struct CProp containing the info. I also moved recall runes from the main itemdesc file to a package "runes" and gave them methods. One of the methods is GetDestination(). In that method I added a check for the old destination CProps. If they are present the method will build the struct for the new way of marking the runes, save the struct CProp on the rune and remove the deprecated CProps. This will ensure any runes created prior to the change will be functional and get updated in the process.
+
+2-Aug-2017	Yukiko	Added		A reworked rune book contributed by ThisIsMe. The old rune books were left in to prevent a server shut down just in case you have them lying around but they currently do not work properly and should be replaced with the current rune books. the old rune books item name is oldrunebook but it doesn't open the correct gump pic for some reason so get rid of them. Sorry for the abrupt deprecation of an item. I strive for legacy support but in this case something broke and I haven't had time to look into it.
+
+6-Aug-2017	Yukiko	Fixed		The book spawn system was causing excess server load. So DevGIB and I worked out a fix (hopefully) that will solve this. Also cleaned up some code from the old book spawn system.

@@ -56,13 +56,7 @@ program cast_mark(parms)
   endif
   PlayObjectCenteredEffect(  caster, FX_MARK_EFFECT, 10, 10);
   PlaySoundEffect( caster, SFX_SPELL_MARK );
-  SetObjProperty(cast_on, "x", caster.x);
-  SetObjProperty(cast_on, "y", caster.y);
-  SetObjProperty(cast_on, "z", caster.z);
-  SetObjProperty (cast_on, "realm", caster.realm);
-  var color_cfg := ReadConfigFile(":spells:runeColor");
-  var realm_elem := color_cfg[caster.realm];
-  cast_on.color := CInt(realm_elem.RuneColor);
+  cast_on.SetDestination(caster.x, caster.y, caster.z, caster.realm);
 
   SetName(cast_on, "a marked recall rune");
 endprogram

@@ -45,10 +45,15 @@ program recall(parms)
     SendSysMessage(caster, "You cannot recall off of runes on a vendor");
     return;
   endif
-  var tox := CInt(GetObjProperty( cast_on, "x" ));
-  var toy := CInt(GetObjProperty( cast_on, "y" ));
-  var toz := CInt(GetObjProperty( cast_on, "z" ));
-  var torealm := GetObjProperty (cast_on, "realm");
+  var dest := cast_on.GetDestination(cast_on);
+  if(!dest)
+	SendSysMessage(caster, "That rune has not been marked with a location.", 2, 33);
+	return 0;
+  endif
+  var tox := CInt(dest.x);
+  var toy := CInt(dest.y);
+  var toz := CInt(dest.z);
+  var torealm := dest.realm;
   if (torealm) 
         if (torealm != caster.realm)
             SendSysMessage (caster, "You do not have enough power to cross the boundary to that realm.");
