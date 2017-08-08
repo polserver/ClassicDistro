@@ -17,7 +17,7 @@ program chrcast_iweapon( parms )
   var caster := result[1];
 
 
-var dru := Cint(GetEffectiveSkill(caster, SKILLID_FORENSICS));
+var dru := Cint(GetEffectiveSkill(caster, SPELLWEAVING));
 var alore := Cint(GetEffectiveSkill(caster, SKILLID_ANIMALLORE));
 var int := GetIntelligence(caster);
 
@@ -43,14 +43,14 @@ var duration := (dru + alore + bonus);
 PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
 PlaySoundEffect(caster, 0x210);
 SetObjProperty(caster, "#reaper", 1);
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_FORENSICS, 500 );
+SetAttributeTemporaryMod( caster, SPELLWEAVING, 500 );
     if(CanMod(caster, "dex"))
 	DoTempMod(caster, "dex", 25, duration);
   endif
   if(CanMod(caster, "str"))
 	DoTempMod(caster, "str", 25, duration);
   endif
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_MAGICRESISTANCE, -500 );
+SetAttributeTemporaryMod( caster, RESISTING_SPELLS, -500 );
 SetObjProperty(caster, "oldgraphic", caster.graphic);
 SetObjProperty (caster, "oldname", caster.name);
 SetObjProperty (caster, "oldcolor", caster.color);
@@ -67,8 +67,8 @@ if(Cint(GetObjProperty(caster, "#reaper")))
     PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
     EraseObjProperty(caster, "#reaper");
 
-    SetAttributeTemporaryMod( caster, ATTRIBUTEID_MAGICRESISTANCE, 0 );
-    SetAttributeTemporaryMod( caster, ATTRIBUTEID_FORENSICS, 0 );
+    SetAttributeTemporaryMod( caster, RESISTING_SPELLS, 0 );
+    SetAttributeTemporaryMod( caster, SPELLWEAVING, 0 );
     SetName(caster, GetObjProperty (caster, "oldname"));
     caster.graphic := Cint(GetObjProperty(caster, "oldgraphic"));
     caster.color :=  Cint(GetObjProperty(caster, "oldcolor"));

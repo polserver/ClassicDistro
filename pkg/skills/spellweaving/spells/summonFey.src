@@ -1,4 +1,4 @@
-include ":spells:summon";
+include ":magery:summon";
 include "include/spellRestrictions";
 
 
