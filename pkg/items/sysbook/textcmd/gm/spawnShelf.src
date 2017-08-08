@@ -8,6 +8,7 @@
 use uo;
 use util;
 use basic;
+use os;
 
 program spawnShelf(who, text);
 
@@ -23,11 +24,16 @@ program spawnShelf(who, text);
 		SendSysMessage(who, "Canceled.", 1, 33);
 		return 0;
 	endif
+	if(GetObjProperty(bookshelf, "Spawn") == "Yes")
+		SendSysMessage(who, "That shelf is already set to spawn books.", 1, 33);
+		return 0;
+	endif
 	if(bookshelf.objtype in bookshelves)
-		SetObjProperty(bookshelf, "Spawn", 1);
+		SetObjProperty(bookshelf, "Spawn", "Yes");
 		SetObjProperty(bookshelf, "MaxBooks", maxbooks);
 		SendSysMessage(who, "The shelf has spawned " + CStr(maxbooks) + " and", 1, 66);
 		SendSysMessage(who, "will restock it to " + CStr(maxbooks) + " every 10 minutes.", 1, 66);
+		start_script(":sysbook:shelfSpawnControl");
 	else
 		SendSysMessage(who, "Ether you targgetted an 'empty' shelf or you chose something that is not a book shelf.", 1, 33);
 		SendSysMessage(who, "Only book shelves with the graphic with books in them can be 'book spawns'.", 1, 33);

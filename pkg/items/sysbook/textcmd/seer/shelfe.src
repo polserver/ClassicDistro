@@ -3,22 +3,16 @@ use os;
 use util;
 
 program textcmd_shelfeast(who);
-  var globalshelves := GetGlobalProperty("shelves");
-  if(!globalshelves)
-    globalshelves := {};
-  endif
-  var shelf := CreateItemAtLocation(who.x, who.y, who.z, 0x0a9f, 1, who.realm);
   var rint;
   case (RandomInt(3)+1)
-    1: rint := 2713;
-    2: rint := 2714;
-    3: rint := 2716;
+    1: rint := 0xA99;
+    2: rint := 0xA9A;
+    3: rint := 0xA9C;
   endcase
-  shelf.graphic := rint;
+  var shelf := CreateItemAtLocation(who.x, who.y, who.z, rint, 1, who.realm);
   if(shelf)
-    globalshelves.append(shelf.serial);
+    return 1;
   else
     SendSysMessage(who, shelf.errortext);
   endif
-  SetGlobalProperty("shelves", globalshelves);
 endprogram
