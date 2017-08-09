@@ -5,6 +5,7 @@ use datafile;
 
 program shelfstock(who);
 
+
   SendSysMessage(who, "This command disabled until Distro team updates it to", 1, 88);
   SendSysMessage(who, "conform to the updated book spawn system.", 1, 88);
   return 0;
