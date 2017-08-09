@@ -3,7 +3,12 @@ use os;
 use util;
 use datafile;
 
-program shelfstock();
+program shelfstock(who);
+
+  SendSysMessage(who, "This command disabled until Distro team updates it to", 1, 88);
+  SendSysMessage(who, "conform to the updated book spawn system.", 1, 88);
+  return 0;
+
   var globalshelves;
   var shelf;
   globalshelves := GetGlobalProperty("shelves");

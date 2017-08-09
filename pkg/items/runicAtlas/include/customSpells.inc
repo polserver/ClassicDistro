@@ -15,7 +15,7 @@ function runebookRecall( who, parms, book, charges, use_charge:=0 )
 			return 0;
 		endif
 		charges -= 1;
-		SetCharges( book, who, charges );
+		book.SetCharges( who, charges );
   else
 		var script := Start_Script( ":magery:spellStarter", {who, 32, 0, runebook_info} );
 		if( script.errortext )
@@ -37,11 +37,4 @@ function runebookGate( who, parms, book )
 	endif
 
 	return 1;
-endfunction
-
-function runebookSacredJourney( who, parms, book )
-  // Just a quick fix to declog my unused variable warnings until this is actually finished.
-  parms := parms;
-  book := book;
-  SendSysMessageCL ( who, 1153203, color := 0x31C ); // This function has not been implemented yet.
 endfunction

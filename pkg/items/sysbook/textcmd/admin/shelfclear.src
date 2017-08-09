@@ -2,6 +2,10 @@ use uo;
 use os;
 
 program textcmd_shelfclear(who)
+
+  SendSysMessage(who, "This command disabled until Distro team updates it to", 1, 88);
+  SendSysMessage(who, "conform to the updated book spawn system.", 1, 88);
+  return 0;
   var count := 0;
   var shelf;
   var shelves := {};
