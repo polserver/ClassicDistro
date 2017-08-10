@@ -1,9 +1,12 @@
+////////////////////////////////////////////////////
+//
 // Bookcase Spawning system  version .3
 // created December 6, 2000
 // updated June 19, 2017
 // designed by Syzygy, Zulu and Bishop Ebonhand
 // updated by Yukiko POL Distro team
-
+//
+///////////////////////////////////////////////////
 use uo;
 use os;
 use util;
