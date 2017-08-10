@@ -1,62 +1,89 @@
 use uo;
-use vitals;
-use attributes;
+use cliloc;
 
-program chrcast_acircle( parms )
-  var circle := 2;
-  var delivery := "notarget";
-  var noto := "heplful";
-  var result := maincast(parms, delivery, circle, noto, 601);
 
-  if(result == 0)
+include "include/attributes";
+include "include/sounds";
+
+CONST MIN_ARCANIST_REQ := 2;
+CONST MAX_ARCANIST_ALLOWED := 4;
+
+program spell_ArcaneCircle( params )
+
+  var mobile := params[1];
+  var info := params[2];
+  params := 0;
+
+
+  //Check that the standing location is on a pentagram
+  if( !IsValidTile(mobile) )
+    SendSysMessageCL(mobile, 1072705); // You must be standing on an arcane circle, pentagram or abbatoir to use this spell.
     return 0;
   endif
 
-  var caster := result[1];
-
-
-var spellweaving := Cint(GetEffectiveSkill(caster, SKILLID_SPELLWEAVING));
-var animallore := Cint(GetEffectiveSkill(caster, SKILLID_ANIMALLORE));
-var int := GetIntelligence(caster);
-
-var bonus := 0;
-
-if(caster.ip)
-	bonus := int/5;
-endif
-
-if(Cint(GetObjProperty(caster, "#arcanecircle")))
-	SendSysMessage(caster, "You are already under the influence of this spell.",3,40);
-	return 0;
-endif
-
-var power := 0;
-
-foreach altar in ListItemsAtLocation( caster.x, caster.y, caster.z, caster.realm );
-    if(altar.objtype == 0xFEA)
-    power := 1;
-    endif
-endforeach
-
-if(power == 0)
-    SendSysMessage(caster, "You must be standing in the middle of an altar to cast this spell.",3,40);
+  //Check that the minimum number of arcanists are also on the pentagram
+  var number_of_arcanists := GetArcanists(mobile);
+  if( number_of_arcanists < MIN_ARCANIST_REQ )
+    SendSysMessageCL(mobile, 1080452); //There are not enough spellweavers present to create an Arcane Focus.
     return 0;
-endif
+  endif
 
-
-
-var duration := (spellweaving + animallore + bonus);
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_SPELLWEAVING, 500 );
-PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
-Playsoundeffect(caster, 0x5C1);
-SetObjProperty(caster, "#arcanecircle", 1);
-Detach();
-sleep(duration);
-PlaySoundEffect(caster, SFX_SPELL_BLESS);
-PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
-SendSysMessage(caster, "The arcane circle spell has warn off.",3,40);
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_SPELLWEAVING, 0 );
-EraseObjProperty(caster, "#arcanecircle");
-
+  //Skill check and then create the arcane focus crystal
+  if( SkillCheck(mobile, SPELLWEAVING, 10, 30) )
+    SendSysMessageCL(mobile, 1072740); // An arcane focus appears in your backpack.
+    PlaySoundEffect(mobile, SFX_ARCANE_CIRCLE); // ServUO suggests sound should be 0x5C0
+    PlayStationaryEffect( mobile.x, mobile.y, mobile.z, 0x3779, 1 );
+    CreateArcaneFocus(mobile, number_of_arcanists);
+  else
+    PlayStationaryEffect( mobile.x, mobile.y, mobile.z, FX_SMOKE, 1 ); //Graphic needs to be confirmed and updated
+    PlaySoundEffect(mobile, SFX_SPELL_FAIL);
+    SendSysMessage(mobile, "You fail to create an Arcane Focus.");
+    return 0;
+  endif
+  return 1;
 endprogram
 
+function IsValidTile(mobile)
+// Pentagram center, Abbatoir center, Arcane Circle Center, Bloody Pentagram has 4 tiles at center
+
+  var itemID;
+  //First check for static items that might be pentagrams.
+  foreach item in ListStaticsNearLocation( mobile.x, mobile.y, mobile.z, 0, 0, mobile.realm )
+    itemID := item.objtype;
+    if( itemID == 0xFEA || itemID == 0x1216 || itemID == 0x307F || itemID == 0x1D10 || itemID == 0x1D0F || itemID == 0x1D1F || itemID == 0x1D12 )
+      return 1;
+    endif
+  endforeach
+
+  //Second check for dynamic items that might be pentagrams.
+  foreach item in ListItemsAtLocation( mobile.x, mobile.y, mobile.z, mobile.realm )
+    itemID := item.objtype;
+    if( itemID == 0xFEA || itemID == 0x1216 || itemID == 0x307F || itemID == 0x1D10 || itemID == 0x1D0F || itemID == 0x1D1F || itemID == 0x1D12 )
+      return 1;
+    endif
+  endforeach
+
+  return 0;
+endfunction
+
+function GetArcanists(mobile)
+  var count := 0;
+  foreach other in ListMobilesNearLocation( mobile.x, mobile.y, mobile.z, 1, mobile.realm )
+    if( SkillCheck( other, SPELLWEAVING, -1, 0 ) )
+      count+= 1;
+    endif
+    if( count == MAX_ARCANIST_ALLOWED )
+      return count;
+    endif
+  endforeach
+  return count;
+endfunction
+
+function CreateArcaneFocus(mobile, number_of_arcanists)
+
+  SendSysMessageCL(mobile, 1072740); // An arcane focus appears in your backpack.
+  
+  SendSysMessageCL(mobile, 1072828);  // Your arcane focus is renewed.
+  
+
+endfunction

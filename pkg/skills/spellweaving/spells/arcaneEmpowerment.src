@@ -17,7 +17,7 @@ program chrcast_apower( parms )
   var caster := result[1];
 
 
-var dru := Cint(GetEffectiveSkill(caster, SKILLID_FORENSICS));
+var dru := Cint(GetEffectiveSkill(caster, SPELLWEAVING));
 var int := GetIntelligence(caster);
 
 var bonus := 0;
@@ -33,7 +33,7 @@ endif
 
 
 var duration := dru;
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_FORENSICS, 500 );
+SetAttributeTemporaryMod( caster, SPELLWEAVING, 500 );
 PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
 Playsoundeffect(caster, 0x5C2);
 SetObjProperty(caster, "#arcanecircle", 1);
@@ -42,7 +42,7 @@ sleep(duration);
 PlaySoundEffect(caster, 0x5C3);
 PlayObjectCenteredEffect( caster, 0x3779, 10,45 );
 SendSysMessage(caster, "Czar Arcane Empowerment zakonczyl swoje dzialanie.",3,40);
-SetAttributeTemporaryMod( caster, ATTRIBUTEID_FORENSICS, 0 );
+SetAttributeTemporaryMod( caster, SPELLWEAVING, 0 );
 EraseObjProperty(caster, "#arcanecircle");
 
 endprogram

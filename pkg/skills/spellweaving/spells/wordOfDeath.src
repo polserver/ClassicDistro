@@ -17,7 +17,7 @@ program chrcast_wdeath( parms )
   var cast_on := result[2];
 
 
-var dru := Cint(GetEffectiveSkill(caster, SKILLID_FORENSICS));
+var dru := Cint(GetEffectiveSkill(caster, SPELLWEAVING));
 var alore := Cint(GetEffectiveSkill(caster, SKILLID_ANIMALLORE));
 var int := GetIntelligence(caster);
 

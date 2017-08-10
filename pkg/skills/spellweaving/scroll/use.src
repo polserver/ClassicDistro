@@ -1,36 +1,49 @@
 use uo;
 use os;
 use cfgfile;
+use cliloc;
 
 include "include/client";
-include "getSpellID";
 include "include/canAccess";
 
-program use_scroll(who, scroll)
-  EraseObjProperty(who, "IsMeditating");
-  EraseObjProperty(who, "HealTimer");
-  if(!can_access(who, scroll))
-    return;
+program use_scroll(mobile, scroll)
+  
+  if(!can_access(mobile, scroll))
+    SendSysMessageCL(mobile, 500237); // Target cannot be seen.
+    return 0;
   endif
+  
   if(scroll.movable == 0)
-    SendSysMessage(who, "You cannot use that.");
-    return;
+    SendSysMessageCL(mobile, 500169); // You cannot pick that up.
+    return 0;
   endif
+  
   if (!scroll.amount)
-	return;
+	return 0;
   endif
+  
   if(!ReserveItem(scroll))
-  	SendSysMessage(who, "That scroll seems to be in use.");
+    SendSysMessageCL(mobile, 1042144); // This is currently in use.
     return;
   endif
   var spellid := scroll.getSpellId( );
   var spells_cfg := ReadConfigFile( ":spellweaving:spells" );
   var element := FindConfigElem( spells_cfg, spellid );
-  var spellname := GetConfigString(element, "script");
-  PrintTextAbove( who, GetConfigString(element, "PowerWords") );
-  var parms := {};
+  var parms := array{};
+  var info  := struct;
+  
+  //Moved spell data into a struct to be passed ot the spell starter so that the config file only need to be accessed once.
+  info.+Difficulty := GetConfigString(element, "Difficulty");
+  info.+ManaCost := GetConfigString(element, "Mana");
+  info.+Delay := GetConfigString(element, "Delay");
+  info.+Script := GetConfigString(element, "Script");
+  info.+PowerWords := GetConfigString(element, "PowerWords");
   parms[1] := "#scroll";
-  parms[2] := who;
+  parms[2] := mobile;
   parms[3] := scroll;
-  start_script(":spellweaving:"+spellname, parms);
+  parms[4] := info;
+  start_script(":spellweaving:spellStarter", parms);
+  
+  return 0;
+  
 endprogram
