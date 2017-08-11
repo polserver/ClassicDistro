@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////
 // Textcommand for Zulu's sysbooks package.                         //
-// Used to add a new book to the zulubooks.cfg file.                //
+// Used to add a new book to the books.cfg file.                    //
 // After entering the command the user is promted to target a book. //
 // The book is checked to be sure it has content and then if so the //
-// contents are reformatted to match the zulubooks config file      //
+// contents are reformatted to match the books config file          //
 // format and then the book info is appended to the end of          //
-// zulubooks.cfg                                                    //
+// :sysbook:books.cfg                                               //
 //                                                                  //
 // Written by Yukiko                                                //
 //////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ program addsysbook(who)
     var bookstuff := {};
     var filename, sysbooks, book, title, author, nextspot;
     var curpage, curline, index;
-    filename := ":sysbook:zulubooks";
+    filename := ":sysbook:books";
     SendSysMessage(who, "Choose the book you wish to add to the book spawn system.", color := 88);
     book := Target(who);
     if(!book)

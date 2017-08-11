@@ -1,0 +1,117 @@
+use uo;
+use os;
+use util;
+use file;
+use datafile;
+
+include "include/eventID";
+
+const DEFAULT_WAIT_TIME := 3600; 			//1 hour wait until it times out and loops again.
+const DEFAULT_SPAWNING_DELAY := 600;	//10 minute delay between replacing books in shelves.
+
+program shelfstock(bookshelf);
+	
+	var rand := RandomDiceRoll("1d60+60");
+	sleep(rand); //random 1 to 2 minute delay on starting to prevent all shelves spawning at the same time.
+	var ev;
+	bookshelf.setprop("#PID", GetPID());
+	
+	if( CheckToSpawn(bookshelf) )
+			//print("Spawning book shelf at " + bookshelf.x + " " + bookshelf.y + " " + bookshelf.z + " in " + bookshelf.realm + ".");
+			addbooks(bookshelf);
+	endif
+  while(1)
+		if( ev.type == EVID_SYSBOOK_BOOK_REMOVED )
+			if( CheckToSpawn(bookshelf) )
+				//print("Spawning book shelf at " + bookshelf.x + " " + bookshelf.y + " " + bookshelf.z + " in " + bookshelf.realm + ".");
+				addbooks(bookshelf);
+			else
+				break;
+			endif
+		endif
+		ev := Wait_For_Event( DEFAULT_WAIT_TIME );
+  endwhile
+  bookshelf.eraseprop("#PID");
+  
+endprogram
+
+function addbooks(bookcase)
+  var count := 0;
+  var books := EnumerateItemsInContainer(bookcase);
+  var max := GetObjProperty(bookcase, "MaxBooks");
+  
+  if((!max) or (max > 15))
+    max := RandomDiceRoll("1d5+2");
+    SetObjProperty(bookcase, "MaxBooks", max);
+  endif
+
+  if(books.size()!= 0)
+    foreach book in books
+     if(book.objtype == 0xfef)
+        count := count + 1;
+      endif
+    endforeach
+  endif
+  while(count < max)
+  	Sleep(DEFAULT_SPAWNING_DELAY);
+		SpecialBook(bookcase);
+		count := count + 1;
+  endwhile
+endfunction
+
+function SpecialBook(bookcase)
+  var book := CreateItemInContainer(bookcase, 0xfef, 1);
+  case(RandomInt(4)+1)
+    1: book.graphic := 4079;
+    2: book.graphic := 4080;
+    3: book.graphic := 4081;
+    4: book.graphic := 4082;
+  endcase
+  var rint := CInt(RandomInt(30) + 1);
+  var bookContents := GetBookContents(rint);
+  book.setprop("contents", bookContents.conents);
+  book.setprop("title",    bookContents.title);
+  book.setprop("author",   bookContents.author);
+  book.name := bookContents.title;
+endfunction
+
+//
+//	GetBookContents( bookid ) - Will return the contents of the book at bookId in the datastore.
+//	Returns either a struct with the book content or 0 on error.
+//
+function GetBookContents(bookid)
+  var df		:=	OpenDataFile("staticbooks");
+  
+  if(!df)
+  	LogToFile("::log/sysbook.log", "[bookShelf/control.ecl]: Datastore file error: " + df.errortext, LOG_DATETIME);
+  	print("Sysbook error - check sysbook.log");
+  	return 0;
+  endif
+  
+  var elem	:=	df.FindElement(bookid);
+  var book	:=	struct{};
+  
+  book.author 	:= elem.getprop("author");
+  book.title		:= elem.getprop("title");
+  book.conents	:= elem.getprop("contents");
+  return book;
+endfunction
+
+//
+// CheckToSpawn( bookshelf ) - Will check if the global pause is in effect or if the shelf has been turned off
+// Returns 1 if shelf should spawn and 0 if checks failed.
+//
+function CheckToSpawn( bookshelf )
+	if(!GetGlobalProperty("BookSpawnPause"))
+		if(GetObjProperty(bookshelf, "Spawn") == "Yes");
+			return 1;
+		elseif( GetObjProperty(bookshelf, "Spawn") == "No")
+			return 0;
+		else
+			SetObjProperty(bookshelf, "Spawn", "No");
+			LogToFile("log/sysbook.log", "[bookShelf/control.ecl]: Shelf at "+bookshelf.x+", "+bookshelf.y+", "+bookshelf.z+", "+bookshelf.realm+" has been disabled.", LOG_DATETIME);
+			return 0;
+		endif
+	endif
+	return 0;
+endfunction
