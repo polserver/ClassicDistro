@@ -77,6 +77,11 @@ const EVID_RESERVED_20000000    := 0x20000000;
 const EVID_RESERVED_40000000    := 0x40000000;
 const EVID_RESERVED_80000000    := 0x80000000;
 
+const EVID_SYSBOOK_BOOK_REMOVED	:=	0x2220;
+const	EVID_SYSBOOK_START_SHELF	:=	0x2221;
+const	EVID_SYSBOOK_STOP_SHELF		:=	0x2222;
+const	EVID_SYSBOOK_PAUSE_SHELF	:=	0x2223;
+
 /* FIXME: these need to be renumbered, one clashes with a reserved event */
 const EVID_SPELL_ATTACK     := 0x0800;
 const EVID_BUDDYATTACKED     := 0x1600;

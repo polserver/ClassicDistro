@@ -1,31 +1,32 @@
 use uo;
 use os;
 use util;
-use file;
 use datafile;
 
-program shelfstock(bookshelf);
+program shelfstock();
+  var globalshelves;
+  var shelf;
   print("Book Spawner is running.");
   sleep(3);
+  var newarray := array{};
   while(1)
-	if(!GetGlobalProperty("BookSpawnPause"))
-		if(GetObjProperty(bookshelf, "Spawn") == "Yes");
-			print("Spawning book shelf at " + bookshelf.x + " " + bookshelf.y + " " + bookshelf.z + " in " + bookshelf.realm + ".");
-			addbooks(bookshelf);
-			sleep(600);
-		elseif(!GetObjProperty(bookshelf, "Spawn") == "No")
-			SetObjProperty(bookshelf, "Spawn", "No");
-			break;
-		else
-			var script_name := GetProcess(GetPID()).name;
-			LogToFile("::log/shelfspawn.log", "["+script_name+"]: Shelf at "+bookshelf.x+", "+bookshelf.y+", "+bookshelf.z+", "+bookshelf.realm+" not spawning correctly.", LOG_DATETIME);
-			break;
-		endif
+    if(!GetGlobalProperty("BookSpawnPause"))
+      globalshelves := GetGlobalProperty("shelves");
+      foreach thing in globalshelves
+        shelf := SystemFindObjectBySerial(thing);
+        if(shelf)
+          newarray.append(thing);
+          addbooks(shelf);
+        endif
+        sleep(10);
+      endforeach
+      SetGlobalProperty("shelves", newarray);
+      sleep(61);
     else
       print("Book Spawner is Paused.");
       print("To unpause book spawner erase global property:");
       print("BookSpawnPause");
-      sleep(120);
+      sleep(60);
     endif
   endwhile
 endprogram
@@ -35,7 +36,7 @@ function addbooks(bookcase)
 //  var junk;
   var books := EnumerateItemsInContainer(bookcase);
   var max := GetObjProperty(bookcase, "MaxBooks");
-  if((!max) or (max > 15))
+  if((!max) or (max > 7))
     max := RandomDiceRoll("1d5+2");
     SetObjProperty(bookcase, "MaxBooks", max);
   endif
