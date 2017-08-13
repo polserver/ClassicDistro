@@ -17,16 +17,20 @@ use os;
 use util;
 use file;
 use datafile;
+use cfgfile;
 
-include "include/eventID";
-
-const DEFAULT_WAIT_TIME := 3600; 			//1 hour wait until it times out and loops again.
-const DEFAULT_SPAWNING_DELAY := 600;	//10 minute delay between replacing books in shelves.
+include ":sysbook:eventID";
+	
+var SettingsCfg := 	ReadConfigFile( ":sysbook:settings" );
+var SettingsElem :=	FindConfigElem( settingsCfg, "settings" );
+var DefaultWaitTime := GetConfigInt( SettingsElem, "DefaultWaitTime" );
+var DefaultSpawningDelay := GetConfigInt( SettingsElem, "DefaultSpawningDelay" );
+var DefaultMaxBooks :=  GetConfigInt( SettingsElem, "DefaultMaxBooks" );
 
 program shelfstock(bookshelf);
 	
-	var rand := RandomDiceRoll("1d60+60");
-	sleep(rand); //random 1 to 2 minute delay on starting to prevent all shelves spawning at the same time.
+	var rand := RandomDiceRoll("1d90+30");
+	sleep(rand); //random 30 sec to 2 minute delay on starting to prevent all shelves spawning at the same time.
 	var ev;
 	bookshelf.setprop("#PID", GetPID()); //set a PID cprop to the book shelf for other scripts to call.
 	
@@ -44,7 +48,7 @@ program shelfstock(bookshelf);
 				break;
 			endif
 		endif
-		ev := Wait_For_Event( DEFAULT_WAIT_TIME );
+		ev := Wait_For_Event( DefaultWaitTime );
 	endwhile
 	bookshelf.eraseprop("#PID"); //Process will be dead soon so delete the PID cprop
   
@@ -66,7 +70,7 @@ function addbooks(bookcase)
 	var books := EnumerateItemsInContainer(bookcase);
 	var max := GetObjProperty(bookcase, "MaxBooks");
   
-	if((!max) or (max > 15))
+	if((!max) or (max > DefaultMaxBooks))
 		max := RandomDiceRoll("1d5+2");
 		SetObjProperty(bookcase, "MaxBooks", max);
 	endif
@@ -79,7 +83,7 @@ function addbooks(bookcase)
 		endforeach
 	endif
 	while(count < max)
-		Sleep(DEFAULT_SPAWNING_DELAY); //Sleep delay between books being created to stop all books being recreated at once.
+		Sleep(DefaultSpawningDelay); //Sleep delay between books being created to stop all books being recreated at once.
 		SpecialBook(bookcase);
 		count := count + 1;
 	endwhile

@@ -2,7 +2,7 @@ use uo;
 use os;
 use file;
 
-include "include/eventID";
+include ":sysbook:eventID";
 
 program on_remove(mobile, bookshelf, item, movetype)
 

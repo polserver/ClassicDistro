@@ -132,3 +132,42 @@ Distro change log
 2-Aug-2017	Yukiko	Added		A reworked rune book contributed by ThisIsMe. The old rune books were left in to prevent a server shut down just in case you have them lying around but they currently do not work properly and should be replaced with the current rune books. the old rune books item name is oldrunebook but it doesn't open the correct gump pic for some reason so get rid of them. Sorry for the abrupt deprecation of an item. I strive for legacy support but in this case something broke and I haven't had time to look into it.
 
 6-Aug-2017	Yukiko	Fixed		The book spawn system was causing excess server load. So DevGIB and I worked out a fix (hopefully) that will solve this. Also cleaned up some code from the old book spawn system.
+
+10-Aug-2017	GIB	Changed		Sysbook PKG -Refactoring some files and moving them into the books folder.
+Deleted duplicate redundant files in the base folder.
+
+11-Aug-2017	GIB	Changed		Sysbook PKG -Added new event ID's to the common include file for handling sysbook events, currently there are defined ID's for book removal, spawn enable, spawn disable, spawn pause, however currently only book removal is used.
+			Changed		Sysbook PKG -
+Refactored and relocated shelfSpawnControl into a bookShelf/control script, Updated all config files to match.
+			Changed		Sysbook PKG -
+Refactored zulubooks.cfg to books.cfg and added a header to pay respects to the people who wrote the books.
+			
+Removed		Sysbook PKG -shelfStock script as it was no longer used.
+			Added		Sysbook PKG -
+Added some debug loggin information to the package start file, tidied up and commented.
+
+			Added		Sysbook PKG -"Spawnshelf" objtype to array in spawnshelf command.
+			
+Added 		Sysbook PKG -Error logging to the spawnshelf command.
+
+			Changed		Sysbook PKG -Relocated spawnshelf from the common itemdesc.cfg file to the config file in the sysbook package.
+
+			Changed		Sysbook PKG -Increase wait times on shelves to check every hour.
+
+			Added		Sysbook PKG -Event check to shelves which should be triggered whenever someone removes a book from a shelf(more testing might be needed).
+
+11-Aug-2017	GIB	Changed		Sysbook PKG -Updated formatting and documentation of control script.
+
+13-Aug-2017	GIB	Changed		Sysbook PKG -
+Moved eventID's into an include within the sysbook package to make it more stand alone.
+			Removed		Sysbook PKG -Calls to control script from the carpentry package as shelves that players make shouldn't be spawning random books.
+			Changed		Sysbook PKG -
+Updated some documentation.
+
+			Changed		Sysbook PKG -Increased the randomness of the starting of control scripts to give more varied start times and reduce lag further.
+			Changed		Sysbook PKG -
+Moved constants and some other items into a config file so that it allows players with no coding/compiling skills to update how often functions perform.
+
+			Removed		Sysbook PKG -Removed old redundant shelfStock script which wasn't called.
+
+
