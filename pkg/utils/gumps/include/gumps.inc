@@ -1100,12 +1100,12 @@ endfunction
  * No return value.
  *
  */
-function GFTooltip(byref gump, cliloc_id)
-	var text := "Tooltip " + CStr(CInt(cliloc_id)) + "'";
-	(gump.layout).Append(text);
+function GFTooltip(byref gump, cliloc_id, customstring := "")
+ var text := "Tooltip " + CInt(cliloc_id) + "@" + customstring + "@" + "'";
+ (gump.layout).Append(text);
 
-	return 1;
-endfunction
+ return 1;
+endfunction/*
 
 /*
  * GFPicTiled(byref gump, x, y, width, height, gump_id)
