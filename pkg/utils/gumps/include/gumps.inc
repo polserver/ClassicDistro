@@ -1105,7 +1105,7 @@ function GFTooltip(byref gump, cliloc_id, customstring := "")
  (gump.layout).Append(text);
 
  return 1;
-endfunction/*
+endfunction
 
 /*
  * GFPicTiled(byref gump, x, y, width, height, gump_id)

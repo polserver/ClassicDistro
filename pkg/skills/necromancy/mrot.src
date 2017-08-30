@@ -38,10 +38,10 @@ program mind_rot( params )
 	PlaySoundEffect(cast_on, 0x258);
 	PlayObjectCenteredEffectEx( cast_on, 0x373A, 1, 17, 9903, 15, 0, 4 );
 
-	Setobjproperty(cast_on, "mindrot", 1);
+	Setobjproperty(cast_on, "#mindrot", 1);
 	EraseObjProperty (caster, "casting");
 	sleep(duration);
-	Eraseobjproperty(cast_on, "mindrot");
+	Eraseobjproperty(cast_on, "#mindrot");
 
 
 

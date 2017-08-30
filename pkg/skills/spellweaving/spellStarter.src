@@ -80,7 +80,7 @@ program spellStarter( parms )
 
 	// Added to support necro spell mind rot.
 	var mana_cost := info.ManaCost;
-	if(GetObjProperty(mobile, "mindrot"))
+	if(GetObjProperty(mobile, "#mindrot"))
 		if(mobile.isA(POLCLASS_NPC))
 			mana_cost := mana_cost * 2;
 		else

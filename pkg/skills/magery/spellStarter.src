@@ -78,7 +78,7 @@ program SpellStarter(params)
 
 	if ( requires_mana )
 	// Added to support necro spell mind rot.
-		if(GetObjProperty(mobile, "mindrot"))
+		if(GetObjProperty(mobile, "#mindrot"))
 			if(mobile.isA(POLCLASS_NPC))
 				manacost := manacost * 2;
 			else
