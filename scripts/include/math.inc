@@ -1,148 +1,114 @@
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-//
-//
 // math.inc
 //
-// Siggy's Improved Math Include, v2.0
-// Revision Date:  8/01/03
+// Siggy's Improved Math Include, v1.3
 //
 // Questions, comments, flames?   Send to:
-// EMail: cjtdennis@comcast.net
+// EMail: prostheticdelirium@worldnet.att.net
 // ICQ: 10520050
-//
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-//
-// History:
-//
-// v2.0:
-//	- Added Min and Max functions.
-//	- Added Bounded function.
-//	- Added SplitLog function.
-// 
-// v1.5:
-//	- Factorial(x) now returns 1 if x==0.
-//	- Log(x, y) now uses Log10 instead of successive
-//	  approximation.
-//
-// v1.4:
-//	- Fixed errors in Mean and StdDev.
-//	- Minor code cleanup across include.
-//
-// v1.3:
-//	- Removed items duplicated in math.em.
-//
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
+// Note: v1.3 removes duplicate functions from math.em.
 
+use uo;
+use os;
+use util;
 use math;
-
 
 const CONST_E := 2.718282;
 const CONST_PI := 3.141592;
 
 
+function Inc(a)
 
-function Log(b, x)
+// Increments an integer by one.
 
-// Finds the logarithm to base <b> of <x>.
-
-	if (x<=0)
-		return 0;
-	endif
-	return (Log10(x) / Log10(b));
+	a := a + 1;
+	return a;
 
 endfunction
 
 
-function SplitLog(x)
-// Returns array of {characteristic, mantissa} for x.
-// (If x==1.12345, the characteristic is "1", and the 
-// mantissa is (0.12345)
+function Dec(a)
 
-	return { (CInt(x)), (x - CInt(x)) };
+// Decrements an integer by one.
+
+	a := a - 1;
+	return a;
+
 endfunction
 
+function Log(base, answer)
 
-function Bounded(x, i, y, inclusive := 1)
-// Checks to see if a number "i" falls between the two
-// bounds "x" and "y".  If inclusive is set to nonzero,
-// the function will return true if (i==x) || (i==y).
-	if (inclusive)
-		if ( (i >= Min({x, y})) && (i <= Max({x, y})) )
-			return 1;
+// Finds the logarithm to <base> of <answer>.
+
+	var x := 1.000;
+	var logcount := 0.000;
+	var diff := 1.000;
+	var success := 0;
+	var Count := 1;
+	
+	While (success == 0)
+
+		x := x * base;
+
+		If (Abs(answer - x) < 0.001)
+			logcount := logcount + 1;
+			success := 1;
 		else
-			return 0;
+			If (x > answer)
+				diff := diff / 2;
+				logcount := logcount - diff;
+				x := Exp(base, logcount);
+			else
+				logcount := logcount + diff;
+			endif
 		endif
-	else
-		if ( (i > Min({x, y})) && (i < Max({x, y})) )
-			return 1;
-		else
-			return 0;
+	
+		Count := Count + 1;
+
+		If (Count > 200) 
+			success := 1;
 		endif
-	endif
+
+	endwhile
+
+	return logcount;
+
 endfunction
 
-
-//function Min(byref x)
-// returns the least value of array "x"
-//	x.sort();
-//	return x[1];
-//endfunction
-
-
-//function Max(byref x)
-// returns the greatest value of array "x"
-//	x.sort();
-//	return x[(len(x))];
-//endfunction
 
 
 function Mod(Numerator, Denominator)
 
-// Returns the modulus of the fraction:
+// New Mod, to appease Louds, Dundee, and other disgruntled elements :P
+// Returns the modulus (remainder) of the fraction:
 //
 //		 Numerator
 //		-----------
 //		Denominator
 
 
-	return (Numerator - (CInt(Numerator/Denominator) * Denominator));
+	var dividend := Numerator - ( CInt(Numerator/Denominator) * Denominator );
+	return dividend;
 	
 endfunction
 
 
 
 
-function Remainder(numerator, denominator)
+function Remainder(Numerator, Denominator)
 
-// Use this to get the remainder for non-integers.
+// Old Mod, now called "Remainder" to satisfy some weenies :P  It was designed
+// this way to get remainders for non-integers.
 // Returns the remainder of the fraction:
 //
 //		 Numerator
 //		-----------
 //		Denominator
 
-	while (numerator >= denominator)
-		numerator := numerator - denominator;
+	While (Numerator >= Denominator)
+		Numerator := Numerator - Denominator;
 	endwhile
 
-	return numerator;
-
-endfunction
-
-
-function RoundNumber(x)
-
-// Rounds the number to the nearest integer.  0.5 and greater rounds to the next
-// highest int.  Note: negative numbers round up as well, so -1.5 becomes -1.0
-
-	if ( ( Abs(x) - CInt(x) ) >= 0.5)
-		return ( CInt(x + 1) );
-	else
-		return ( CInt(x) );
-	endif
+	return Numerator;
 
 endfunction
 
@@ -151,9 +117,11 @@ function Trunc(number, places)
 
 // Truncates a dbl to a fixed amount of decimal places.
 
-	var base := Pow(10, places);
+	var base := Exp(10, places);
 
-	number := CDbl(CInt(number * Pow(10, places)));
+	number := number * base;
+	number := Cint(number);
+	number := CDbl(number);
 	number := number / base;
 
 	return number;
@@ -164,12 +132,10 @@ endfunction
 function Fac(factorial);
 
 // Returns the factorial of a number:
-// Fac(10) == 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1
+// Fac(10) = 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1
 
-	factorial := CInt(factorial);
 	var x := 1;
-
-	while (factorial > 0)
+	While (factorial > 0)
 		x := x * factorial;
 		factorial := factorial - 1;
 	endwhile
@@ -180,9 +146,25 @@ endfunction
 
 function Exp(base, power)
 
-// Obsolete: math.em has Pow(b, p)
+// Returns the exponent of <base> raised to <power>:
+// Exp(2, 5) = 2^5 = 32
 
-	return Pow(base, power);
+	var i;
+	var x := 1;
+	var check := Cint(power);
+	if (power == check)
+		for(i:=1;i<=power;i:=i+1)
+			x := x * base;
+		endfor
+		return x;
+	else
+		var m, n;
+		m := power - check;
+		m := m * 1000;
+		n := YRoot(base, 1000);
+		x := Exp(n, m);
+		return x;
+	endif
 
 endfunction
 
@@ -193,7 +175,7 @@ function YRoot(x, y)
 	
 	var i := 0.000;
 	var n := 0.000;
-	var root := 2.000;
+	var sroot := 2.000;
 	var a := CInt(Sqr(x));
 
 	if (a < 4)
@@ -201,45 +183,56 @@ function YRoot(x, y)
 	endif
 
 	var success := 0;
-	while (!success)		
-		n := Pow(root, y);
+	
+	
+	While (success == 0)		
+
+		n := Exp(sroot, y);
 		i := x - n;
-		i := i / (a * root);
+		i := i / (a * sroot);
 		i := Trunc(i, 3);
-		root := root + i;
+		sroot := sroot + i;
 		if (i == 0)
 			success := 1;
-			if ( Pow(Root, y) > x )
-				root := root - 0.001;
+			if ( Exp(sRoot, y) > x )
+				sroot := sroot - 0.001;
 			endif
-			if ( Pow((root + 0.001), y) == x)
-				root := root + 0.001;
+			if ( Exp((sroot + 0.001), y) == x)
+				sroot := sroot + 0.001;
 			endif
 		endif
 	endwhile
 
-	return root;
-
-endfunction
-
-
-function Inc(a)
-// Increments an integer by one.
-	return (a + 1);
-
-endfunction
-
-
-function Dec(a)
-// Decrements an integer by one.
-	return a - 1;
+	return sroot;
 
 endfunction
 
 
 function Sqr(x)
-// Obsolete: math.em has Sqrt(x)
-	return Sqrt(x);
+
+// Returns the square root of x.
+
+	var i := 0.000;
+	var n := 0.000;
+	var sroot := 2.000;
+	var success := 0;
+	
+	While (success == 0)		
+
+		n := Exp(sroot, 2);
+		i := x - n;
+		i := i / (2 * sroot);
+		i := Trunc(i, 3);
+		sroot := sroot + i;
+		if (i == 0)
+			success := 1;
+			if ( Exp(sRoot, 2) > x )
+				sroot := sroot - 0.001;
+			endif
+		endif
+	endwhile
+
+	return sroot;
 
 endfunction
 
@@ -251,15 +244,18 @@ function Mean(ArrayX)
 	var n, i:=0.000;
 
 	foreach n in ArrayX
-		i := i + n;
+		i := i + ArrayX[n];
 	endforeach
 
-	return (i / Len(ArrayX));
+	n := CDbl(i / Len(ArrayX) );
+
+	return n;
 
 endfunction
 
 
 function StdDev(ArrayX)
+
 // Returns the Standard Deviation of an array of numbers.
 
 	var m, n, i := 0.000;
@@ -267,8 +263,8 @@ function StdDev(ArrayX)
 	var ArrayLen := Len(ArrayX);
 
 	foreach m in ArrayX
-		n := m - ArrayMean;
-		n := Pow(n, 2);
+		n := ArrayX[m] - ArrayMean;
+		n := Exp(n, 2);
 		i := i + n;
 	endforeach
 
@@ -281,17 +277,18 @@ endfunction
 
 
 function ZTest(ArrayX, mu, sigma)
+
 // Returns the test statistic for a ZTest.   This is used to show
 // the likelihood that a sample is drawn from the population.  The 
 // mean and standard deviation for the population must be known.
 // The z-statistic is computed as follows:
 //
-//	z==(mean - mu) / (sigma / (Sqr(n))
+//	z = (mean - mu) / (sigma / (Sqr(n))
 //
-// mean==the mean of the ArrayX data
-// mu==the mean of the entire population
-// sigma==the standard deviation of the population
-// n==the number of samples in the data
+// mean = the mean of the ArrayX data
+// mu = the mean of the entire population
+// sigma = the standard deviation of the population
+// n = the number of samples in the data
 
 	var i, n;
 	var z:= 0.000;
@@ -303,7 +300,7 @@ function ZTest(ArrayX, mu, sigma)
 
 	z := i/n;
 
-	return := z;
+	return z;
 
 endfunction
 
@@ -315,36 +312,27 @@ function TTest(ArrayX, mu)
 // the mean and standard deviation for the entire population are
 // unknown.  The t-statistic is computed as follows:
 //
-//	t==(mean - mu) / (s / (Sqr(n))
+//	t = (mean - mu) / (s / (Sqr(n))
 //
-// mean==the mean of the ArrayX data
-// mu==the estimated mean of the entire population
-// s==the standard deviation of the samples
-// n==the number of samples in the data
+// mean = the mean of the ArrayX data
+// mu = the estimated mean of the entire population
+// standarddev = the standard deviation of the samples
+// n = the number of samples in the data
 
 
 	var i, n, s;
 	var t:= 0.000;
 	var ArrayMean := Mean(ArrayX);
 	var ArrayLen := Len(ArrayX);
-	var s := StdDev(ArrayX);
+	var standarddev := StdDev(ArrayX);
 
 	i := ArrayMean - mu;
-	n := s / Sqr(ArrayLen);
+	n := standarddev / Sqr(ArrayLen);
 
 	t := i/n;
 
-	return := t;
-
+	return t;
 endfunction
-
-
-
-//
-// BITWISE FUNCTIONS: These are very old, and not very efficient.
-// Use the standard $$, ||, etc. for bitwise comparisons.
-// Left intact to support any legacy code.
-
 
 function BitIn(ArrayX)
 
@@ -357,14 +345,14 @@ function BitIn(ArrayX)
 
 	var i := 8;
 	var n;
-	var loop := 1;
+//	var loop := 1;
 	var bitvalue := 0;
 
 	While (i >= 0)
 
 		n := 8 - i;
-		if (ArrayX[i]==1)
-			bitvalue := bitvalue + Pow(2, n);
+		if (ArrayX[i] == 1)
+			bitvalue := bitvalue + Exp(2, n);
 		endif
 		i := i - 1;
 
@@ -385,13 +373,13 @@ function BitOut(x)
 	x := Cint(x);
 	var loop := 1;
 	var bitvalue := 0;
-	var ArrayX := {0,0,0,0,0,0,0,0};
+	var ArrayX := array{0,0,0,0,0,0,0,0};
 	var n;
 
 	while (loop <= 8)
 
 		n := 8 - loop;
-		bitvalue := Pow(2, n);
+		bitvalue := Exp(2, n);
 		if ( (x - bitvalue) >= 0)
 			ArrayX[loop] := 1;
 			x := x - bitvalue;
@@ -421,8 +409,8 @@ function BitAnd(x, y)
 	while (loop <= 8)
 	
 		n := loop - 1;
-		if ( (ArrayX[loop]==1) AND (ArrayY[loop]==1) )
-			z := z + Pow(2, n);
+		if ( (ArrayX[loop] == 1) AND (ArrayY[loop] == 1) )
+			z := z + Exp(2, n);
 		endif
 		loop := loop + 1;
 
@@ -444,13 +432,13 @@ function BitOr(x, y)
 	var ArrayY := BitOut(y);
 	var z := 0;
 	var loop := 1;
-	locan n;
+	var n;
 
 	while (loop <= 8)
 
 		n := loop - 1;
-		if ( (ArrayX[loop]==1) OR (ArrayY[loop]==1) )
-			z := z + Pow(2, n);
+		if ( (ArrayX[loop] == 1) OR (ArrayY[loop] == 1) )
+			z := z + Exp(2, n);
 		endif
 		loop := loop + 1;
 
@@ -478,7 +466,7 @@ function BitXor(x, y)
 
 		n := loop - 1;
 		if (ArrayX[loop] - ArrayY[loop] <> 0)
-			z := z + Pow(2, n);
+			z := z + Exp(2, n);
 		endif
 		loop := loop + 1;
 
@@ -505,8 +493,8 @@ function BitEqv(x, y)
 	while (loop <= 8)
 
 		n := loop - 1;
-		if (ArrayX[loop] - ArrayY[loop]==0)
-			z := z + Pow(2, n);
+		if (ArrayX[loop] - ArrayY[loop] == 0)
+			z := z + Exp(2, n);
 		endif
 		loop := loop + 1;
 
@@ -535,7 +523,7 @@ function BitImp(x, y)
 
 		n := loop - 1;
 		if (ArrayX[loop] - ArrayY[loop] < 1)
-			z := z + Pow(2, n);
+			z := z + Exp(2, n);
 		endif
 		loop := loop + 1;
 
@@ -561,9 +549,9 @@ function BitNot(x)
 	while (loop <= 8)
 
 		n := loop - 1;
-		if (ArrayX[loop]==0)
+		if (ArrayX[loop] == 0)
 			ArrayX[loop] := 1;
-			z := z + Pow(2, n);
+			z := z + Exp(2, n);
 		else
 			ArrayX[loop] := 0;
 		endif
@@ -626,4 +614,100 @@ function FlagCheck(flag, bit);
 		return 0;
 	endif
 
+endfunction
+
+/*
+ * equal_probability_dice ( minimum, maximum )
+ *
+ * Purpose
+ * To convert two numbers into an equally probable dice roll.
+ *
+ * Parameters
+ * minimum : lowest value of the two numbers passed to function.
+ * maximum : highest value of the two numbers passed to function.
+ *
+ * Thanks to Nando for the formulae for these dice roll functions
+ *
+ * Return value:
+ * string dice roll representation of the minimum and maximum numbers passed.
+ *
+ */
+function equal_probability_dice ( minimum, maximum )
+	var val := "";
+	minimum := CInt(minimum);
+	maximum := CInt(maximum);
+	
+	if ( minimum < 1 || maximum < 1 )
+		return 0;
+	endif
+	
+	if ( minimum > maximum )
+		var temp := minimum;
+		minimum := maximum;
+		maximum := temp;
+	endif
+	
+	var x := 1;
+	var z := minimum - 1;
+	var y := ( maximum - minimum + 1 );
+	
+	if ( z > 0 )
+		val := CStr ( x+"d"+y+"+"+z );
+	else
+		val := CStr ( x+"d"+y );
+	endif
+	
+	return val;
+endfunction
+
+/*
+ * normal_distribution_dice ( minimum, maximum )
+ *
+ * Purpose
+ * To convert two numbers into a more evenly distributed dice roll.
+ *
+ * Parameters
+ * minimum : lowest value of the two numbers passed to function.
+ * maximum : highest value of the two numbers passed to function.
+ *
+ * Return value:
+ * string dice roll representation of the minimum and maximum numbers passed.
+ *
+ * Thanks to Nando for the formulae for these dice roll functions
+ *
+ */
+function normal_distribution_dice ( minimum, maximum )
+	var val := "";
+	minimum := CInt(minimum);
+	maximum := CInt(maximum);
+	
+	if ( minimum < 1 || maximum < 1 )
+		return 0;
+	endif
+	
+	if ( minimum > maximum )
+		var temp := minimum;
+		minimum := maximum;
+		maximum := temp;
+	endif
+	
+	var x := 0;
+	var y := 0;
+	var z := 0;
+	
+	for ( z; z < minimum; z += 1 )
+		x := minimum - z;
+		if ( ( maximum - z ) % x == 0 )
+			y := ( maximum - z ) / x;
+			break;
+		endif
+	endfor		
+	
+	if ( z > 0 )
+		val := CStr ( x+"d"+y+"+"+z );
+	else
+		val := CStr ( x+"d"+y );
+	endif
+	
+	return val;
 endfunction
