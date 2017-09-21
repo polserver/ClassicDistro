@@ -27,7 +27,7 @@ ECHO Command        Purpose
 ECHO  [ a ] - Compile a specific script.
 ECHO  [ b ] - Compile a directory.
 ECHO  [ c ] - Compile all .src scripts.
-ECHO  [ d ] - Compile all scripts and output to POL\ecompile.log
+ECHO  [ d ] - Compile all scripts and output to POL\log\ecompile.log
 ECHO  [ e ] - Compile all scripts but halt on errors.
 ECHO  [ f ] - Compile updated scripts only.
 ECHO.
@@ -66,17 +66,17 @@ GOTO RETURN_TO_MENU()
 
 REM -- COMPILE_ALL_SCRIPTS() FUNCTION
 :COMPILE_ALL_SCRIPTS()
-%ECOMPILE_PATH% -b -r
+%ECOMPILE_PATH% -b -A
 GOTO RETURN_TO_MENU()
 
 REM -- COMPILE_ALL_SCRIPTS_OPTXT() FUNCTION
 :COMPILE_ALL_SCRIPTS_OPTXT()
-%ECOMPILE_PATH% -b -r >>ecompile.log
+%ECOMPILE_PATH% -b -A > log\ecompile.log
 GOTO RETURN_TO_MENU()
 
 REM -- COMPILE_ALL_SCRIPTS_WITH_HALT() FUNCTION
 :COMPILE_ALL_SCRIPTS_WITH_HALT()
-%ECOMPILE_PATH% -r
+%ECOMPILE_PATH% -A
 GOTO RETURN_TO_MENU()
 
 REM -- COMPILE_UPDATED_SCRIPTS() FUNCTION
