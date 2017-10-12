@@ -11,7 +11,7 @@ use vitals;
 include "include/client";
 include "include/objtype";
 include "include/yesNo";
-include "include/attributes";
+include ":attributes:attributes";
 
 const ITEM_SWARM		:= 0x091b;
 const SOUND_SCRUNCH		:= 0x58;

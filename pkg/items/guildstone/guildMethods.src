@@ -4,7 +4,7 @@ use cfgfile;
 use util;
 use guilds;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/canAccess";
 
 program Install()

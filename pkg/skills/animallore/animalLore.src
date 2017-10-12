@@ -2,7 +2,7 @@ use uo;
 use os;
 use cfgfile;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":poisonwatcher:poisons";
 include "include/trainingskill";
 

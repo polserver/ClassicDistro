@@ -5,7 +5,7 @@ use attributes;
 include "include/objtype";
 include "include/client";
 include "include/canAccess";
-include "include/attributes";
+include ":attributes:attributes";
 
 program go_go_gadget_map(who)
   EraseObjProperty(who, "IsMeditating");

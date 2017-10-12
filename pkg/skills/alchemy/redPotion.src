@@ -3,7 +3,7 @@ use uo;
 use util;
 use cfgfile;
 include ":alchemy:drinkPotion";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/canAccess";
 
 program drink_blue (who, potion)

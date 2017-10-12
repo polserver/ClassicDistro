@@ -6,7 +6,7 @@ use basic;
 
 include ":housing:housing_settings";
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sysEvent";
 include "include/objtype";
 

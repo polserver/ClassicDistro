@@ -6,7 +6,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-include "include/attributes";
+include ":attributes:attributes";
 program textcmd_refreshme( who )
     SetHp(who, GetMaxHp(who));
     SetMana(who, GetMaxMana(who));

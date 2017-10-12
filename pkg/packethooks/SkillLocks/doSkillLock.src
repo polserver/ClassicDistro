@@ -12,7 +12,7 @@ use polsys;
 include "include/client";
 include ":skilllocks:common";
 //include ":attributes:attributes_ex";
-include "include/attributes";
+include ":attributes:attributes";
 
 CONST MODE_FULL_LIST		:= 0;
 CONST MODE_SINGLE_SKILL		:= 255;

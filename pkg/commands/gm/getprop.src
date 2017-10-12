@@ -2,7 +2,7 @@ use uo;
 use basic;
 use os;
 
-include "include/attributes";
+include ":attributes:attributes";
 
 program textcmd_getprop( who, propname )
 

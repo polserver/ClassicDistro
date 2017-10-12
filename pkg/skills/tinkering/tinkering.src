@@ -3,7 +3,7 @@ use cfgfile;
 use os;
 use util;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/client";
 include "include/objtype";
 include "include/skillPoints";

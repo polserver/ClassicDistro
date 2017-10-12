@@ -6,7 +6,7 @@ use cfgfile;
 include "util/bank";
 include "util/key";
 include "include/objtype";
-include "include/attributes";
+include ":attributes:attributes";
 include ":gumps:gumpPrompt";
 include ":housing:staticlayout";
 include ":housing:coownerlayout";

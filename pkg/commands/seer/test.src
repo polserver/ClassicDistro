@@ -2,7 +2,7 @@ use attributes;
 use basic;
 use uo;
 
-include "include/attributes";
+include ":attributes:attributes";
 
 program test(who)
 

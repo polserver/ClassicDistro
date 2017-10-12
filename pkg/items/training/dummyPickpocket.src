@@ -9,7 +9,7 @@ use os;
 use attributes;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 const UOBJECT_DUMMYSWING_EW := 0x1ec1;
 const UOBJECT_DUMMYFREEZE_EW := 0x1ec0;

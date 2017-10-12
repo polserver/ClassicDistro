@@ -1,5 +1,5 @@
 use uo;
-include "include/attributes";
+include ":attributes:attributes";
 
 program textcmd_setint(chr)
     var who := Target(chr);

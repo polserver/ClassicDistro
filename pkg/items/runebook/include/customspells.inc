@@ -2,7 +2,7 @@ use uo;
 use os;
 
 //include ":areas:managment";
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 
 function runebookRecall( who, parms, book, charges, use_charge:=0 )

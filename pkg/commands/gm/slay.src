@@ -1,7 +1,7 @@
 use os;
 use uo;
 use boat;
-include "include/attributes";
+include ":attributes:attributes";
 
 program textcmd_kill( who )
 

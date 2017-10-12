@@ -11,7 +11,7 @@ use uo;
 use os;
 use storage;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/BAInpcUtil";
 include ":gumps:gumps";
 include ":gumps:gumpPrompt";

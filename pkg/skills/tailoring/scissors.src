@@ -2,7 +2,7 @@ use uo;
 use cfgfile;
 
 include "include/objtype";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/client";
 include "include/canAccess";
 include "include/toolWear";

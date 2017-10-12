@@ -3,7 +3,7 @@ use os;
 use cfgfile;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 
 const EVID_UNEQUIP   := 0x123456;

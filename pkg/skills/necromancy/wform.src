@@ -1,7 +1,7 @@
 
 use uo;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 
 program wraith_form( params )

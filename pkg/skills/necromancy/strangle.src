@@ -3,7 +3,7 @@
 use uo;
 use vitals;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 
 var npcfg := ReadConfigFile("::npcdesc");

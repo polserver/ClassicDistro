@@ -1,6 +1,6 @@
 
 include ":magery:summon";
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
 include "include/sounds";

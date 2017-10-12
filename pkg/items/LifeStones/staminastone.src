@@ -19,7 +19,7 @@ use uo;
 use os;
 
 //include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 //include "include/objtype";
 //include "include/string";
 //include "include/magicitems";

@@ -7,7 +7,7 @@ if(!cfg)
   syslog("Failed to open alchemy.cfg: " + cfg.errortext);
 endif
 
-include "include/attributes";
+include ":attributes:attributes";
 function is_reagent(what)
   case(what.objtype)
     0xf7a: return 1;

@@ -2,7 +2,7 @@ use uo;
 use os;
 use cfgfile;
 include "include/hitScriptInc";
-include "include/attributes";
+include ":attributes:attributes";
 
 var speech;
 

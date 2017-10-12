@@ -5,7 +5,7 @@ use util;
 use cfgfile;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include ":poisonwatcher:poisons";
 include "include/trainingskill";
 include ":damage:damage";

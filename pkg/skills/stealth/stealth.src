@@ -2,7 +2,7 @@ use uo;
 use util;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/trainingskill";
 
 program skill_stealth( who )

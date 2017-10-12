@@ -1,6 +1,6 @@
 
 use uo;
-include "include/attributes";
+include ":attributes:attributes";
 
 program textcmd_showstats( who )
     SendSysMessage( who, "Select a mobile" );

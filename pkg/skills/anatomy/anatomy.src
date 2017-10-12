@@ -5,7 +5,7 @@
 use uo;
 use unicode;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/trainingskill";
 
 program Anatomy(who)

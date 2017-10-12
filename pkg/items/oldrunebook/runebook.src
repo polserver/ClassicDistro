@@ -4,7 +4,7 @@ use math;
 use basic;
 
 include ":oldrunebook:customSpells";
-include "include/attributes";
+include ":attributes:attributes";
 
 
 const RENAME_BOOK		:= 0x01;

@@ -13,7 +13,7 @@ use cfgfile;
 use util;
 
 include "include/math"; // Used for Mod
-include "include/attributes";
+include ":attributes:attributes";
 
 const TEXTSTARTLOCY :=  70;  // The location of the top of the gump
 

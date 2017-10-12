@@ -3,7 +3,7 @@ use uo;
 use os;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 program createlightsource(caster)
 

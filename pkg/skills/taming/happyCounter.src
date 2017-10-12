@@ -1,6 +1,6 @@
 use uo;
 use os;
-include "include/attributes";
+include ":attributes:attributes";
 
 program happycounter(parms)
   var me := parms[1];

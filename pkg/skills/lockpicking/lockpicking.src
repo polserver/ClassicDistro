@@ -9,7 +9,7 @@ include "include/objtype";
 include "include/startEqp";
 include "util/key";
 include "include/canAccess";
-include "include/attributes";
+include ":attributes:attributes";
 
 program pick( me, lockpick )
   EraseObjProperty(me, "IsMeditating");

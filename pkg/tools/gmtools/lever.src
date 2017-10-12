@@ -6,7 +6,7 @@ use vitals;
 use attributes;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 
 const FX_POISON_GAS := 0x113a;

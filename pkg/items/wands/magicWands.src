@@ -3,7 +3,7 @@ use os;
 use cfgfile;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/statMod";
 include "include/canAccess";
 include ":damage:damage";

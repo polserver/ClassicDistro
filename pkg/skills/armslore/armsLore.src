@@ -3,7 +3,7 @@ use uo;
 use basic;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/trainingskill";
 
 

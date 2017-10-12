@@ -4,7 +4,7 @@ use util;
 use cfgfile;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/yesNo";
 
 const SFX_MEDITATION := 0xfa;

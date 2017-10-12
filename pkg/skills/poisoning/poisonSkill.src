@@ -4,7 +4,7 @@ use cfgfile;
 use util;
 use os;
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/objtype";
 var config_file;
 

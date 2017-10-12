@@ -4,7 +4,7 @@ use uo;
 use os;
 
 include ":oldstyle-gumps:gumps";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/gumpUtil";
 include "include/dist";
 include "include/client";

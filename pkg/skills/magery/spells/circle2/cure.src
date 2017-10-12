@@ -4,7 +4,7 @@ use cfgfile;
 
 include "include/eventID";
 include ":poisonwatcher:poisons";
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
 include "include/sounds";

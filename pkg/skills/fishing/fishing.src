@@ -5,7 +5,7 @@ use util;
 use math;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/dist";
 include "include/math";
 include "include/objtype";

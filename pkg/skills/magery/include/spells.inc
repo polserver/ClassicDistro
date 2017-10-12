@@ -3,7 +3,7 @@ use os;
 use util;
 use cfgfile;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:settings";
 include ":magery:spells_ex";
 include ":magery:report";

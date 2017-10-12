@@ -2,7 +2,7 @@ use uo;
 use util;
 use os;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/dist";
 include "include/client";
 include ":poisonwatcher:poisons";

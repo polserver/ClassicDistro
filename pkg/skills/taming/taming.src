@@ -4,7 +4,7 @@ use uo;
 use os;
 
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/client";
 //include "../../systems/spawnregion/spawnRegion";
 

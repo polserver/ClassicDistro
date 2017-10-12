@@ -6,7 +6,7 @@ use cfgfile;
 include "include/client";
 include "include/skillPoints";
 include "include/trainingskill";
-include "include/attributes";
+include ":attributes:attributes";
 
 
 program do_itemid( who )

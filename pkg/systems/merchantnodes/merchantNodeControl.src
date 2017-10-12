@@ -4,7 +4,7 @@ use util;
 use cfgfile;
 
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sysEvent";
 include "include/mrcSpawn";
 include "include/utility";

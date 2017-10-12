@@ -1,6 +1,6 @@
 use uo;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
 include "include/sounds";

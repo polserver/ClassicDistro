@@ -9,7 +9,7 @@ include "include/client";
 include "include/res";
 include "include/resPenalty";
 include "include/canAccess";
-include "include/attributes";
+include ":attributes:attributes";
 include ":poisonwatcher:poisons";
 
 var clock := ReadGameClock();

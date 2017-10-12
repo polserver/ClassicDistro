@@ -14,7 +14,7 @@ use cfgfile;
 include ":damage:settings";
 include ":damage:report";
 include "include/NPCUtil";
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 
 /*

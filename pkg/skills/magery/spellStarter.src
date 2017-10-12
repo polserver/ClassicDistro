@@ -7,7 +7,7 @@ use uo;
 use os;
 use cfgfile;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 
 include "include/containers";

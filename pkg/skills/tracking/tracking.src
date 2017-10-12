@@ -3,7 +3,7 @@ use basic;
 use os;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 program track(who)
   EraseObjProperty(who, "IsMeditating");

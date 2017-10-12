@@ -1,6 +1,6 @@
 use util;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":magery:spells";
 
 program cast_poly( parms )

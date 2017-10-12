@@ -1,6 +1,6 @@
 use uo;
 use os;
-include "include/attributes";
+include ":attributes:attributes";
 /*
 program npcwipe(who)
   set_critical(0);

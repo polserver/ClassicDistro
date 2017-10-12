@@ -1,5 +1,5 @@
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/canAccess";
 
 var tinker_cfg:= ReadConfigFile("tinker");

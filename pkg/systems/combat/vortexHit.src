@@ -2,7 +2,7 @@ use uo;
 use util;
 use os;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 
 program macehit(param)

@@ -4,7 +4,7 @@ use cfgfile;
 use util;
 
 include "include/objtype";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/math";
 include ":gmtools:layout";
 include ":gmtools:goLayout";

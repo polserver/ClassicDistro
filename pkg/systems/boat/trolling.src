@@ -5,7 +5,7 @@ use util;
 include "include/client";
 include "include/eventID";
 include "include/utility";
-include "include/attributes";
+include ":attributes:attributes";
 
 var spawnmsg := "";
 var spawnname := "";

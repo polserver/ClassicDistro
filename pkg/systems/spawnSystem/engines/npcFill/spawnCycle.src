@@ -11,7 +11,7 @@
 use uo;
 use os;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":spawnsystem:groups";
 include ":spawnsystem:regions";
 include ":spawnsystem:settings";

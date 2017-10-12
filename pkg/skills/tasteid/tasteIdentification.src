@@ -4,7 +4,7 @@ use cfgfile;
 
 include "include/client";
 include "include/trainingskill";
-include "include/attributes";
+include ":attributes:attributes";
 // include "include/skillpoints"; used to find default points for skillcheck
 
 const UOBJECT_FLASK_EMPTY:= 0x1832;
@@ -81,7 +81,7 @@ use uo;
 use cfgfile;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/trainingskill";
 
 const UOBJECT_FLASK_EMPTY:= 0x1832;

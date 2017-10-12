@@ -5,7 +5,7 @@ use util;
 include "include/client";
 include "include/yesNo";
 // include "include/skills";
-include "include/attributes";
+include ":attributes:attributes";
 
 Const JOBS_AVAILABLE_PER_MERCHANT		:= 5;
 Const MERCHANT_JOB_ERASE_TIMER		:= 1800;
