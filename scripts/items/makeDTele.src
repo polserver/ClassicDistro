@@ -2,7 +2,7 @@ use os;
 use uo;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 program walk_on_moongate( mobile, gate )
   var magery := CInt(GetObjProperty(gate,"magery"));

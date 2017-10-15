@@ -1,6 +1,6 @@
 
 
-include "include/attributes";
+include ":attributes:attributes";
 function ask_for_help(opponent)
 
 var range := CInt(GetHp(me)/10);

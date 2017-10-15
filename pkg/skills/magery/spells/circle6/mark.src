@@ -4,6 +4,7 @@ use cfgfile;
 
 include ":magery:spells";
 include "include/objtype";
+include ":housing:housing";
 
 program cast_mark(parms)
   var caster := parms[1];
@@ -34,7 +35,13 @@ program cast_mark(parms)
   endforeach
 
   if(caster.multi)
-    SendSysMessage(caster,"you cant mark runes here inside this location.", color := 33);
+    SendSysMessage(caster,"You cant mark runes here inside this location.", color := 33);
+    PlaySoundEffect(caster,0x005d);
+    PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+    return;
+  endif
+  if(FindHouseForLocation(caster.x, caster.y, caster.realm))
+    SendSysMessage(caster,"You cant mark runes here inside this location.", color := 33);
     PlaySoundEffect(caster,0x005d);
     PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
     return;

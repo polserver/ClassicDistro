@@ -11,7 +11,7 @@
  */
 use uo;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":skilllocks:common";
 include "include/packets";
 

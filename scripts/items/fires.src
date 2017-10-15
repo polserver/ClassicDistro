@@ -1,7 +1,7 @@
 use uo;
 use cfgfile;
 
-include "include/attributes";
+include ":attributes:attributes";
 //include "include/spellRestrictions";
 include "include/client";
 //include "include/spellAttack";

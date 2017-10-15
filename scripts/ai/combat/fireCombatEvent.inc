@@ -1,6 +1,6 @@
 use vitals;
 
-include "include/attributes";
+include ":attributes:attributes";
 include ":damage:damage";
 //include ":magery:spells";
 

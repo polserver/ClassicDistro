@@ -2,7 +2,7 @@ use uo;
 use util;
 use math;
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/virtue";
 
 var nototitles :=

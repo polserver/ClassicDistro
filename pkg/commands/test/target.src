@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////
+// This program file is here to use for creating little //
+// pieces of code for testing purposes.					//
+//////////////////////////////////////////////////////////
+
+
 use uo;
 use cfgfile;
 use os;
@@ -16,12 +22,9 @@ include ":clilocs:clilocs";
 
 program targetbug(who, text)
 
-var trg := CreateItemInBackpack(who, "recallrune", 1);
-SetObjProperty(trg, "x", 1000);
-SetObjProperty(trg, "y", 1000);
-SetObjProperty(trg, "z", 10);
-SetObjProperty(trg, "realm", "britannia");
-return;
+
+
+	return;
 /*var cmdlvl := CInt(text);;
 SendSysMessage(who, "Logical test: " + CStr(who.cmdlevel == cmdlvl), 1, 88);
 return 1;

@@ -5,7 +5,7 @@ use cfgfile;
 
 include "include/client";
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sysEvent";
 include "include/randName";
 include "include/vetement";

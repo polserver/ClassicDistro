@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 function main_AI_loop()
 
     var ev;

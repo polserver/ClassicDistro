@@ -21,7 +21,7 @@ include "include/client";
 include "include/eventID";
 include ":SkillLocks:common";
 
-const CFGFILESPEC_SKILLSDEF        := ":skills:skillsdef";
+const CFGFILESPEC_SKILLSDEF        := ":attributes:skillsdef";
 const CORE_SETTINGS_MIN_ATTRIBUTE  := 0;
 const CORE_SETTINGS_MAX_ATTRIBUTE  := 60000;
 const CORE_SETTINGS_MIN_VITAL      := 100;
@@ -1079,9 +1079,9 @@ endfunction
  *
  */
 function AP_SkillIdToAttributeName(skill_number)
-	var skills_cfg := ReadConfigFile(":skills:uoskills");
+	var skills_cfg := ReadConfigFile(":attributes:uoskills");
 	if ( skills_cfg.errortext )
-		SysLog("Error::AP_IDToAttributeName() - Unable to open :skills:uoskills.cfg ->"+skills_cfg.errortext);
+		SysLog("Error::AP_IDToAttributeName() - Unable to open :attributes:uoskills.cfg ->"+skills_cfg.errortext);
 	endif
 
 	var cfg_elem := skills_cfg[skill_number];
@@ -1126,7 +1126,7 @@ endfunction
  *
  */
 function AP_GetAttributesCfgFile()
-	var cfg_file := ReadConfigFile(":skills:attributes");
+	var cfg_file := ReadConfigFile(":attributes:attributes");
 	if ( cfg_file.errortext )
 		SysLog("Error::AP_GetAttributesCfgFile() - Unable to open attributes.cfg ->"+cfg_file.errortext);
 	endif
@@ -1173,7 +1173,7 @@ endfunction
  *
  */
 function AP_GetAttributesDataFile()
-	var data_file := DFOpenDataFile(":skills:attributes", DF_CREATE);
+	var data_file := DFOpenDataFile(":attributes:attributes", DF_CREATE);
 	if ( data_file.errortext )
 		SysLog("Error::AP_GetAttributesDataFile() - Unable to open attributes.txt ->"+data_file.errortext);
 	endif
@@ -1220,7 +1220,7 @@ endfunction
  */
 function AP_ListAttributesByType(type:="")
 	if ( !type )
-		var cfg_file := ReadConfigFile(":skills:attributes");
+		var cfg_file := ReadConfigFile(":attributes:attributes");
 		return GetConfigStringKeys(cfg_file);
 	endif
 	
@@ -1652,7 +1652,7 @@ use cfgfile;
  *
  */
 function AP_GetVitalsCfgFile()
-	var cfg_file := ReadConfigFile(":skills:vitals");
+	var cfg_file := ReadConfigFile(":attributes:vitals");
 	if ( cfg_file.errortext )
 		SysLog("Error::AP_GetVitalsCfgFile() - Unable to open vitals.cfg ->"+cfg_file.errortext);
 	endif
@@ -1818,7 +1818,7 @@ endfunction
  *
  */
 function AP_RefreshVitals(mobile)
-	var vital_cfg := ReadConfigFile(":skills:vitals");
+	var vital_cfg := ReadConfigFile(":attributes:vitals");
 	foreach elem_name in GetConfigStringKeys(vital_cfg)
 		AP_SetVital(mobile, elem_name, AP_GetVitalMaximumValue(mobile, elem_name));
 		SleepMS(2);
@@ -1840,10 +1840,10 @@ endfunction
  *
  */
 function AP_GetSettingsCfgFile()
-	var settings_cfg := ReadConfigFile(":skills:settings");
+	var settings_cfg := ReadConfigFile(":attributes:settings");
 
 	if ( settings_cfg.errortext )
-		SysLog("Error::AP_GetSettingsCfgFile() - Unable to open [:skills:settings.cfg] ->"+settings_cfg.errortext);
+		SysLog("Error::AP_GetSettingsCfgFile() - Unable to open [:attributes:settings.cfg] ->"+settings_cfg.errortext);
 	endif
 
 	return settings_cfg;

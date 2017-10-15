@@ -159,15 +159,17 @@ Added 		Sysbook PKG -Error logging to the spawnshelf command.
 11-Aug-2017	GIB	Changed		Sysbook PKG -Updated formatting and documentation of control script.
 
 13-Aug-2017	GIB	Changed		Sysbook PKG -
-Moved eventID's into an include within the sysbook package to make it more stand alone.
+			Moved eventID's into an include within the sysbook package to make it more stand alone.
 			Removed		Sysbook PKG -Calls to control script from the carpentry package as shelves that players make shouldn't be spawning random books.
 			Changed		Sysbook PKG -
-Updated some documentation.
+			Updated some documentation.
 
 			Changed		Sysbook PKG -Increased the randomness of the starting of control scripts to give more varied start times and reduce lag further.
 			Changed		Sysbook PKG -
-Moved constants and some other items into a config file so that it allows players with no coding/compiling skills to update how often functions perform.
+			Moved constants and some other items into a config file so that it allows players with no coding/compiling skills to update how often functions perform.
 
 			Removed		Sysbook PKG -Removed old redundant shelfStock script which wasn't called.
 
+31-Aug-2017	Yukiko	Moved	Copied attributes.inc and moved the skills pkg files to attributes pkg. Adjusted all the scripts to new attributes.inc location. I left a copy of attributes.inc in \scripts\include temporarily for anyone using legacy scripts.
 
+15-Oct-2017	Yukiko	Fixed	All combat skills not gaining. The problem was in the syshook.cfg definition in attributes pkg. It was missing the package name :combathook: in the definitions for newCombat.ecl and newParry.ecl.

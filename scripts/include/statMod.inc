@@ -1,6 +1,6 @@
 use uo;
 use util;
-include "include/attributes";
+include ":attributes:attributes";
 
 function GetModAmount(magery)
   var mod_amount := CInt(RandomInt(3) +(magery/10));

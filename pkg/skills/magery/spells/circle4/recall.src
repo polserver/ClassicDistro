@@ -61,7 +61,7 @@ program recall(parms)
         endif
   endif
   if(!tox)
-    SendSysMessage(caster, "the rune must be marked.");
+    SendSysMessage(caster, "The rune must be marked.");
     return;
   endif
   if(!isValidLoc(tox,toy))
@@ -81,10 +81,10 @@ program recall(parms)
     endif
     chk := 1;
   endif
-  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
-  multicheck.hidden := 1;
-  if(!MoveObjectToLocation(multicheck, tox, toy, toz, caster.realm, MOVEOBJECT_NORMAL))
-    SendSysMessage(caster, "Something is blocking the location");
+  // Cannot recall into/onto a multi
+	var MultiCheck := ListMultisInBox(dest.x, dest.y, dest.z, dest.x, dest.y, dest.z, torealm.realm).size()>0;
+  if(multicheck)
+    SendSysMessage(caster,"Something is blocking the location", 1, 33);
     if(cast_on.objtype == UOBJ_RUNE)
       DestroyItem(cast_on);
     elseif(cast_on.objtype == 0x16100)
@@ -92,16 +92,6 @@ program recall(parms)
     endif
     chk := 1;
   endif
-  if(multicheck.multi)
-    SendSysMessage(caster,"something is blocking the location");
-    if(cast_on.objtype == UOBJ_RUNE)
-      DestroyItem(cast_on);
-    elseif(cast_on.objtype == 0x16100)
-      removeentry(cast_on);
-    endif
-    chk := 1;
-  endif
-  DestroyItem(multicheck);
   
   // Added next 20 lines for Interdictions.
 	success := 0;
@@ -132,16 +122,13 @@ program recall(parms)
       var infoarr := GetObjProperty( item, "homeinfo" );
       if (infoarr)
         if ((tox >= infoarr[2]) and (tox <= infoarr[4]) and (toy >= infoarr[3]) and (toy <= infoarr[5]))
-          sendsysmessage(caster, "your spell fails and consumes the rune!");
+          sendsysmessage(caster, "Your spell fails and consumes the rune!");
           destroyitem(cast_on);
           return;
         endif
       endif
     endforeach
 // End static house check.
-
-  
-  
 
   if(chk == 1)
     return;
@@ -157,6 +144,9 @@ program recall(parms)
   PlaySoundEffect(caster, 0x1fd);
 endprogram
 
+
+// Legacy code for old style rune books.
+// Must be eliminated at some point.
 function removeentry(cast_on)
   var tox := CInt(GetObjProperty( cast_on, "x" ));
   var toy := CInt(GetObjProperty( cast_on, "y" ));

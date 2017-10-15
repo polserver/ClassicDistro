@@ -3,7 +3,7 @@ use uo;
 use os;
 use util;
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/string";
 include "include/objtype";
 include "include/canAccess";

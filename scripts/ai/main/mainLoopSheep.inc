@@ -1,5 +1,5 @@
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 function main_AI_loop()
   var ev;

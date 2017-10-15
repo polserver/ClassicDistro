@@ -1,5 +1,5 @@
 use uo;
-include "include/attributes";
+include ":attributes:attributes";
 
 var maximumloss := 0.20; //20% loss for 20 shortterm murders or more
 

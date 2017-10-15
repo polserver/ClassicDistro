@@ -6,7 +6,7 @@ use os;
 
 include "include/math";
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/clock";
 include "include/accounts";
 include ":timeutils:time";

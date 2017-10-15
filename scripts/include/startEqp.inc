@@ -1,7 +1,7 @@
 use cfgfile;
 use os;
 use util;
-include "include/attributes";
+include ":attributes:attributes";
 //
 //  See starteqp.cfg for a description of what we expect in the config file.
 //
@@ -123,7 +123,7 @@ function CreateFromGroup(who, group)
 endfunction
 
 function GetSkillName(skillid)
-  var cfg := ReadConfigFile(":skills:uoskills");
+  var cfg := ReadConfigFile(":attributes:uoskills");
   return cfg[skillid].attribute;
 endfunction
 

@@ -1,7 +1,7 @@
 use attributes;
 
 include "include/client";
-include "include/attributes";
+include ":attributes:attributes";
 
 Const MAX_SKILL_BONUS := 20;
 
@@ -17,7 +17,7 @@ function GetSkillName (skillid)
 //		return "None";
 //	endif
 
-	var skillmastercfg := ReadConfigFile(":skills:skillmaster");
+	var skillmastercfg := ReadConfigFile(":attributes:skillmaster");
 	var skillelem := FindConfigElem(skillmastercfg, skillid);
 	if (skillelem.desc)
 		return skillelem.desc;
@@ -34,7 +34,7 @@ endfunction
 ///////////////////
 
 function GetSkillTitle (skillid)
-	var skillmastercfg := ReadConfigFile(":skills:skillmaster");
+	var skillmastercfg := ReadConfigFile(":attributes:skillmaster");
 	var skillelem := FindConfigElem(skillmastercfg, skillid);
 	if (skillelem.title)
 		return skillelem.title;
@@ -95,7 +95,7 @@ endfunction
 ///////////////////
 
 function IsTradeSkill(skillid)
-	var skillmastercfg := ReadConfigFile(":skills:skillmaster");
+	var skillmastercfg := ReadConfigFile(":attributes:skillmaster");
 	var skillelem := FindConfigElem(skillmastercfg, skillid);
 	if (skillelem.tradeskill)
 		return 1;
@@ -127,7 +127,7 @@ function LaunchSkillScript (byref character, skillid)
 		character.hidden := 0;
 	endif
 
-	var skillmastercfg := ReadConfigFile (":skills:skillmaster");
+	var skillmastercfg := ReadConfigFile (":attributes:skillmaster");
 	var skillelem := FindConfigElem (skillmastercfg, skillid);
 	if (skillelem.script)
 		start_script (skillelem.script, character);

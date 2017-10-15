@@ -3,7 +3,7 @@ use os;
 use uo;
 
 include "include/NPCCast";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/NPCBackpacks";
 include "include/randName";
 include "include/vetement";

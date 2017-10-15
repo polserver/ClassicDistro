@@ -2,7 +2,7 @@ use uo;
 use os;
 
 include "include/startEqp";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/vetement";
 include "include/randName";
 include "include/client";

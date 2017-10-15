@@ -4,7 +4,7 @@ use cfgfile;
 use util;
 
 include "include/fields";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/client";
 include "include/objtype";
 include "include/statMod";

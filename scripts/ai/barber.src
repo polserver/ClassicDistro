@@ -14,7 +14,7 @@ include "include/anchors";
 include "include/findCity";
 include "include/dist";
 include "include/begging";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/trainSkill";
 
 const MAX_SKILLS      := 48;

@@ -263,6 +263,7 @@ endfunction
  *
  */
 function DisplayDamage(damaged, amount, source:=0)
+
 	var dmg_packet := CreatePacket(0x0B, 0x07);
 
 	if( amount <= 255 )

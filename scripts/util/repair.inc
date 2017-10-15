@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 
 function repair_item(who, what, attribid)
   var maxhp;

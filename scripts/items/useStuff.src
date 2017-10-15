@@ -5,7 +5,7 @@ use cfgfile;
 use attributes;
 
 include "include/canAccess";
-include "include/attributes";
+include ":attributes:attributes";
 
 var config;
 var elem;

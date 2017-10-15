@@ -1,6 +1,6 @@
 use uo;
 use os;
-include "include/attributes";
+include ":attributes:attributes";
 
 program demod(parms)
   var mod := lower(parms[1]);

@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////
 use os;
 use cfgfile;
-include "include/attributes";
+include ":attributes:attributes";
 
 var badguy         := 0;
 var hunger         := 0;

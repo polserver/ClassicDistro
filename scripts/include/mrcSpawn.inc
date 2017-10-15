@@ -1,7 +1,7 @@
 // Some comments added by Yukiko - denoted by capital 'Y'
 
 use cfgfile;
-include "include/attributes";
+include ":attributes:attributes";
 include "include/utility";
 
 var mrcspawn_cfg := ReadConfigFile("::mrcspawn");

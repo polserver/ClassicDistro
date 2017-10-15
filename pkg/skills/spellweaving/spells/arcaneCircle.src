@@ -2,7 +2,7 @@ use uo;
 use cliloc;
 
 
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sounds";
 
 CONST MIN_ARCANIST_REQ := 2;

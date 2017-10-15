@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 
 function process_combat_event(opponent)
   send_web(opponent);

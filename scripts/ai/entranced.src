@@ -4,7 +4,7 @@ use uo;
 
 
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sysEvent";
 include "include/dist";
 

@@ -4,7 +4,7 @@ use uo;
 use cfgfile;
 
 include "include/eventID";
-include "include/attributes";
+include ":attributes:attributes";
 include "include/sysEvent";
 include "include/randName";
 include "include/vetement";

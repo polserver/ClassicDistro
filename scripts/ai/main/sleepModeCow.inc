@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 function sleepmode()
   foreach critter in ListMobilesNearLocation( me.x,me.y,me.z, 15, me.realm);
     if(!critter.isA(POLCLASS_NPC))

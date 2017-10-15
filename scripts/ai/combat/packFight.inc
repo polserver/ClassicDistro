@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 function Fight( opponent )
   if ((opponent.cmdlevel > 0) || (opponent.serial == me.serial))
     SetWarMode(0);

@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 function Expand_Stats(me)
   if(GetObjProperty(me, "#Expanded"))
     return;

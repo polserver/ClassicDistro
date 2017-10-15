@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 include ":poisonwatcher:poisons";
 include ":damage:damage";
 

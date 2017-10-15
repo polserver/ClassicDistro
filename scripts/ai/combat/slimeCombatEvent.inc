@@ -1,4 +1,4 @@
-include "include/attributes";
+include ":attributes:attributes";
 function process_combat_event(opponent)
   do_damage(opponent);
   if (RandomInt(10) == 1)
