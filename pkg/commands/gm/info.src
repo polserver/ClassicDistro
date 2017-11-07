@@ -54,7 +54,7 @@ program textcmd_Info(who, serial)
 		targ := Target(who);
 	endif
 	if ( targ.IsA(POLCLASS_ITEM) )
-		start_script("::textcmd/gm/iteminfo", {who, targ.serial});
+		start_script(":commands:/gm/iteminfo", {who, targ.serial});
 		return 0;
 	endif
 
@@ -202,7 +202,7 @@ function DisplayMember(targ, byref gump, byref entry, byref y_pos)
 endfunction
 
 function DisplayVitals(targ, byref gump, byref y_pos)
-	var vitals := GetVitalIds();
+	var vitals := AP_GetVitalNames();
 	var num_vitals := vitals.Size();
 
 	GFResizePic(gump, 145, y_pos, GetCfgConst("Defaults", "ForeGround"), 340, (num_vitals*20));
@@ -222,9 +222,9 @@ endfunction
 
 function DisplayAttributes(targ, byref gump, byref entry, byref y_pos)
 	var type := entry[2];
-//	var attributes := AP_ListAttributesByType(type);
+	var attributes := AP_ListAttributesByType(type);
         var attrib_cfg := ReadConfigFile(":*:attributes"); 
-        var attributes := GetConfigStringKeys(attrib_cfg); 
+//        var attributes := GetConfigStringKeys(attrib_cfg); 
 	//
 	// Notes about the first page of showing attributes:
 	// 1. The Y position they start showing on is dynamic.
