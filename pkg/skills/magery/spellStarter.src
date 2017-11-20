@@ -197,7 +197,7 @@ program SpellStarter(params)
 		info.+spellId := spell_id;
 		info.+circle := spell_elem.Circle;
 		info.+spell_config := spell_elem;
-		info.+damage_typ := spell_elem.DamageType;
+		info.+damage_type := spell_elem.DamageType;
 
 		var script := Start_Script(spell_elem.SpellScript, {mobile, info, spell_id, targ});
 		Detach();

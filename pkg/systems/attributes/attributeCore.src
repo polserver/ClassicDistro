@@ -7,8 +7,11 @@ include ":attributes:attributes";
 include "include/eventID";
 include ":SkillLocks:common";
 
-const CONST_STATCAP := 230;
-const CONST_SKILLCAP := 14000;
+var StatInfo := AP_GetSettingsCfgElem("Stats");
+var TotalStatCap := CDbl(StatInfo.TotalCap);
+
+var SkillInfo := AP_GetSettingsCfgElem("Skills");
+var TotalSkillCap := CDbl(StatInfo.TotalCap);
 
 var attribcfg := ReadConfigFile(":attributes:attributes");
 
@@ -64,9 +67,9 @@ function CheckStatCap(who, ev)
     bi := 100;
   endif
   var stattotal := CInt(bs + bi + bd);
-  if(stattotal > CONST_STATCAP)
+  if(stattotal > TotalStatCap)
     var loops := 1;
-    while(stattotal > CONST_STATCAP)
+    while(stattotal > TotalStatCap)
       if(loops > 5)
         break;
       endif

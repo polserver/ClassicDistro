@@ -126,10 +126,10 @@ function AwardPoints(who, skillid, skillpoints)
 
     // If it ain't a mobile then don't bother
     if(!who.isA(POLCLASS_MOBILE))
-		return 0;
+      return 0;
     // If the skillid is an error then abort
     elseif(Cint(skillid)== error)
-		return 0;
+      return 0;
     endif
 	
     // Make the skillid an integer
@@ -137,57 +137,57 @@ function AwardPoints(who, skillid, skillpoints)
     // Reads the info from skillsdef.cfg to determine which stats will be affected by the skills being used.
     var elem := GetSkillConfigElem(skillid);
     if(!elem)
-	return elem;
+      return elem;
     endif
     // Get the string attribute name using the skill number
     var attributeid := GetAttributeIdBySkillId(skillid);
     if((attributeid != ATTRIBUTEID_STRENGTH) and (attributeid != ATTRIBUTEID_DEXTERITY) and (attributeid != ATTRIBUTEID_INTELLIGENCE))
-		if(!who.npctemplate)
-			var skillarray := GetObjProperty(who,"SkillArray");
-			if(!skillarray)
-			skillarray := {};
-			foreach thing in GetAttributeIdsWithoutStatIds()
-				if(GetAttributeBaseValue(who, thing) > 0)
-				skillarray.append(GetSkillIdByAttributeId(thing));
-				endif
-			endforeach
-			SetObjProperty(who,"SkillArray", skillarray);
-			endif
-			var skill := GetSkillIdByAttributeId(attributeid);
-			var newarray := {};
-			foreach thing in skillarray
-			if((thing != skill) and (GetBaseSkill(who, thing) > 0))
-				newarray.append(thing);
-			endif
-			endforeach
-			newarray.append(skill);
-			skillarray := newarray;
-			SetObjProperty(who,"SkillArray", skillarray);
-		endif
+      if(!who.npctemplate)
+        var skillarray := GetObjProperty(who,"SkillArray");
+        if(!skillarray)
+          skillarray := {};
+          foreach thing in GetAttributeIdsWithoutStatIds()
+            if(GetAttributeBaseValue(who, thing) > 0)
+              skillarray.append(GetSkillIdByAttributeId(thing));
+            endif
+          endforeach
+          SetObjProperty(who,"SkillArray", skillarray);
+        endif
+        var skill := GetSkillIdByAttributeId(attributeid);
+        var newarray := {};
+        foreach thing in skillarray
+          if((thing != skill) and (GetBaseSkill(who, thing) > 0))
+            newarray.append(thing);
+          endif
+        endforeach
+        newarray.append(skill);
+        skillarray := newarray;
+        SetObjProperty(who,"SkillArray", skillarray);
+      endif
     endif
     AwardRawAttributePoints(who, attributeid, skillpoints, skillid);
     var adv := elem.StrAdv;
     if(adv)
-	adv := SplitWords(adv);
-	if(RandomInt(1000)< Cdbl(adv[1])*10)
-	    AwardRawAttributePoints(who, ATTRIBUTEID_STRENGTH, RandomDiceRoll(adv[2]), skillid);
-	endif
+      adv := SplitWords(adv);
+      if(RandomInt(1000)< Cdbl(adv[1])*10)
+          AwardRawAttributePoints(who, ATTRIBUTEID_STRENGTH, RandomDiceRoll(adv[2]), skillid);
+      endif
     endif
     adv := 0;
     adv := elem.DexAdv;
     if(adv)
-	adv := SplitWords(adv);
-	if(RandomInt(1000)< Cdbl(adv[1])*10)
-	    AwardRawAttributePoints(who, ATTRIBUTEID_DEXTERITY, RandomDiceRoll(adv[2]), skillid);
-	endif
+      adv := SplitWords(adv);
+      if(RandomInt(1000)< Cdbl(adv[1])*10)
+          AwardRawAttributePoints(who, ATTRIBUTEID_DEXTERITY, RandomDiceRoll(adv[2]), skillid);
+      endif
     endif
     adv := 0;
     adv := elem.IntAdv;
     if(adv)
-	adv := SplitWords(adv);
-	if(RandomInt(1000)< Cdbl(adv[1])*10)
-	    AwardRawAttributePoints(who, ATTRIBUTEID_INTELLIGENCE, RandomDiceRoll(adv[2]), skillid);
-	endif
+      adv := SplitWords(adv);
+      if(RandomInt(1000)< Cdbl(adv[1])*10)
+          AwardRawAttributePoints(who, ATTRIBUTEID_INTELLIGENCE, RandomDiceRoll(adv[2]), skillid);
+      endif
     endif
     return 1;
 endfunction

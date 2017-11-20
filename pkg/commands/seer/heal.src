@@ -1,6 +1,6 @@
 use uo;
-use os;
-use util;
+//use os;
+// use util;
 
 // include "include/spellRestrictions";
 include ":attributes:attributes";

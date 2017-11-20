@@ -16,7 +16,6 @@ exported function NewCombatAdvancement(attacker, weapon, defender)
   if(attacker.npctemplate)
     cfg := ReadConfigFile("::npcdesc");
     skid := cfg[attacker.npctemplate].AttackAttribute;
-//    Broadcast("Attacker is " + attacker.name + " and Attribute is " + skid);
   else
     cfg := ReadConfigFile(":*:itemdesc");
     skid := cfg[weapon.objtype].Attribute;
