@@ -746,8 +746,8 @@ var checkdata := array(
 "Are you sure you want to do this?"
 );
 
-program textcmd_sign(who, sign)
-  var hserial := GetObjProperty(sign, "house_serial");
+program Mulit_House_sign(who, sign)
+  var hserial := GetObjProperty(sign, "signserial");
   if(!hserial)
     return;
   endif
