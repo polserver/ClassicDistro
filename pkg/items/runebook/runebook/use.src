@@ -6,7 +6,7 @@ use cliloc;
 include ":gumps:gumps";
 include ":gumps:gumps_ex";
 include ":runebook:runebookFunctions";
-include ":runebook:customSpells";
+include ":runebook:customspells";
 include "include/itemUtil";
 
 program use_Runebook( who, book )

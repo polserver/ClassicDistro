@@ -72,7 +72,7 @@ const SFX_2C    :=  0x002c; // bellows.wav, bellows
 const SFX_2D    :=  0x002d; // chstcls3.wav, chest close
 const SFX_2E    :=  0x002e; // chstopn2.wav, chest open
 const SFX_2F    :=  0x002f; // drawercl.wav, drawer close
-const SFX_30    :=  0x0030; // drawerop.wav, drawer open
+const SFX_30    :=  0x0030; // drawerop.wav, drawer opeconst SFX_31    :=  0x0031; // drink01.wav, drink - sip or slurp
 const SFX_31    :=  0x0031; // drink01.wav, drink
 const SFX_32    :=  0x0032; // drink05.wav, drink
 const SFX_33    :=  0x0033; // dropgem1.wav, drop gem
@@ -263,9 +263,9 @@ const SFX_EB    :=  0x00eb; // open01a.wav
 const SFX_EC    :=  0x00ec; // open03a.wav
 const SFX_ED    :=  0x00ed; // open04b.wav
 const SFX_EE    :=  0x00ee; // open09.wav
-const SFX_EF    :=  0x00ef; // portclos.wav
-const SFX_F0    :=  0x00f0; // portcul4.wav
-const SFX_F1    :=  0x00f1; // portcul5.wav
+const SFX_EF    :=  0x00ef; // portclos.wav slamming Boom! labelled as portcullis but no chain sound.
+const SFX_F0    :=  0x00f0; // portcul4.wav close portcullis with chain sound
+const SFX_F1    :=  0x00f1; // portcul5.wav open prtcullis with chain sound
 const SFX_F2    :=  0x00f2; // shut03a.wav
 const SFX_F3    :=  0x00f3; // shut07a.wav
 const SFX_F4    :=  0x00f4; // shut14b.wav
@@ -723,6 +723,10 @@ const SFX_OPEN_WOODEN_DOOR          :=  SFX_EB;
 const SFX_CLOSE_WOODEN_DOOR         :=  SFX_F2;
 const SFX_OPEN_METAL_DOOR           :=  SFX_ED;
 const SFX_CLOSE_METAL_DOOR          :=  SFX_F4;
+const SFX_OPEN_PORTCULLIS           :=  SFX_F0;
+const SFX_CLOSE_PORTCULLIS_CHAIN    :=  SFX_F1;
+const SFX_OPEN_SLIDING_DOOR         :=  SFX_30;
+const SFX_CLOSE_SLIDING_DOOR        :=  SFX_2F;
 
 
 ////
