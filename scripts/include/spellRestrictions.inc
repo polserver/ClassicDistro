@@ -240,9 +240,9 @@ function Resisted(circle, caster, cast_on, amt)
 	// called by: most spells
 	// returns: amount of damage not resisted?
 
-        var magery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
-        var evalint := CInt(GetEffectiveSkill(caster, SKILLID_EVALUATING_INTELLIGENCE));
-        var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_RESISTING_SPELLS));
+        var magery := CInt(AP_GetSkill(caster, MAGERY));
+        var evalint := CInt(AP_GetSkill(caster, EVALUATING_INTELLIGENCE));
+        var resist := CInt(AP_GetSkill(cast_on, RESISTING_SPELLS));
         
         // chk1 relates to the resist ability.
         var chk1 := (resist / 5);
@@ -292,7 +292,7 @@ endfunction
 function CalcSpellDamage(circle, caster, cast_on)
   var die_string := circle+"d8";
   var dmg := RandomDiceRoll(die_string);
-  dmg := dmg + CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)/10);
+  dmg := dmg + CInt(AP_GetSkill(caster, MAGERY)/10);
   if(dmg > (circle * 8))
     dmg := circle * 8;
   endif
@@ -347,7 +347,7 @@ function spellcast(me, circle, scroll, id)
   else
     return 0;
   endif
-  if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRESTLING)/2)))
+  if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (AP_GetSkill(me, WRESTLING)/2)))
     SendSysMessage(me,"You lost your concentration.", 3, 40);
     return 0;
   endif
@@ -364,7 +364,7 @@ function spellcast(me, circle, scroll, id)
   if(can_cast(me))
     me.frozen :=1;
     for (n:=1; n<=times; n:=n+1)
-      if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRESTLING)/2)))
+      if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (AP_GetSkill(me, WRESTLING)/2)))
         SendSysMessage(me,"You lost your concentration.", 3, 40);
         PlaySoundEffect(me,0x005d);
         PlayObjectCenteredEffect(me, 0x3735,0x0a, 0x1e);
@@ -379,7 +379,7 @@ function spellcast(me, circle, scroll, id)
     endif
     me.frozen :=0;
     if (SkillCheck(me,MAGERY, diff, 0))
-      if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (GetEffectiveSkill(me, SKILLID_WRESTLING)/2)))
+      if((mhp > GetHp(me)) && ((RandomInt(99)+1) > (AP_GetSkill(me, WRESTLING)/2)))
         SendSysMessage(me,"You lost your concentration.", 3, 40);
         return 0;
       endif
@@ -490,7 +490,7 @@ function getpoints(c, scroll, skillid)
       8:   points := 180; diff := 100;
     endcase
   endif
-  var skill := GetEffectiveSkill(caster, skillid);
+  var skill := AP_GetSkill(caster, AP_SkillIDToAttributeName(skillid));
   if(skill > (diff - 20))
     if((skill - diff) <= 5)
       points := points;
@@ -520,7 +520,7 @@ function getresistpoints(c, victim, skillid)
     7:   points := 160; diff := 86;
     8:   points := 180; diff := 100;
   endcase
-  var skill := GetEffectiveSkill(victim, skillid);
+  var skill := AP_GetSkill(victim, AP_SkillIDToAttributeName(skillid));
   if(skill > (diff - 20))
     if((skill - diff) <= 5)
       points := points;

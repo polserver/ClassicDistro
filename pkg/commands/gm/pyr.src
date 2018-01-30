@@ -2,7 +2,7 @@
 
 use uo;
 include ":attributes:attributes";
-
+include "include/client";
 
 program pyrotechnics (who)
             var place := TargetCoordinates( who );

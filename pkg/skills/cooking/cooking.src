@@ -77,7 +77,7 @@ function cookit(who,item);
     endif
   endif
   if(!points)
-    points := GetEffectiveSkill(who, SKILLID_COOKING) * 2;
+    points := AP_GetSkill(who, COOKING) * 2;
   endif
   if(skill_needed)
     if(SkillCheck( who, COOKING, skill_needed, 0));
@@ -104,7 +104,7 @@ function cookit(who,item);
 endfunction
 
 function GetPoints(who, diff, pts)
-  var skill := GetEffectiveSkill(who, SKILLID_COOKING);
+  var skill := AP_GetSkill(who, COOKING);
   if(skill > (diff - 20))
     if((skill - diff) <= 5)
       pts := pts;

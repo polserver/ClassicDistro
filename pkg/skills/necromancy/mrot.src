@@ -13,7 +13,7 @@ program mind_rot( params )
 	var cast_on := Target(caster);
 	
 
-	var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+	var sspeak := Cint(AP_GetSkill(caster, SPIRITSPEAK));
 	var int := GetIntelligence(caster);
 
 	var bonus := 0;
@@ -32,7 +32,7 @@ program mind_rot( params )
 	endif
 
 
-	var duration :=  (sspeak  - GetEffectiveSkill(cast_on, SKILLID_RESISTING_SPELLS)) / 5 + 20;
+	var duration :=  (sspeak  - AP_GetSkill(cast_on, RESISTING_SPELLS)) / 5 + 20;
 	detach();
 	PlaySoundEffect(cast_on, 0x1FB);
 	PlaySoundEffect(cast_on, 0x258);

@@ -82,7 +82,7 @@ program vampiric_embrace( params )
 	Setobjproperty(caster, "NewRegenRateForMana", 10000);
 	Setobjproperty(caster, "vampire", 1);
 	Setobjproperty(caster, "poly", 2);
-	SetObjProperty(caster, "vampiric_resist", GetEffectiveSkill(caster, SKILLID_RESISTING_SPELLS));
+	SetObjProperty(caster, "vampiric_resist", AP_GetSkill(caster, RESISTING_SPELLS));
 	SetAttributeBaseValue(caster, RESISTING_SPELLS, 0);
 	ModifyResistance(cast_on, DMG_FIRE, -25);
 	RecalcVitals(caster);

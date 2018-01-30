@@ -15,8 +15,8 @@ program poison_strike( params )
 	var cast_on := Target(caster);
 	
 
-	var necroskill := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
-	var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+	var necroskill := Cint(AP_GetSkill(caster, NECROMANCY));
+	var sspeak := Cint(AP_GetSkill(caster, SPIRITSPEAK));
 	var int := GetIntelligence(caster);
 
 	var bonus := 0;

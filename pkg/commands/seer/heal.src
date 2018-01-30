@@ -1,10 +1,9 @@
 use uo;
-//use os;
-// use util;
+use os;
+use util;
 
-// include "include/spellRestrictions";
 include ":attributes:attributes";
-
+include "include/client";
 
 program heal(who, amount)
   var targ :=  Target( who, TGTOPT_NOCHECK_LOS );

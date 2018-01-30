@@ -27,7 +27,7 @@ program destroy(item)
     "reflect":      val := reflect(who,item);
     "protection":   val := protection(who,item);
     "wizzohat":     val := wizzohat(who,item);
-    "strength":     val := strength(who,item);
+    "strength":     val := strgth(who,item);
     "invisibility": val := invisibility(who, item);
     default:        val := 1;
   endcase
@@ -35,7 +35,7 @@ program destroy(item)
   set_critical(0);
 endprogram
 
-function strength(who,item)
+function strgth(who,item)
   return 1;
 endfunction
 

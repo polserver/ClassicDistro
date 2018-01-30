@@ -155,7 +155,7 @@ endprogram
 
 function ComposeSubMenu(who)
   var num := 2;
-  var skill := (GetEffectiveSkill(who, SKILLID_BLACKSMITHY) + 20);
+  var skill := (AP_GetSkill(who, BLACKSMITHY) + 20);
   var color := 0;
   var cfg := ReadConfigFile(":blacksmithy:blacksmithy");
   while(num < 11)
@@ -637,9 +637,9 @@ function makeBlacksmithItems(who, what, amt, cont, hammer)
   var counter := 0;
   var x := who.x;
   var y := who.y;
-  var skchk := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  var skchk := AP_GetSkill(who, BLACKSMITHY);
   pts := getPoints(who, skil, pts);
-  excmod := CInt(GetEffectiveSkill(who, SKILLID_ARMSLORE) / 10) + 3;
+  excmod := CInt(AP_GetSkill(who, ARMSLORE) / 10) + 3;
   var modpts := 0;
   if(skchk > (skil - 20))
     modpts := (skchk - skil);
@@ -667,7 +667,7 @@ function makeBlacksmithItems(who, what, amt, cont, hammer)
         nme := "";
         theitem := CreateItemInContainer(cont, what, 1);
         if(theitem)
-          CheckToolWear(who, hammer, SKILLID_BLACKSMITHY);
+          CheckToolWear(who, hammer, BLACKSMITHY);
           if(!theitem.isa(POLCLASS_WEAPON))
             case(use_on.objtype)
               0x6309:   nme := ""             + itemname; theitem.color := 0x0;
@@ -694,7 +694,7 @@ function makeBlacksmithItems(who, what, amt, cont, hammer)
             theitem.hp      := theitem.maxhp;
             ExceptionalFameMod(who, skchk, skil, CInt(points / 2));
             SendSysMessage(who, "You make an exceptional item and put it in your pack");
-            if(GetEffectiveSkill(who, SKILLID_BLACKSMITHY) >= 99)
+            if(AP_GetSkill(who, BLACKSMITHY) >= 99)
               tname := "an exceptional " + nme + " [Crafted by " + who.name + "]";
             else
               tname := "an exceptional " + nme;
@@ -824,7 +824,7 @@ function ExceptionalFameMod(who, skill, diff, points)
 endfunction
 
 function getPoints(who, diff, pts)
-  var skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  var skill := AP_GetSkill(who, BLACKSMITHY);
   if(diff > 20)
     diff := diff - 20;
   else
@@ -862,7 +862,7 @@ function checkSkillForDifferentMetals(who, ingot)
 endfunction
 
 function checkHisSkill(who, skill)
-  var his_skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  var his_skill := AP_GetSkill(who, BLACKSMITHY);
   if(his_skill >= skill)
     return 1;
   else
@@ -907,7 +907,7 @@ function resmelt(who, tongs)
     SendSysMessage(who, "You cannot resmelt that.");
     return;
   endif
-  amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+  amt := CInt((amt * AP_GetSkill(who,BLACKSMITHY) * 75 ) / 10000);
   if(amt < 1)
 	amt := 1;
   endif

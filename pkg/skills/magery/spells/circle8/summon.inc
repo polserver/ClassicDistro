@@ -63,17 +63,17 @@ function summon_creature( caster, circle := 8, npctemplate, cast_loc, controldif
 	endif
 
 	if ("Intelligence" in attributelist)
-		SetIntelligenceMod(thecritter, CInt(GetEffectiveSkill(caster, SKILLID_MEDITATION) / 3));
+		SetIntelligenceMod(thecritter, CInt(AP_GetSkill(caster, MEDITATION) / 3));
 		SetMana(thecritter, thecritter.intelligence);
 	endif
 
 	if ("Speed" in attributelist)
-		SetDexterityMod(thecritter, CInt(GetEffectiveSkill(caster, SKILLID_MEDITATION) / 3));
+		SetDexterityMod(thecritter, CInt(AP_GetSkill(caster, MEDITATION) / 3));
 		SetStamina(thecritter, thecritter.dexterity);
 	endif
 
 	if ("Strength" in attributelist)
-		SetStrengthMod(thecritter, CInt(GetEffectiveSkill(caster, SKILLID_MEDITATION) / 3));
+		SetStrengthMod(thecritter, CInt(AP_GetSkill(caster, MEDITATION) / 3));
 		SetHp(thecritter, thecritter.strength);
 	endif
 	Detach();

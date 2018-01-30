@@ -200,7 +200,7 @@ function PayForJobCompleted (byref ev)
 		return;
 	endif
 
-	var jobattribute := GetAttributeIDBySkillID (GetObjProperty (bag, "jobtype"));
+	var jobattribute := AP_SkillIdToAttributeName (GetObjProperty (bag, "jobtype"));
 
 	var goldamount := count * CINT(GetAttribute (player, jobattribute)/5);
 	if (!goldamount)

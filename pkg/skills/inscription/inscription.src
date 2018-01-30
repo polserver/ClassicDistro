@@ -85,7 +85,7 @@ program do_inscription(who)
             SendSysMessage(who,"Your backpack is too full to create the scroll.");
             return;
           endif
-          var myskill := CInt(GetEffectiveSkill(who, SKILLID_INSCRIPTION));
+          var myskill := CInt(AP_GetSkill(who, INSCRIPTION));
           var modpts := 0;
           if(myskill >=  skill)
             modpts := (myskill - (skill - 10));
@@ -167,7 +167,7 @@ function CreateRunebook(who, the_item)
   endif
   if(SkillCheck(who, INSCRIPTION, 70, 900))
     if(SubtractAmount(the_item, 1) && SubtractAmount(scrolls, 8) && SubtractAmount(recall, 1) && SubtractAmount(gate, 1))
-      var myskill := CInt(GetEffectiveSkill(who, SKILLID_CARPENTRY));
+      var myskill := CInt(AP_GetSkill(who, CARPENTRY));
       var modpts := 0;
       if(myskill >=  90)
         modpts := (myskill - 80);

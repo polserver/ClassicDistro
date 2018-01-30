@@ -19,15 +19,8 @@ include "include/string";
 //include ":staticHousing:staticHousing";
 include "include/packets";
 include ":clilocs:clilocs";
-include ":attributes:attributes";
 
 program targetbug(who, text)
-
-	var Thing := Target(who);
-	Thing.resist_fire_mod := 0;
-	SendSysMessage(who, "Energy resistance is " + CStr(thing.resist_energy), 1, 88);
-	SendSysMessage(who, "Fire damage is " + CStr(thing.damage_fire), 1, 88);
-	return;
 
 	// Add buff icon for 10 seconds
 	who.addBuff(0x460, 30, 0x106a85, 0x106a86, CAscZ("1234 "));

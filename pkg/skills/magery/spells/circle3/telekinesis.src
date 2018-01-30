@@ -28,7 +28,7 @@ program telekinesis(parms)
     endif
     PlaySoundEffect(cast_on, 0x144);
     PlayObjectCenteredEffect(cast_on, 0x37b9,0x03, 0x0a);
-    var dmg := RandomInt(GetEffectiveSkill(caster, SKILLID_MAGERY) / 10);
+    var dmg := RandomInt(AP_GetSkill(caster, MAGERY) / 10);
     ApplyRawSpellDamageEX(cast_on, dmg, DMG_ENERGY, caster, info.Circle);
     if((cast_on.graphic  == 0x190) or (cast_on.graphic == 0x191))
       PerformAction(cast_on, 20);

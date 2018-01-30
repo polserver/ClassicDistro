@@ -350,7 +350,7 @@ function canclaim(player, pettemplate)
   var difficulty := CInt(GetConfigInt(elem, "tameskill"));
   if (difficulty < 50)
     return 1;
-  elseif ( ( difficulty - 20 ) > GetEffectiveSkill(player, SKILLID_TAMING ) )
+  elseif ( ( difficulty - 20 ) > AP_GetSkill(player, TAMING ) )
     return 0;
   else
     return 1;

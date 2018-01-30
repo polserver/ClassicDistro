@@ -62,8 +62,8 @@ function heal(who, patient)
   var wx:= who.x;
   var wy:= who.y;
   var chp;
-  var healing := (CInt(GetEffectiveSkill(who, SKILLID_VETERINARY)) / 2);
-  var anatomy := (CInt(GetEffectiveSkill(who, SKILLID_ANATOMY)) / 5);
+  var healing := (CInt(AP_GetSkill(who, VETERINARY)) / 2);
+  var anatomy := (CInt(AP_GetSkill(who, ANATOMY)) / 5);
   var healamt := healing + anatomy + 10;
   var counter := 0;
   var cycles;
@@ -138,8 +138,8 @@ function cure(who, patient)
   var wx:= who.x;
   var wy:= who.y;
   var chp;
-  var healing := (CInt(GetEffectiveSkill(who, SKILLID_VETERINARY)) / 2);
-  var anatomy := (CInt(GetEffectiveSkill(who, SKILLID_ANATOMY)) / 5);
+  var healing := (CInt(AP_GetSkill(who, VETERINARY)) / 2);
+  var anatomy := (CInt(AP_GetSkill(who, ANATOMY)) / 5);
   var healamt := healing + anatomy + 10;
   var counter := 0;
   var cycles;

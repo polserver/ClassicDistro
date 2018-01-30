@@ -417,9 +417,9 @@ function Resisted(circle, caster, cast_on, amt)
 	// called by: most spells
 	// returns: amount of damage not resisted?
 
-        var magery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
-        var evalint := CInt(GetEffectiveSkill(caster, SKILLID_EVALUATING_INTELLIGENCE));
-        var resist := CInt(GetEffectiveSkill(cast_on, SKILLID_RESISTING_SPELLS));
+        var magery := CInt(AP_GetSkill(caster, MAGERY));
+        var evalint := CInt(AP_GetSkill(caster, EVALUATING_INTELLIGENCE));
+        var resist := CInt(AP_GetSkill(cast_on, RESISTING_SPELLS));
         
         // chk1 relates to the resist ability.
         var chk1 := (resist / 5);
@@ -515,7 +515,7 @@ function getresistpoints(c, victim, skillid)
     7:   points := 160; diff := 86;
     8:   points := 180; diff := 100;
   endcase
-  var skill := GetEffectiveSkill(victim, skillid);
+  var skill := AP_GetSkill(victim, AP_SkillIDToAttributeName(skillid));
   if(skill > (diff - 20))
     if((skill - diff) <= 5)
       points := points;
@@ -536,7 +536,7 @@ function CalcSpellDamage(circle, caster, cast_on)
   cast_on := cast_on;
   var die_string := circle+"d8";
   var dmg := RandomDiceRoll(die_string);
-  dmg := dmg + CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)/10);
+  dmg := dmg + CInt(AP_GetSkill(caster, MAGERY)/10);
   if(dmg > (circle * 8))
     dmg := circle * 8;
   endif

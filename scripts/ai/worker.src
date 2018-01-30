@@ -156,7 +156,7 @@ function MerchantTrain(me, who, text)
         myskill := 25 + RandomInt(10);
         SetObjProperty(me, thing, myskill);
       endif
-      pskill := GetEffectiveSkill(who, FindSkillId(thing));
+      pskill := AP_GetSkill(who, AP_SkillIDToAttributeName(FindSkillId(thing)));
       if(pskill < myskill)
         if(holder == "")
           holder := thing;
@@ -182,7 +182,7 @@ function MerchantTrain(me, who, text)
       if(lower(thing) == skill)
         npclevel := CInt(GetObjProperty(me, thing));
         holder := FindSkillId(thing);
-        pclevel := GetEffectiveSkill(who, holder);
+        pclevel := AP_GetSkill(who, AP_SkillIDToAttributeName(holder));
         if(pclevel >= npclevel)
           say("I cannot teach you anymore.");
           return;
@@ -220,7 +220,7 @@ function TrainSkill(me, who, item)
       return;
     endif
     npc_level    := CInt(GetObjProperty(me, trainskillname));
-    pc_level     := GetEffectiveSkill(who, trainskillid);
+    pc_level     := AP_GetSkill(who, AP_SkillIDToAttributeName(trainskillid));
     goldreceived := item.amount;
     variance     := npc_level - pc_level;
     currentnpccost := GoldForSkillGain(npc_level, pc_level, trainskillid);

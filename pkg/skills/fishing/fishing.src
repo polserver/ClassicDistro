@@ -84,7 +84,7 @@ program use_fishpole(who, fishingpole)
         endif
         var catchtype := GetTheCatch(who);
         if(CreateItemInContainer(who.backpack, catchtype, 1))
-          CheckToolWear (who, fishingpole, SKILLID_FISHING);
+          CheckToolWear (who, fishingpole, FISHING);
           skillgain(who, difficulty * 10);
         endif
       else

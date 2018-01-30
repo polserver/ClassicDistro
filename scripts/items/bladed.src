@@ -63,7 +63,7 @@ function process_wool(who, blade, sheep, craftingbag)
     sheep.graphic := 223;
     CreateItemInContainer(craftingbag, 0xdf8, 3);
   endif
-  CheckToolWear (who, blade, SKILLID_TAILORING);
+  CheckToolWear (who, blade, TAILORING);
 endfunction
 
 function is_tree(theobj)
@@ -101,7 +101,7 @@ function CarveTree(who, blade, use_on, craftingbag)
   CreateItemInContainer(craftingbag, UOBJ_KINDLING, 1);
   DestroyItem(use_on);
   SendSysMessage(who, "You chip off some kindling and put it in your backpack");
-  CheckToolWear (who, blade, SKILLID_CAMPING);
+  CheckToolWear (who, blade, CAMPING);
 endfunction
 
 function CarveFish(who, blade, use_on, craftingbag)
@@ -119,7 +119,7 @@ function CarveFish(who, blade, use_on, craftingbag)
   if(DestroyItem(use_on))
     CreateItemInContainer(craftingbag, UOBJ_FISHSTEAK, num_steaks);
     SendSysMessage(who, "You carve the fish steaks and put them in your backpack");
-    CheckToolWear (who, blade, SKILLID_COOKING);
+    CheckToolWear (who, blade, COOKING);
   endif
   sleep(1);
 endfunction

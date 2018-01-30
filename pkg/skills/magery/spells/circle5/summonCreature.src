@@ -23,7 +23,7 @@ program cast_summon( parms )
   
   var thecreature;
   var critgroup;
-  var basemagery := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+  var basemagery := CInt(AP_GetSkill(caster, MAGERY));
   if (basemagery < 70)
 	critgroup := RandomInt(1);
   elseif (basemagery < 80)

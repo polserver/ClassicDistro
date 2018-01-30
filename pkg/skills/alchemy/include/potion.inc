@@ -90,7 +90,7 @@ function can_make(user, potion, reg)
   else
     skillneeded := 0;
   endif
-  if(GetEffectiveSkill(user, SKILLID_ALCHEMY) >= skillneeded)
+  if(AP_GetSkill(user, ALCHEMY) >= skillneeded)
     return 1;
   else
     return 0;
@@ -141,7 +141,7 @@ function try_to_make_potion(user, potion, in_mortar, mortar, reg)
       endforeach
       set_critical(0);
       if(RandomInt(10) > 6)
-        var skill := GetEffectiveSkill(user, SKILLID_ALCHEMY);
+        var skill := AP_GetSkill(user, ALCHEMY);
         ExceptionalFameMod(user, skill, difficulty, Cint(points / 4));
       endif
       if(hasbottle)

@@ -334,10 +334,10 @@ function Transfer()
   endif
   //var npccfgfile := ReadConfigFile("npcdesc"); // unneeded due to global 'npccfgfile'!!
   var tameskill  := CInt(npccfgfile[me.npctemplate].tameskill);
-  var mastaming  := GetEffectiveSkill(master, SKILLID_TAMING);
-  var maslore    := GetEffectiveSkill(master, SKILLID_ANIMALLORE)/5;
-  var tgttaming  := CInt(GetEffectiveSkill(whom, SKILLID_TAMING));
-  var tgtlore    := CInt(GetEffectiveSkill(whom, SKILLID_ANIMALLORE)/5);
+  var mastaming  := AP_GetSkill(master, TAMING);
+  var maslore    := AP_GetSkill(master, ANIMALLORE)/5;
+  var tgttaming  := CInt(AP_GetSkill(whom, TAMING));
+  var tgtlore    := CInt(AP_GetSkill(whom, ANIMALLORE)/5);
   happiness := GetObjProperty(me, "happiness");
   if(tgttaming <(tameskill - 50))
     PlaySoundEffect(me, dmgsound);
@@ -935,8 +935,8 @@ function obediencecheck()
   if(me.objtype in arry)
     return 1;
   endif
-  var maslore    := GetEffectiveSkill(master, SKILLID_ANIMALLORE)/5;
-  var mastaming  := CInt(GetEffectiveSkill(master, SKILLID_TAMING)+ maslore);
+  var maslore    := AP_GetSkill(master, ANIMALLORE)/5;
+  var mastaming  := CInt(AP_GetSkill(master, TAMING)+ maslore);
   var checkvalue := CInt(mastaming - 20);
   happiness := GetObjProperty(me, "happiness");
   var happybonus := happiness/10;

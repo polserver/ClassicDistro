@@ -13,7 +13,7 @@ function sleepmode()
   endif
   EraseObjProperty(me,"#flees");
   DisableMainEvents();
-  if(GetEffectiveSkill(me, 21) > 0 )
+  if(AP_GetSkill(me, HIDING) > 0 )
     me.hidden := 1;
   endif
   EnableEvents(SYSEVENT_ENTEREDAREA,18);

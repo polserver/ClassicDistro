@@ -47,7 +47,7 @@ program resmelt(who)
           SendSysMessage(who, "You cannot resmelt that.");
           return;
         endif
-        amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+        amt := CInt((amt * AP_GetSkill(who,BLACKSMITHY) * 75 ) / 10000);
         if(amt < 1)
           amt := 1;
         endif
@@ -85,7 +85,7 @@ program resmelt(who)
       SendSysMessage(who, "You cannot resmelt that.");
       return;
     endif
-    amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 75 ) / 10000);
+    amt := CInt((amt * AP_GetSkill(who,BLACKSMITHY) * 75 ) / 10000);
     if(amt < 1)
       amt := 1;
     endif

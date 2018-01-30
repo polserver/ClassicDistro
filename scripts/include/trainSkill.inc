@@ -44,12 +44,13 @@ function MerchantTrain(me, who, text)
 // Since so many npcdesc.cfg entries have NPC's with 100 skill, set it lower
 // for the purpose of training.
 
-        var npclevel := GetEffectiveSkill(me, holder);
+        var npclevel := AP_GetSkill(me, AP_SkillIDToAttributeName(holder));
 
         if(npclevel == 0)
           npclevel := RandomInt(12) + 22;
           SetBaseSkill(me, holder, npclevel);
-          var npclevel := GetEffectiveSkill(me, holder);
+          var npclevel := AP_GetSkill(me, AP_SkillIDToAttributeName(holder));
+
         endif
         if(npclevel > maxskilltotrain)
           npclevel := maxskilltotrain;
@@ -106,7 +107,7 @@ function TrainSkill(me, who, item)
   if((item.objtype == 0xeed) && (item.amount != 0))
     var skillid := GetObjProperty(who, "TrainSkillID");
     var trainmaxcost := GetObjProperty(who, "TrainMaxCost");
-    var attributeid := GetAttributeIDBySkillid(GetObjProperty(who, "TrainSkillID"));
+    var attributeid := AP_SkillIdToAttributeName(GetObjProperty(who, "TrainSkillID"));
     if((!trainmaxcost || !attributeid) && attributeid != 0)
       say("I don't know what this is for, but thanks!");
       DestroyItem(item);

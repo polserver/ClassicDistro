@@ -18,7 +18,7 @@ program strangle( params )
 	
 
 	
-	var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+	var sspeak := Cint(AP_GetSkill(caster, SPIRITSPEAK));
 	var int := GetIntelligence(caster);
 	var daemon := Cint(GetObjProperty(cast_on, "#Daemon"));
 	var daemonqual := daemon * 0.01;
@@ -50,7 +50,7 @@ program strangle( params )
 	endif
 
 	var waittime := 5;
-	var rounds := cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK) / 30);
+	var rounds := cint(AP_GetSkill(caster, SPIRITSPEAK) / 30);
 	var x := 1, dmg2;
 
 	Detach();

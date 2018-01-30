@@ -14,8 +14,8 @@ program wither( params )
 	var spellID := params[3];
 	var cast_on := params[4]; // Target of spell if required.
 	
-    var necroskill := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
-    var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+    var necroskill := Cint(AP_GetSkill(caster, NECROMANCY));
+    var sspeak := Cint(AP_GetSkill(caster, SPIRITSPEAK));
     var int := GetIntelligence(caster);
     var bonus := 0;
     

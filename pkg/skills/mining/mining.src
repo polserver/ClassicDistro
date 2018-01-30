@@ -285,7 +285,7 @@ program use_picktool(who, tool)
 endprogram
 
 function GetRange( who );
-  var skill := GetEffectiveSkill( who, SKILLID_MINING );
+  var skill := AP_GetSkill( who, MINING );
   if( skill >= 100 )
     return 5;
   elseif( skill >= 80 )
@@ -374,7 +374,7 @@ function GetOre(who, location, info, tool)
   var oretype := wait_for_event(10);
   var diff := 0;
   var objtype := 0;
-  var skill := GetEffectiveSkill(who, SKILLID_MINING);
+  var skill := AP_GetSkill(who, MINING);
   var points := skill + 1;
   var name;
   case(oretype)

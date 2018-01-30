@@ -7,7 +7,7 @@ program textcmd_setint(chr)
     SetIntelligenceMod(who, 0);
     SetStrengthMod(who, 0);
     who.ar_mod := 0;
-    foreach thing in GetAttributeIds()
+    foreach thing in List_of_Skills
       SetAttributeTemporaryMod(chr, thing, 0);
     endforeach
 endprogram

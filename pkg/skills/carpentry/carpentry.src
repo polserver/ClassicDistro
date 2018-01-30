@@ -247,7 +247,7 @@ function MakeCarpentryItems(who, tool, objtype, cont, item1, item2)
   EraseObjProperty(who, "HealTimer");
   var itemname, theitem;
   var elm, exchk, skill, name, skill2, skillid, material, material2, material2obj;
-  var carpentryskill := CInt(GetEffectiveSkill(who, SKILLID_CARPENTRY));
+  var carpentryskill := CInt(AP_GetSkill(who, CARPENTRY));
   var cfg := ReadConfigFile( "carpentry" );
   case(objtype)
     0x0faf: objtype := 0x1b000;
@@ -376,7 +376,7 @@ function MakeCarpentryItems(who, tool, objtype, cont, item1, item2)
       SendSysMessage(who, "You make an exceptional item and put it in your pack");
     endif
   else
-    var fq :=  RandomInt(GetEffectiveSkill(who, SKILLID_CARPENTRY));
+    var fq :=  RandomInt(AP_GetSkill(who, CARPENTRY));
     if(skill > 20)
       skill := skill - 20;
     else
@@ -403,16 +403,24 @@ function MakeCarpentryItems(who, tool, objtype, cont, item1, item2)
       var thekey := CreateItemInContainer(theitem, UOBJ_COPPER_KEY, 1 );
       SetObjProperty(thekey, "lockid",lockid);
       SetObjProperty(theitem,"lockid",lockid);
-      SetObjProperty(theitem,"LockPickDiff", GetEffectiveSkill(who, SKILLID_TINKERING));
+      SetObjProperty(theitem,"LockPickDiff", AP_GetSkill(who, TINKERING));
       SendSysMessage(who, "You put the key inside the container.");
     endif
   endif
   return 1;
 endfunction
 
+
+//////////////////////////////////////////
+//
+// This section will need to be rewritten
+// at some point to get rid of
+// GetEffectiveSkill function calls.
+//
+//////////////////////////////////////////
 function ComposeSubMenu(who)
   var num := 2;
-  var skill := (GetEffectiveSkill(who, SKILLID_CARPENTRY) + 20);
+  var skill := (AP_GetSkill(who, CARPENTRY) + 20);
   var skill2;
   var color := 0;
   var cfg := ReadConfigFile(":carpentry:carpentry");
@@ -823,7 +831,7 @@ function makewooditems(who, tool, objtype, lop, cont)
   var theitem;
   var cfg := ReadConfigFile( "carpentry" );
   var skill := cfg[objtype]."skill";
-  var carpentryskill := CInt(GetEffectiveSkill(who, SKILLID_CARPENTRY));
+  var carpentryskill := CInt(AP_GetSkill(who, CARPENTRY));
   var modpts := 0;
   if(carpentryskill >= skill)
     modpts := (carpentryskill - (skill - 10));
@@ -911,7 +919,7 @@ function makewooditems(who, tool, objtype, lop, cont)
           if(modpts >= rint)
             ExceptionalFameMod(who, carpentryskill, skill, skill);
           endif
-          CheckToolWear (who, tool, SKILLID_CARPENTRY);
+          CheckToolWear (who, tool, CARPENTRY);
           theitem.movable := 1;
           SendSysMessage( who, "You made the item and put it in your pack.");
         endif
@@ -954,7 +962,7 @@ function makewooditems(who, tool, objtype, lop, cont)
       if(SubtractAmount(item1, amt))
         theitem := CreateItemInContainer(cont, objtype, amt);
         if(theitem)
-          AwardRawSkillPoints(who, SKILLID_CARPENTRY, getpoints(who, GetEffectiveSkill(who, SKILLID_CARPENTRY), (skill * 4)));
+          AwardRawSkillPoints(who, SKILLID_CARPENTRY, getpoints(who, AP_GetSkill(who, CARPENTRY), (skill * 4)));
           CheckToolWear (who, tool, CARPENTRY);
           chk := 1;
         endif
@@ -978,7 +986,7 @@ function gettypes(type)
 endfunction
 
 function getpoints(who, diff, pts)
-  var skill := GetEffectiveSkill(who, SKILLID_CARPENTRY);
+  var skill := AP_GetSkill(who, CARPENTRY);
   if(skill > (diff - 20))
     if((skill - diff) <= 5)
       pts := pts;

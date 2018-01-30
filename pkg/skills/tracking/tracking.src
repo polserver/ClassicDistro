@@ -9,11 +9,11 @@ program track(who)
   EraseObjProperty(who, "IsMeditating");
   EraseObjProperty(who, "HealTimer");
   UnloadConfigFile(":tracking:tracking");
-//  if(SkillCheck(who, TRACKING, -1, (GetEffectiveSkill(who, SKILLID_TRACKING) + 30)))
-  if(SkillCheck(who, TRACKING, -1, (GetEffectiveSkill(who, SKILLID_TRACKING))))
+//  if(SkillCheck(who, TRACKING, -1, (AP_GetSkill(who, TRACKING) + 30)))
+  if(SkillCheck(who, TRACKING, -1, (AP_GetSkill(who, TRACKING))))
     var tracker := ReadGameClock();
     SetObjProperty(who, "TrackingCounter", tracker);
-    var range := CInt((GetEffectiveSkill(who, SKILLID_TRACKING)/3));
+    var range := CInt((AP_GetSkill(who, TRACKING)/3));
     var nearby := ListMobilesNearLocation(who.x,who.y, who.z, range, who.realm);
     if(len(nearby) == 1)
       SendSysMessage(who, "There don't seem to be any creatures nearby");

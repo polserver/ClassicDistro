@@ -68,7 +68,7 @@ function Do_Chops(me, axe, tree)
     SendSysMessage(me,"You stop chopping.");
     return 1;
   endif
-  var points := CInt((GetEffectiveSkill(me, SKILLID_LUMBERJACKING) * 2) + 10);
+  var points := CInt((AP_GetSkill(me, LUMBERJACKING) * 2) + 10);
   if(SkillCheck(me, LUMBERJACKING, difficulty, points))
     var wood_amount := HarvestResource( "wood", tree.x, tree.y, 1, 10 );
     if(wood_amount == 0)
@@ -80,7 +80,7 @@ function Do_Chops(me, axe, tree)
       return 1;
     else
       SendSysMessage(me, "You put some logs in your backpack");
-      CheckToolWear (me, axe, SKILLID_LUMBERJACKING);
+      CheckToolWear (me, axe, LUMBERJACKING);
       return 0;
     endif
   else
@@ -303,7 +303,7 @@ function process_wool(who, blade, sheep)
   if(sheep.graphic == 207)
     sheep.graphic := 223;
     CreateItemInContainer(who.backpack, 0x1f125, 3);
-    CheckToolWear (who, blade, SKILLID_TAILORING);
+    CheckToolWear (who, blade, TAILORING);
   else
     SendSysMessage(who,"That sheep is not yet ready to be shorn.");
   endif
@@ -328,7 +328,7 @@ function CarveFish(who, blade, use_on)
   PlaySoundEffect(who, SFX_57);
   if(DestroyItem(use_on))
     CreateItemInBackpack(who, UOBJ_FISHSTEAK, num_steaks);
-    CheckToolWear (who, blade, SKILLID_FISHING);
+    CheckToolWear (who, blade, FISHING);
     SendSysMessage(who, "You carve the fish steaks and put them in your backpack");
   endif
   sleep(1);
@@ -497,27 +497,27 @@ function CarveLogs(who, blade, logs)
       var amt := logs.amount;
       if(DestroyItem(logs))
         CreateItemInBackpack(who, what, amt);
-        CheckToolWear (who, blade, SKILLID_BOWCRAFT);
+        CheckToolWear (who, blade, BOWCRAFT);
         SendSysMessage(who, "You create some shafts and place them in your pack." );
       endif
     elseif (what == UOBJ_BOW)
       if(SubtractAmount(logs, material))
         bow := CreateItemInBackpack(who, what);
-        CheckToolWear (who, blade, SKILLID_BOWCRAFT);
+        CheckToolWear (who, blade, BOWCRAFT);
         SendSysMessage(who, "You create a bow and place it in your pack.");
         SetName(bow, "a bow");
       endif
     elseif (what == UOBJ_XBOW)
       if(SubtractAmount(logs, material))
         bow := CreateItemInBackpack(who, what);
-        CheckToolWear (who, blade, SKILLID_BOWCRAFT);
+        CheckToolWear (who, blade, BOWCRAFT);
         SendSysMessage(who, "You create a crossbow and place it in your pack.");
         SetName(bow, "a crossbow");
       endif
     elseif (what == UOBJ_HEAVY_XBOW)
       if(SubtractAmount(logs, material))
         bow := CreateItemInBackpack(who, what);
-        CheckToolWear (who, blade, SKILLID_BOWCRAFT);
+        CheckToolWear (who, blade, BOWCRAFT);
         SendSysMessage(who, "You create a heavy crossbow and place it in your pack.");
         SetName(bow, "a heavy crossbow");
       endif
@@ -525,7 +525,7 @@ function CarveLogs(who, blade, logs)
       SendSysMessage(who, "I don't know how to make that.");
       return;
     endif
-    var myskill := CInt(GetEffectiveSkill(who, SKILLID_BOWCRAFT));
+    var myskill := CInt(AP_GetSkill(who, BOWCRAFT));
     var modpts := 0;
     if(myskill >=  difficulty)
       modpts := (myskill - difficulty);
@@ -543,7 +543,7 @@ endfunction
 
 function setquality(who, bow)
   var tname := TruncateArticle(bow.name);
-  if(CInt(GetEffectiveSkill(who, SKILLID_BOWCRAFT)) >= 99)
+  if(CInt(AP_GetSkill(who, BOWCRAFT)) >= 99)
     bow.name := "an exceptional " + tname + " [crafted by " + who.name + "]";
   else
     bow.name := "an exceptional " + tname;

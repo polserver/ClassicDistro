@@ -25,7 +25,7 @@ program unequip(who, item)
     "reflect":      val := reflect(who,item);
     "protection":   val := protection(who,item);
     "wizzohat":     val := wizzohat(who,item);
-    "strength":     val := strength(who,item);
+    "strength":     val := strengthRemove(who,item);
     "invisibility": val := invisibility(who, item);
     default:        val := 1;
   endcase
@@ -50,7 +50,7 @@ program unequip(who, item)
   set_critical(0);
 endprogram
 
-function strength(who,item)
+function strengthRemove(who,item)
   RemoveMods(who, item);
   return 1;
 endfunction

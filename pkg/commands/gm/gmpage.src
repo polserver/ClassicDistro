@@ -541,7 +541,7 @@ function FillInSkills(who)
   var datindx;
   var attribindex := 1;
   var attribs := array;
-  attribs := GetAttributeIds();
+  attribs := List_of_Skills;
   for(datindx := 32; datindx <= 128; datindx := datindx + 2)
     infodata[datindx] := GetAttribute(who, attribs[attribindex]);
     attribindex += 1;
