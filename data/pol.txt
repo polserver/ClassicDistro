@@ -10,20 +10,21 @@ System
 	CoreVersionString	99.0.1 Break Everything Even Rudder
 	CompileDate	Jan  8 2018
 	CompileTime	00:43:19
-	LastItemSerialNumber	1073743145
-	LastCharSerialNumber	248
+	LastItemSerialNumber	1073743396
+	LastCharSerialNumber	249
 }
 
 GlobalProperties
 {
-	CProp	DayPhase sNight
+	CProp	DayPhase sDawn
 	CProp	MaxPlayers i1
 	CProp	MaxUptime i0
-	CProp	NewDay i950225
+	CProp	NewDay i950243
 	CProp	ShardDate i147
 	CProp	SystemTeleportersCreated i1
-	CProp	gameclock s950245
+	CProp	gameclock s952089
 	CProp	nextlockid i1
-	CProp	storagestart i1
+	CProp	orelist d0:
+	CProp	storagestart i248
 }
 
