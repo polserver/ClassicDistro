@@ -63,7 +63,7 @@ core-changes.txt
 objtypes.txt
 packethooks.txt
 packets.zip
-data/
+data/*
 landtiles.cfg
 multis.cfg
 tiles.cfg
