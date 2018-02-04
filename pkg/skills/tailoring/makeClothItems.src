@@ -10,7 +10,7 @@ include "include/dist";
 include "include/client";
 include "include/objtype";
 include "include/canAccess";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/noto";
 
 /*const UOBJ_SEWING_KIT   := 0x0f9d;

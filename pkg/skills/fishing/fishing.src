@@ -11,7 +11,7 @@ include "include/math";
 include "include/objtype";
 include "include/startEqp";
 include "include/canAccess";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/eventID";
 
 program use_fishpole(who, fishingpole)

@@ -12,7 +12,7 @@ include "include/client";
 include "include/objtype";
 include "include/canAccess";
 include "util/key";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/noto";
 
 // These entries are unnecessary?  - HellRazor 19 Nov 02

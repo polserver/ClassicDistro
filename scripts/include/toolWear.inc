@@ -42,4 +42,33 @@ function CheckToolWear (who, tool, skillid)
       endif	
     endif
   endif
-endfunction  
+endfunction
+
+function SetToolDurability(who, tool, skillid)
+
+	var toolfile := ReadConfigFile(":*:itemdesc");
+	var toolscript := toolfile[tool.objtype].Script;
+
+	if ( !toolscript.errortext )
+		if ( !tool.isA(POLCLASS_CONTAINER) && !tool.isA(POLCLASS_ARMOR) )
+			var myskill := GetEffectiveSkill(who, skillid);
+			var swings := 0;
+			var mods := GetObjProperty(tool, "durability");
+			var bonus := 0;
+			case( mods )
+				"durable":		bonus := 10; break;
+				"substantial":		bonus := 20; break;
+				"massive":		bonus := 30; break;
+				"fortified":		bonus := 40; break;
+				"indestructable": 	bonus := 50; break;
+				default: bonus := 0;
+			endcase
+			swings := Cint(50 + myskill) + bonus;
+			SetObjProperty(tool, "swings", swings);
+			if ( !tool.quality or tool.quality == error )
+				tool.quality := 1.0;
+			endif
+		endif
+	endif
+
+endfunction 

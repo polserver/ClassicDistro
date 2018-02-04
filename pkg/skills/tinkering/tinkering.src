@@ -9,7 +9,7 @@ include "include/objtype";
 include "include/skillPoints";
 include "util/key";
 include "include/canAccess";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include ":oldstyle-gumps:gumps";
 include "include/noto";
 include ":damage:damage";

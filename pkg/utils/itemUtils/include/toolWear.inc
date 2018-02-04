@@ -1,6 +1,6 @@
 include ":attributes:attributes_ex";
 
-function CheckToolWear (who, tool, skillid)
+function CheckToolWear (who, tool, attributeID)
 	var swings := GetObjProperty(tool,"swings");
 	if ( !swings )
 		var mods := GetObjProperty(tool, "durability");
@@ -19,7 +19,7 @@ function CheckToolWear (who, tool, skillid)
 		DestroyItem(tool);
 		SendSysMessage(who,"Your tool broke.");
 	else
-		var skill := GetAttribute(who, AP_SkillIdToAttributeName(skillid));
+		var skill := GetAttribute(who, attributeID);
 		if ( skill > 80 )
 			skill := 80;
 		elseif ( skill < 20 )

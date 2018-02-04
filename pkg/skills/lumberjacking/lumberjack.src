@@ -10,7 +10,7 @@ include "include/objtype";
 include "include/canAccess";
 include "include/utility";
 include "include/dist";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/noto";
 include ":damage:damage";
 

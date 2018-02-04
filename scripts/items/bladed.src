@@ -8,7 +8,7 @@ include "include/string";
 include "include/objtype";
 include "include/canAccess";
 include "include/dist";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/noto";
 include "include/crafting";
 include ":gumps:requestGump";

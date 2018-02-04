@@ -17,7 +17,7 @@
 // the "bazaar" in Magincia. Land elevations make some of the
 // structures from Mondain's Legacy era maps unusable.
 //
-// I hope this is useful for shard.
+// I hope this is useful for your server.
 // Sincerely,
 // Yukiko "Kiko"
 // POL Distro development leader.
@@ -35,6 +35,7 @@ use file;
 use polsys;
 use cliloc;
 
+include ":decorateServer:teleporters";
 include ":clilocs:clilocs";
 include ":timeutils:time";
 include "include/arrays";
@@ -49,7 +50,7 @@ program decoratefacets(who, text)
 	var element := "";			// Holds a cfg file element reference
 	var object := 0;			// The integer value of the items ObjType
 	var map := "";				// The realm to place the item
-	
+	var LogFile := "::/log/DecorateFacets";
 	// These things must be cleared for each new object
 	var itemname := "";			// Holds the items name if specified.
 	var labelnum := 0;			// A cliloc reference that will be used to assign a name to an item if specified.
@@ -81,11 +82,11 @@ program decoratefacets(who, text)
 		decorate_all := 1;
 	endif
 	selected_facets := DecorateFacetsGump ( who, decorate_all );
-	Print("decoratefacets: Initialising the facets (realms) for Mondain's Legacy maps.");
+	LogToFile(LogFile, "decoratefacets: Initialising the facets (realms) for Mondain's Legacy maps.", 1);
 	foreach UOMap in selected_facets
 		var directories := ListDirectory( ":DecorateServer:config/", LISTDIR_NO_FILES, LISTDIR_LIST_DIRS );
 		foreach directory in directories
-			Print("decoratefacets: Processing directory: " + directory);
+			LogToFile(LogFile, "decoratefacets: Processing directory: " + directory, 1);
 			files := ListDirectory( ":DecorateServer:decorations/" + directory, LISTDIR_ALL_FILES, LISTDIR_DONT_LIST_DIRS );
 			foreach fileref in files
 				fileref := fileref[1, Len(fileref) - 4];
@@ -99,7 +100,7 @@ program decoratefacets(who, text)
 				element := FindConfigElem( decorations, "Realm" );
 				map := GetConfigString(element, "Map");
 				
-				Print("decoratefacets: Processing file: " + fileref);
+				LogToFile(LogFile, "decoratefacets: Processing file: " + fileref, 1);
 
 				///////////////////////////////////////////////////////////////////////////////
 				things := GetConfigStringKeys( decorations );
@@ -189,7 +190,7 @@ program decoratefacets(who, text)
 	// the config files xilshenar.cfg, xmalas.cfg, xtokuno.cfg, and xtermur.cfg.
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-		Print("decoratefacets: Phase 2...");
+		LogToFile(LogFile, "decoratefacets: Phase 2...", 1);
 
 		files := {"doorsInit", "signsInit", "lightsInit"};
 		foreach fileref in files
@@ -241,9 +242,9 @@ program decoratefacets(who, text)
 							createdthing := CreateItemAtLocation(CInt(itemx), CInt(itemy), CInt(itemz), CInt(object), itemamount, map);
 							if(!createdthing)
 								// Would like this to be in a yes/no gump
-								Print("decoratefacets: Couldn't create the item" + CStr(object) +" " +  CStr(itemx) + " " + CStr(itemy) + " " +CStr(itemz) + " in realm " + map);
-								Print("decoratefacets: The item is in the file " + ":decorateServer:" + fileref);
-								Print("decoratefacets: " + createdthing.errortext);
+								LogToFile(LogFile, "decoratefacets: Couldn't create the item" + CStr(object) +" " +  CStr(itemx) + " " + CStr(itemy) + " " +CStr(itemz) + " in realm " + map, 1);
+								LogToFile(LogFile, "decoratefacets: The item is in the file " + ":decorateServer:" + fileref, 1);
+								LogToFile(LogFile, "decoratefacets: " + createdthing.errortext, 1);
 								// return;
 							endif
 							
@@ -281,7 +282,7 @@ program decoratefacets(who, text)
 			map := GetConfigString(element, "Map");
 			
 			if(map == UOMap)
-				Print("decoratefacets: Processing realm: " + map);
+				LogToFile(LogFile, "decoratefacets: Processing realm: " + map, 1);
 
 				things := GetConfigIntKeys( decorations );
 				foreach thing in things
@@ -333,8 +334,8 @@ program decoratefacets(who, text)
 						createdthing := CreateItemAtLocation(CInt(itemx), CInt(itemy), CInt(itemz), CInt(object), itemamount, map);
 						if(!createdthing)
 							// Would like this to be in a yes/no gump
-							Print("decoratefacets: Couldn't create the item " + itemname + ", ObjType " + CStr(Hex(object)) + ", at " +  CStr(itemx) + " " + CStr(itemy) + " " +CStr(itemz));
-							Print("decoratefacets: " + createdthing.errortext);
+							LogToFile(LogFile, "decoratefacets: Couldn't create the item " + itemname + ", ObjType " + CStr(Hex(object)) + ", at " +  CStr(itemx) + " " + CStr(itemy) + " " +CStr(itemz), 1);
+							LogToFile(LogFile, "decoratefacets: " + createdthing.errortext, 1);
 							// return 0;
 						endif
 						
@@ -354,11 +355,18 @@ program decoratefacets(who, text)
 				endforeach					// thing in things
 			endif							// map == UOMap
 		endforeach							// fileref in files
+		
+		LogToFile(LogFile, "Adding teleporters to the selected facets...", 1);
+		CreateTeleporters(UOMap);
+		
 		SetGlobalProperty(UOMap + "_Decorated", 1);
 		SaveWorldState();
+		
 	endforeach								// UOMap in selected_facets
+	
+	
 
-	Print("decoratefacets: Finished decorating the selected facets.");
+	LogToFile(LogFile, "decoratefacets: Finished decorating the selected facets.", 1);
 
 endprogram
 

@@ -11,7 +11,7 @@ include "include/objtype";
 include "include/client";
 include "include/objtype";
 include "include/canAccess";
-include "include/toolWear";
+include ":itemutils:toolWear";
 include "include/noto";
 
 var itemcfg   := ReadConfigFile(":combat:itemdesc");

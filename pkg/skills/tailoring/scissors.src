@@ -5,7 +5,7 @@ include "include/objtype";
 include ":attributes:attributes";
 include "include/client";
 include "include/canAccess";
-include "include/toolWear";
+include ":itemutils:toolWear";
 
 var scissors_cfg := ReadConfigFile("scissors");
 var cfg2 := ReadConfigFile("tailoring");
