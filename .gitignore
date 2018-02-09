@@ -89,3 +89,5 @@ runecl.exe
 scripts/eCompile_commands.txt
 scripts/ecompile.cfg.example
 scripts/modules/*
+pol-core*
+*.session
