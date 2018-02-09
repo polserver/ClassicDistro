@@ -1,0 +1,25 @@
+language: cpp
+sudo: false
+git:
+  depth: 1
+
+before_script:
+  - echo 'Configure...' && echo -en 'travis_fold:start:script.configure\\r'
+  - wget http://pol.uo.hyeah.pl/upload/core/polserver099-LINUX-2018-02-09.zip
+  - unzip polserver099-LINUX-2018-02-09.zip
+  - cp -Rf polserver099-LINUX-2018-02-09/* .
+  - echo "ModuleDirectory=scripts" >>scripts/ecompile.cfg
+  - echo "IncludeDirectory=scripts" >>scripts/ecompile.cfg
+  - echo "PolScriptRoot=scripts" >>scripts/ecompile.cfg
+  - echo "PackageRoot=pkg" >>scripts/ecompile.cfg
+  - echo -en 'travis_fold:end:script.configure\\r'
+
+script:
+  - echo 'Build...' && echo -en 'travis_fold:start:script.build\\r'
+  - scripts/ecompile -AT
+  - echo -en 'travis_fold:end:script.build\\r'
+
+
+notifications:
+  email:
+    #    - polteam@polserver.com
