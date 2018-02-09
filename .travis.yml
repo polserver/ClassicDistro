@@ -10,7 +10,7 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7']
+          packages: ['g++-7', 'libstdc++6-7', 'libstdc++-6-7-dev', 'libstdc++6-7-dbg']
 
 before_script:
   - echo 'Configure...' && echo -en 'travis_fold:start:script.configure\\r'
