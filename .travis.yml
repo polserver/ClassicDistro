@@ -3,6 +3,15 @@ sudo: false
 git:
   depth: 1
 
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
+
 before_script:
   - echo 'Configure...' && echo -en 'travis_fold:start:script.configure\\r'
   - wget http://pol.uo.hyeah.pl/upload/core/polserver099-LINUX-2018-02-09.zip
