@@ -1,4 +1,7 @@
+[![Build Status](https://travis-ci.org/polserver/Distro.svg?branch=master)](https://travis-ci.org/polserver/Distro)
+
 # POL-Distro
+
 A basic working set of scripts used by the POL UO emulator.
 This is mostly an upgrade of the POL 0.95 Distro to work with current POL versions. It is a little more than that because I have included some of the scripts from the unfinished 0.97 Distro started by Austin started. His version of the "info" command is just one example.
 
