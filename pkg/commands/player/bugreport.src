@@ -2,7 +2,7 @@ use uo;
 use os;
 use cfgfile;
 
-include ":gumps:requestgump";
+include ":gumps:requestGump";
 include ":timeutils:time";
 
 
