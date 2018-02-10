@@ -18,14 +18,9 @@ before_script:
   - wget https://github.com/polserver/polserver/archive/master.zip
   - unzip master.zip
   - cd polserver-master/pol-core/bin-build
-  - rm ../CMakeLists.txt
-  - echo "add_subdirectory(clib)" >> ../CMakeLists.txt
-  - echo "add_subdirectory(bscript)" >> ../CMakeLists.txt
-  - echo "add_subdirectory(plib)" >> ../CMakeLists.txt
-  - echo "add_subdirectory(ecompile)" >> ../CMakeLists.txt
   - export CXX=$CXX_P
   - export CC=$CC_P
-  - cmake ../..
+  - cmake -DBUILD_ALL=OFF -DONLY_ECOMPILE=ON ../..
   - make -j 2
   - cp ../bin/ecompile ../../../scripts/
   - cp ../support/scripts/*.em ../../../scripts/
