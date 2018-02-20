@@ -29,7 +29,7 @@ function HandleMods(who, item)
     "reflect":      val := reflect(who,item);
     "protection":   val := protection(who,item);
     "wizzohat":     val := wizzohat(who,item);
-    "strength":     val := strngth(who,item);
+    "strength":     val := strengthBoost(who,item);
     "invisibility": val := invisibility(who,item);
     default:        val := 1;
   endcase
@@ -53,7 +53,7 @@ function HandleMods(who, item)
   set_critical(0);
 endfunction
 
-function strngth(who,item)
+function strengthBoost(who,item)
   var gain := GetObjProperty(item, "gain");
   if(!gain)
     gain := 5;

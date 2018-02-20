@@ -6,7 +6,7 @@ include "include/NPCBackpacks";
 
 
 ///////////////////
-//  Determines if the plank is extened
+//  Determines if the plank is extended
 ///////////////////
 
 function IsExtended( plank )
@@ -99,11 +99,31 @@ endfunction
 ///////////////////
 
 function FindKey (me, plank)
-	var doorlockid := GetObjProperty (plank, "lockid");
+//	var doorlockid := GetObjProperty (plank, "lockid");
 	var keylockid;
 
 	foreach item in EnumerateItemsInContainer (me.backpack)
-		case (item.objtype)
+		if(item.IsKey())
+        keylockid := GetObjProperty (item, "lockid");
+				if (item.KeyMatchesLock(item, plank))
+					return item;
+				endif
+    endif
+		if(item.IsKeyRing())
+				foreach key in EnumerateItemsInContainer (FindMyPack (item.serial))
+					keylockid := GetObjProperty (key, "lockid");
+          if (item.KeyMatchesLock(item, plank))
+						return key;
+					endif
+				endforeach
+      endif
+	endforeach
+					
+	return 0;
+endfunction
+
+// Old lock ID check.
+/*    case (item.objtype)
 			UOBJ_COPPER_KEY:
 			UOBJ_GOLD_KEY:
 			UOBJ_IRON_KEY:
@@ -120,9 +140,4 @@ function FindKey (me, plank)
 						return key;
 					endif
 				endforeach
-		endcase
-	endforeach
-					
-	return 0;
-endfunction
-
+		endcase */

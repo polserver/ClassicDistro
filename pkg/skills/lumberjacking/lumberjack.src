@@ -15,7 +15,7 @@ include "include/noto";
 include ":damage:damage";
 
 const UACTION_CHOP := 0x0d;
-const FX_POISON_GAS := 0x113a;
+//const FX_POISON_GAS := 0x113a;
 var bowcraftconfigfile := ReadConfigFile("::bowcraft");
 var mex;
 var mey;

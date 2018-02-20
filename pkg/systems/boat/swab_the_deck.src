@@ -20,4 +20,3 @@ program swab_the_deck (parms)
 		DestroyItem (item);
 	endforeach
 endprogram
-

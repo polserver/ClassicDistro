@@ -6,7 +6,7 @@ use os;
 include "include/client";
 include ":damage:damage";
 
-const FX_POISON_GAS := 0x113a;
+//const FX_POISON_GAS := 0x113a;
 
 program open_trapped_item(character, item)
       var traptype := GetObjProperty(item,"trap_type");

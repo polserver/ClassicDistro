@@ -9,7 +9,7 @@ include "include/client";
 include ":attributes:attributes";
 include ":damage:damage";
 
-const FX_POISON_GAS := 0x113a;
+//const FX_POISON_GAS := 0x113a;
 
 var layout := array(
 	"page 0                            ",

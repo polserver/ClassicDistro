@@ -12,8 +12,8 @@ program renameboat( you, tillerman )
 		return;
 	endif
 
-    	var boatname := RequestInput( you, tillerman, 
-		"Enter a new name for this boat. (max 40 characters)" );
+	var boatname := RequestInput( you, tillerman, 
+	"Enter a new name for this boat. (max 40 characters)" );
 
 	if ( boatname )
 		if ( Len( boatname ) <= 40 )
