@@ -19,23 +19,19 @@ program walk_on_moongate(mobile, gate)
   if(GetObjProperty(mobile, "#justgated"))
 	return;
   endif
-  var x, y, z, facet;
-  x := CInt(GetObjProperty( gate, "DestX" ));
-  y := CInt(GetObjProperty( gate, "DestY" ));
-  z := CInt(GetObjProperty( gate, "DestZ" ));
-  facet := GetObjProperty(gate, "DestRealm");
-  if(!facet)
-	facet := "britannia";
-  endif
-  foreach critter in ListMobilesNearLocation( gate.x, gate.y, gate.z, 8, facet);
+  var x, y, z;
+  x := GetObjProperty( gate, "DestX" );
+  y := GetObjProperty( gate, "DestY" );
+  z := GetObjProperty( gate, "DestZ" );
+  foreach critter in ListMobilesNearLocation( gate.x, gate.y, gate.z, 8, gate.realm);
     if(((critter.script == "employed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)) || ((critter.script == "escortee") && (CInt(GetObjProperty(critter, "Escortee")) == mobile.serial)) || ((critter.script == "tamed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)))
       SetObjProperty(critter, "Pause", 1);
-      MoveObjectToLocation( critter, gate.x, gate.y, gate.z, facet, MOVEOBJECT_FORCELOCATION);
+      MoveObjectToLocation( critter, gate.x, gate.y, gate.z, gate.realm, MOVEOBJECT_FORCELOCATION);
       EraseObjProperty(critter, "Pause");
     endif
   endforeach
   SetObjProperty(mobile,"#justgated",1);
-  MoveObjectToLocation(mobile, x, y, z, facet );
+  MoveObjectToLocation(mobile, x, y, z, gate.realm );
   sleep(1);
   EraseObjProperty(mobile,"#justgated");
 endprogram

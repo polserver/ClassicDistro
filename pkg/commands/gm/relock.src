@@ -19,7 +19,7 @@ program relock( who )
        return;
     endif
 
-    var lockid := GetObjProperty(key, "lockid");
+    var lockid := key.GetLockId();
 
     SetObjProperty( lockeditem, "lockid", lockid );
    

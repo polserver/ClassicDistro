@@ -43,11 +43,15 @@ program CastleGuard()
   set_priority(100);
   var ev;
   var evtext;
-  var next_wander := ReadGameClock() + 10;
+  evtext := evtext;
+  next_wander := ReadGameClock() + 10;
   var wanders := 9;
+  wanders := wanders;
   var txt;
+  txt := txt;
   var ph := SplitWords(me.name);
   var myname := lower(ph[1]);
+  myname := myname;
   while (1)
     ev := os::wait_for_event(120);
 	if (ev)
@@ -174,9 +178,13 @@ function Fight(opponent)
   sleep(1);
   DestroyItem(gate);
   var oldprio := set_priority(50);
+  oldprio := oldprio;
   var loops := 0;
+  loops := loops;
   var ev;
+  ev := ev;
   var waittime := 0;
+  waittime := waittime;
   post_combat();
   return;
 endfunction

@@ -83,6 +83,7 @@ set_priority(50);
                                     if(ev.text["buy"])
                                       TurnToward(ev.source);
                                       var res := SendBuyWindow(ev.source, inv_fs, Self(), inv_pb);
+									  res := res;
                                       foreach thing in ListRootItemsInContainer((ev.source).backpack)
                                         EraseObjProperty(thing, "ClearRestock");
                                       endforeach
@@ -146,7 +147,7 @@ endfunction
 
 function Lookiehere(who)
   var mobiles := ListMobilesNearLocation(who.x, who.y, who.z, 15, me.realm);
-  var guard, num, i, hogcall, guardzone, element, range, timer, elem;
+  var num, hogcall, guardzone, element, range, timer, elem;
   var cfgfile := ReadConfigFile("::gzone");
   var entries := GetConfigStringKeys(cfgfile);
   foreach listing in entries

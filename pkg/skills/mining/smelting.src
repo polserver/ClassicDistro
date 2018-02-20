@@ -17,15 +17,16 @@ program smelt_that_ore (who, ore)
     return;
   endif
   case(ore.objtype)
-    0x16300:  SmeltOre(who, ore, 0x16309,  15);
-    0x16301:  SmeltOre(who, ore, 0x1630a,  65);
-    0x16302:  SmeltOre(who, ore, 0x1630b,  70);
-    0x16303:  SmeltOre(who, ore, 0x1630c,  75);
-    0x16304:  SmeltOre(who, ore, 0x1630d,  80);
-    0x16305:  SmeltOre(who, ore, 0x1630e,  85);
-    0x16306:  SmeltOre(who, ore, 0x1630f,  90);
-    0x16307:  SmeltOre(who, ore, 0x16310,  95);
-    0x16308:  SmeltOre(who, ore, 0x16311,  99);
+    0x16300:  SmeltOre(who, ore, 0x16309,  15);				// iron
+    0x16301:  SmeltOre(who, ore, 0x1630a,  65);				// dull copper
+    0x16302:  SmeltOre(who, ore, 0x1630b,  70);				// shadow
+    0x16303:  SmeltOre(who, ore, 0x1630c,  75);				// copper
+    0x16304:  SmeltOre(who, ore, 0x1630d,  80);				// bronze
+    0x16306:  SmeltOre(who, ore, 0x1630f,  85);				// agapite
+    0x16307:  SmeltOre(who, ore, 0x16310,  90);				// verite
+    0x16308:  SmeltOre(who, ore, 0x16311,  95);				// valorite
+    0x16312:  SmeltOre(who, ore, 0x16313,  95);				// silver
+    0x16305:  SmeltOre(who, ore, 0x1630E,  99);				// gold
     default: SendSysMessage(who,"You can't smelt that.");
   endcase
 endprogram

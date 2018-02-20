@@ -162,11 +162,11 @@ const UOBJ_SEXTANT_PARTS                := 0x1059;
 const UOBJ_AXLE                         := 0x105b;
 const UOBJ_SPRINGS                      := 0x105d;
 
-const UOBJ_WAX				:= 0x1422;
-const UOBJ_EMPTY_KETTLE		        := 0x09ed;
-const UOBJ_KETTLE_OF_WAX		:= 0x142a;
-const UOBJ_DIPPING_STICK		:= 0x1428;
-const UOBJ_SKULL			:= 0x1ae2;
+const UOBJ_WAX                          := 0x1422;
+const UOBJ_EMPTY_KETTLE                 := 0x09ed;
+const UOBJ_KETTLE_OF_WAX                := 0x142a;
+const UOBJ_DIPPING_STICK                := 0x1428;
+const UOBJ_SKULL                        := 0x1ae2;
 
 
 
@@ -174,15 +174,15 @@ const UOBJ_SKULL			:= 0x1ae2;
 // Tailoring items //
 /////////////////////
 
-const UOBJ_SEWING_KIT		        := 0x0f9d;
-const UOBJ_BOLT_OF_CLOTH		:= 0x0f95;
+const UOBJ_SEWING_KIT                   := 0x0f9d;
+const UOBJ_BOLT_OF_CLOTH                := 0x0f95;
 const UOBJ_CLOTH_BOLT                   := 0x0f95;
-const UOBJ_CLOTH			:= 0x1765;
-const UOBJ_WOOL			        := 0x0df8;
-const UOBJ_HIDE			        := 0x1078;
-const UOBJ_BROWN_HIDE		        := 0x17050;
-const UOBJ_RED_HIDE			:= 0x17051;
-const UOBJ_BLUE_HIDE		        := 0x17052;
+const UOBJ_CLOTH                        := 0x1765;
+const UOBJ_WOOL                         := 0x0df8;
+const UOBJ_HIDE                         := 0x1078;
+const UOBJ_BROWN_HIDE                   := 0x17050;
+const UOBJ_RED_HIDE                     := 0x17051;
+const UOBJ_BLUE_HIDE                    := 0x17052;
 const UOBJ_GREEN_HIDE		        := 0x17053;
 const UOBJ_SILVER_HIDE		        := 0x17054;
 const UOBJ_GREYDRAGON_HIDE		:= 0x1705a;

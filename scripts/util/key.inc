@@ -17,10 +17,9 @@ function FindKey(who, what)
   if(!lockid)
     return 1;
   endif
-  var keytypes := { UOBJ_COPPER_KEY, UOBJ_GOLD_KEY, UOBJ_IRON_KEY, UOBJ_MAGIC_KEY, UOBJ_RUSTY_IRON_KEY };
   foreach item in EnumerateItemsInContainer( who.backpack )
-    if(item.graphic in keytypes)
-      if(GetObjProperty( item, "lockid" ) == lockid)
+    if(item.IsKey())
+      if(item.KeyMatchesLock(lockid))
         return item;
       endif
     endif

@@ -22,6 +22,19 @@ include ":clilocs:clilocs";
 
 program targetbug(who, text)
 
+	var item := Target(who);
+	var junk := item.script;
+	SendSysMessage(who,  CStr(item.script), 2, 88);
+	SendSysMessage(who, "Equip script " +CStr(item.equipscript), 2, 88);
+	if(item.Script.errortext)
+		SendSysMessage(who, item.script.errortext, 2, 33);
+	endif
+	item.Script := ":blacksmithy:makeBlacksmithItems";
+	SendSysMessage(who, "Use script " +CStr(item.script), 2, 88);
+	SendSysMessage(who, "Equip script " +item.equipscript, 2, 88);
+
+	return;
+	
 	// Add buff icon for 10 seconds
 	who.addBuff(0x460, 30, 0x106a85, 0x106a86, CAscZ("1234 "));
 	sleep(30);

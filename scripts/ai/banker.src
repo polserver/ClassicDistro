@@ -152,7 +152,6 @@ function BuyBankersNote(who, me, currency := 0xEED)
 	var box := FindBankBox(who);
 	var stuff := EnumerateItemsInContainer(box);
 	var payeeserial := 0;
-	var i := 1;
 	var amt := 500000001;		// This is so the 'while' loop will get executed.
 	
 	while(amt > 500000000)
@@ -232,7 +231,6 @@ endfunction
 function CashBankersOrder(me, event)
 
 	var type := 0x0EED;
-	var foundit := 0;
 	var amnt := 0;
 	var refund := 0;
 	var bankbox := 0;

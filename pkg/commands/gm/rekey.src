@@ -19,7 +19,8 @@ program rekey( who )
         SetObjProperty( lockeditem, "lockid", lockid );
        
         var key := CreateItemInBackpack( who, 0x100f, 1 );
-        SetObjProperty( key, "lockid", lockid );
+		key.SetLockId(lockid);
+//        SetObjProperty( key, "lockid", lockid );
     
         SendSysMessage( who, "Created a key in your pack.", color := 66 );
     else

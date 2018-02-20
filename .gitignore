@@ -58,12 +58,15 @@ realm/*
 # POL MULs
 MUL/*
 
+# Misc Directories used locally
+decoration/
+
 # Other files
 core-changes.txt
 objtypes.txt
 packethooks.txt
 packets.zip
-data/*
+data/
 landtiles.cfg
 multis.cfg
 tiles.cfg
@@ -89,6 +92,5 @@ runecl.exe
 scripts/eCompile_commands.txt
 scripts/ecompile.cfg.example
 scripts/modules/*
-pol-core*
+Realm funcs.txt
 *.session
-pkg/commands/test/target.src

@@ -383,10 +383,11 @@ function GetOre(who, location, info, tool)
     3: diff :=  70;   objtype := 0x16302;   name := "shadow";
     4: diff :=  75;   objtype := 0x16303;   name := "copper";
     5: diff :=  80;   objtype := 0x16304;   name := "bronze";
-    6: diff :=  85;   objtype := 0x16305;   name := "golden";
+    6: diff :=  99;   objtype := 0x16305;   name := "golden";
     7: diff :=  90;   objtype := 0x16306;   name := "agapite";
     8: diff :=  95;   objtype := 0x16307;   name := "verite";
     9: diff :=  99;   objtype := 0x16308;   name := "valorite";
+    10: diff :=  95;   objtype := 0x16312;   name := "silver";
   endcase
   var diffi := GetHarvestDifficulty( "ore", location.x, location.y, info.landtile, location.realm );
   if(diffi == error)

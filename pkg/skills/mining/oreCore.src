@@ -49,7 +49,7 @@ function NewSpot(x:=0,y)
 endfunction
 
 function GenerateNewOreType()
-  var val := RandomInt(999) + 1;
+  var val := RandomInt(1029) + 1;
   if((val >= 1) && (val <= 496))
     return 1;  //"iron"
   elseif((val >= 497) && (val <= 608))
@@ -60,13 +60,15 @@ function GenerateNewOreType()
     return 4;  //"copper"
   elseif((val >= 791) && (val <= 860))
     return 5;  //"bronze"
-  elseif((val >= 861) && (val <= 916))
+  elseif((val >= 861) && (val <= 886))
     return 6;  //"golden"
-  elseif((val >= 917) && (val <= 958))
+  elseif((val >= 887) && (val <= 928))
     return 7;  //"agapite"
-  elseif((val >= 959) && (val <= 985))
+  elseif((val >= 929) && (val <= 985))
     return 8;  //"verite"
   elseif((val >= 986) && (val <= 1000))
     return 9;  //"valorite"
+  elseif((val >= 1001) && (val <= 1030))
+    return 10;  //"silver"
   endif
 endfunction

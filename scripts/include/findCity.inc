@@ -122,14 +122,9 @@ function WhatCityAmIIn(object)
 function GetTownCurrency(town)
 
   var regions := {};                                    // Array of city names
-  var boundary := "";                                   // String containing the 4 coords defining a resgion.
-  var boundaries := {};                                 // Array with the boundary coords as each element.
-  var yes := 0;
-  //var city := "";
-  var isCity := "";
   var region;
-  var currency := 0x0EED;
-  
+  var DEFAULTCURRENCY := 0x0EED;
+  var FoundCurrency := "";
   //  regions_cfg := ReadConfigFile("../regions/regions");               // Reads cities.cfg
   /*if(!regions_cfg)
     Broadcast("findCity.inc: Can't read regions.cfg", 2, 33);
@@ -141,10 +136,10 @@ function GetTownCurrency(town)
         foreach place in regions
             region := FindConfigElem( regions_cfg, place );
             if(Lower(place) == Lower(town))
-              currency := region[place]."Currency";
+              FoundCurrency := region[place]."Currency";
               
-                if(!currency)
-                  currency := 0xEED;
+                if(!FoundCurrency)
+                  return CInt(DEFAULTCURRENCY);
                 endif
                 
               break;
@@ -154,7 +149,7 @@ function GetTownCurrency(town)
   
  
         
-      return CInt(currency);
+      return CInt(FoundCurrency);
  
  endfunction
 

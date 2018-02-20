@@ -127,7 +127,7 @@ endfunction
 //  character's backpack
 ///////////////////
 
-function IsLocked (character, door)
+function IsLocked (who, door)
 	if (!door.locked)
 		return 0;
 	endif
@@ -138,28 +138,22 @@ function IsLocked (character, door)
 	endif
 
 	//look for keys
-	foreach item in EnumerateItemsInContainer (character.backpack)
-		case (item.objtype)
-			UOBJ_COPPER_KEY:
-			UOBJ_GOLD_KEY:
-			UOBJ_IRON_KEY:
-			UOBJ_MAGIC_KEY:
-			UOBJ_RUSTY_IRON_KEY:
-				var keylockid := GetObjProperty (item, "lockid");
-				if (keylockid and keylockid == doorlockid)
-					PrintTextAbovePrivate (door, "You quickly unlock, use and re-lock the door", character);
+	foreach item in EnumerateItemsInContainer (who.backpack)
+		if(item.IsKey())
+				if (item.KeyMatchesLock(door))
+          PrintTextAbovePrivate (door, "You quickly unlock, use and re-lock the door", who);
 					return 0;
 				endif
-			UOBJ_KEY_RING:
-				var insidering := FindMyPack (item.serial);
-				foreach otherkey in EnumerateItemsInContainer (insidering)
-					var keylockid := GetObjProperty (otherkey, "lockid");
-					if (keylockid and keylockid == doorlockid)
-						PrintTextAbovePrivate (door, "You quickly unlock, use and re-lock the door", character);
+    endif
+/*		if(item.IsKeyRing())
+				foreach key in EnumerateItemsInContainer (FindMyPack (item.serial))
+					keylockid := GetObjProperty (key, "lockid");
+          if (item.KeyMatchesLock(door))
+            PrintTextAbovePrivate (door, "You quickly unlock, use and re-lock the door", who);
 						return 0;
 					endif
 				endforeach
-		endcase
+      endif */
 	endforeach
 
 	return 1;				

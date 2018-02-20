@@ -255,14 +255,14 @@ function ModifyPCSellList(merchanttype, customer)
 		return 0;
 	endif
 
-	var iteminit := 0;
 	var itemmark := -1;
 	
 	// set buy price for each item to be 0 to start. This means it won't be sellable.
         // Commented out by Yukiko - This section prevented us from setting custom buy prices for items
+/*        
+	var iteminit := 0;
         
-        
-/*	foreach item in backpackitems
+	foreach item in backpackitems
 		item.buyprice := iteminit;
 	endforeach
 */	

@@ -39,14 +39,6 @@ function IsLocationAccessible(character, x, y, z)
   return CheckLosAt( character, x, y, z );
 endfunction
 
-//function min(x, y)
-//  if(x<= y)
-//    return x;
-//  else
-//    return y;
-//  endif
-//endfunction
-
 /////////////////// 
 // Sends messages to all online GMs. Useful for important errors 
 /////////////////// 

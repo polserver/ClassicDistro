@@ -9,7 +9,6 @@ include ":runebook:runebookFunctions";
 include ":runebook:customSpells";
 include "include/itemUtil";
 
-
 program use_Runebook( who, book )
 
 	if( !useItem_check( who, book, DEFAULT_ITEM ))

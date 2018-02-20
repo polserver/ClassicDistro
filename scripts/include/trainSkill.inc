@@ -50,6 +50,7 @@ function MerchantTrain(me, who, text)
           npclevel := RandomInt(12) + 22;
           SetBaseSkill(me, holder, npclevel);
           var npclevel := AP_GetSkill(me, AP_SkillIDToAttributeName(holder));
+          npclevel := npclevel;
 
         endif
         if(npclevel > maxskilltotrain)
@@ -106,6 +107,7 @@ function TrainSkill(me, who, item)
   var currentnpccost := 0;
   if((item.objtype == 0xeed) && (item.amount != 0))
     var skillid := GetObjProperty(who, "TrainSkillID");
+    skillid := skillid;
     var trainmaxcost := GetObjProperty(who, "TrainMaxCost");
     var attributeid := AP_SkillIdToAttributeName(GetObjProperty(who, "TrainSkillID"));
     if((!trainmaxcost || !attributeid) && attributeid != 0)

@@ -1,4 +1,4 @@
-function CheckToolWear (who, tool, skillid)
+function CheckToolWear (who, tool, skillname)
     // A bonus for those who save their starting tools.
     // *grins*
     if(tool.newbie)
@@ -22,7 +22,7 @@ function CheckToolWear (who, tool, skillid)
     DestroyItem(tool);
     SendSysMessage(who,"Your tool broke.", font := 2, color := 33);
   else
-    var skill := GetEffectiveSkill(who, skillid);
+    var skill := AP_GetSkill(who, skillname);
     if(skill > 80)
       skill := 80;
     elseif(skill < 20)
@@ -42,33 +42,4 @@ function CheckToolWear (who, tool, skillid)
       endif	
     endif
   endif
-endfunction
-
-function SetToolDurability(who, tool, skillid)
-
-	var toolfile := ReadConfigFile(":*:itemdesc");
-	var toolscript := toolfile[tool.objtype].Script;
-
-	if ( !toolscript.errortext )
-		if ( !tool.isA(POLCLASS_CONTAINER) && !tool.isA(POLCLASS_ARMOR) )
-			var myskill := GetEffectiveSkill(who, skillid);
-			var swings := 0;
-			var mods := GetObjProperty(tool, "durability");
-			var bonus := 0;
-			case( mods )
-				"durable":		bonus := 10; break;
-				"substantial":		bonus := 20; break;
-				"massive":		bonus := 30; break;
-				"fortified":		bonus := 40; break;
-				"indestructable": 	bonus := 50; break;
-				default: bonus := 0;
-			endcase
-			swings := Cint(50 + myskill) + bonus;
-			SetObjProperty(tool, "swings", swings);
-			if ( !tool.quality or tool.quality == error )
-				tool.quality := 1.0;
-			endif
-		endif
-	endif
-
-endfunction 
+endfunction  

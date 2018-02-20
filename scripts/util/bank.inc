@@ -48,14 +48,14 @@ function WipeBankBox( character, bank_obj_name_prefix := "Bankbox of " )
 endfunction
 
 function OpenWorldBank()
-  var bank := FindStorageArea( "World Bank" );
-  if (!bank)
-    bank := CreateStorageArea( "World Bank" );
+  var wbank := FindStorageArea( "World Bank" );
+  if (!wbank)
+    wbank := CreateStorageArea( "World Bank" );
   endif
-  if (!bank)
+  if (!wbank)
     syslog( "Unable to open or create world bank!" );
   endif
-  return bank;
+  return wbank;
 endfunction
 
 function SpendCoin(who, quantity, cont, cointype)
