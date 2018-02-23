@@ -13,6 +13,7 @@ use storage;
 
 include ":attributes:attributes";
 include "include/BAInpcUtil";
+include ":gumps:gumps_ex";
 include ":gumps:gumps";
 include ":gumps:gumpPrompt";
 include ":gumps:requestGump";
@@ -51,7 +52,7 @@ program textcmd_Info(who, serial)
 	if ( serial )
 		targ := SystemFindObjectBySerial(CInt(serial));
 	else
-		targ := Target(who);
+		targ := Target(who, TGTOPT_NOCHECK_LOS);
 	endif
 	if ( targ.IsA(POLCLASS_ITEM) )
 		start_script(":commands:/gm/iteminfo", {who, targ.serial});

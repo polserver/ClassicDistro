@@ -15,7 +15,7 @@ use uo;
 use os;
 
 include "include/clock";
-include ":gumps:old/old-gumps";
+include ":gumps:old-gumps";
 
 var topicos;
 

@@ -161,7 +161,7 @@ program use_static_sign( who, sign )
 
   SetObjProperty(sign,"decay", (ReadGameClock()+ CInt(get_abandon_time())));
   var homeinfo := GetObjProperty(sign,"homeinfo");
-  var oserial := homeinfo[1];  // the house owner...
+  var oserial := homeinfo[1];  // the house owner serial
   var nwx     := homeinfo[2];
   var nwy     := homeinfo[3];
   var sex     := homeinfo[4];
@@ -508,7 +508,7 @@ function addcoowner( sign, who )
   endif
   var arraysize := len(coownerinfo);
   arraysize := arraysize + 1;
-  if (arraysize > 20)
+  if (arraysize > 5)
     SendSysMessage(who," your house cant support any more co-owners");
     return;
   endif

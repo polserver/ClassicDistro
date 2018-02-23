@@ -2,7 +2,7 @@ use uo;
 use util;
 use os;
 
-include ":gumps:old/old-gumps";
+include ":gumps:old-gumps";
 include "include/gumpUtil";
 include "util/bank";
 include ":attributes:attributes";

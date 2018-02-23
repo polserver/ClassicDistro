@@ -19,13 +19,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-//	homeinfo[1] = NW X coord
-//	homeinfo[2] = NW Y coord
-//	homeinfo[3] = SE X coord
-//	homeinfo[4] = SE Y coord
-//	homeinfo[5] = sign serial number
-//	homeinfo[6] = number of levels * 20
-//	homeinfo[7] = Base Z level for the house
+//	homeinfo[1] = Owner Character Serial
+//	homeinfo[2] = NW X coord
+//	homeinfo[3] = NW Y coord
+//	homeinfo[4] = SE X coord
+//	homeinfo[5] = SE Y coord
+//	homeinfo[6] = NW Z coord
+//	homeinfo[7] = SE Z coord
 //	homeinfo[8] = num lockdowns
 //	homeinfo[9]	= num secures
 //

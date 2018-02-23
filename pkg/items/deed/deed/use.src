@@ -6,9 +6,9 @@ use cliloc;
 include ":itemutils:itemUtil";
 include "include/string";
 include ":containers:containers";
-include ":staticHousing:house";
-include ":staticHousing:houseItem";
-include ":gumps:yesno";
+include ":housing:housing";
+//include ":staticHousing:houseItem";
+include ":gumps:yesNo";
 include ":keys:key";
 
 const CANCEL_ID := 999;
@@ -21,7 +21,7 @@ var opposing  := 0;
 //500272 //You cannot build near the stairs.
 program Place_Deeded_Item ( who, deed )
 	//Sign stuff
-	var sign := FindHouseSign (who);
+	var sign := FindHouseForLocation (who.x, who.y, who.z, who.realm);
 	if ( !sign )
 		SendSysMessageCL(who, 500275, color := 33); // You can only build this in a house.
 	return 0;
@@ -57,7 +57,7 @@ program Place_Deeded_Item ( who, deed )
 	elseif( !CheckLosAt( who, CInt( start.x ), CInt( start.y ), CInt( start.z )))
 		SendSysMessageCL( who, 500950, color := 33 ); // You cannot see that.
 		return 0;
-	elseif( !IsLocationWithinHouseSign (sign, start.x, start.y, start.realm, start.z) )
+	elseif( !IsLocationWithinHouseSign (sign, start.x, start.y, start.z) )
 		SendSysMessageCL( who, 500275, color := 33); // You can only build this in a house.
 		return 0;
 	endif
@@ -144,7 +144,7 @@ function BuildItem ( who, deed, sign, targ, buildCFG, RetainColor, direction )
 		newx := targ.x + CInt(broken[2]);
 		newy := targ.y + CInt(broken[3]);
 		newz := targ.z + CInt(broken[4]);
-		if ( !IsLocationWithinHouseSign ( sign, newx, newy, targ.realm, newz ) )
+		if ( !IsLocationWithinHouseSign ( sign, newx, newy, newz ) )
 			outside := 1;
 		endif
 		

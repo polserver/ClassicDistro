@@ -48,7 +48,7 @@ program textcmd_Info(who, serial)
 	if ( serial )
 		targ := SystemFindObjectBySerial(CInt(serial));
 	else
-		targ := Target(who);
+		targ := Target(who, TGTOPT_NOCHECK_LOS);
 	endif
 	if ( !targ.IsA(POLCLASS_ITEM) )
 		SendSysMessage(who, "Cancelled.");

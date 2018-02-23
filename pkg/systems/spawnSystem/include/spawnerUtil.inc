@@ -141,7 +141,7 @@ function SS_IsInHouse( spawn_coords )
 	var isInHouse;
   
   // Are we trying to spawn in a static house?
-	isInHouse := FindHouseForLocation (spawn_coords.x, spawn_coords.y, spawn_coords.realm);
+	isInHouse := FindHouseForLocation (spawn_coords.x, spawn_coords.y, spawn_coords.z, spawn_coords.realm);
 
 	if(IsInHouse)
 		return 0;

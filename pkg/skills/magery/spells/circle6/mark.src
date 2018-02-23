@@ -40,7 +40,7 @@ program cast_mark(parms)
     PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
     return;
   endif
-  if(FindHouseForLocation(caster.x, caster.y, caster.realm))
+  if(FindHouseForLocation(caster.x, caster.y, caster.z, caster.realm))
     SendSysMessage(caster,"You cant mark runes here inside this location.", color := 33);
     PlaySoundEffect(caster,0x005d);
     PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);

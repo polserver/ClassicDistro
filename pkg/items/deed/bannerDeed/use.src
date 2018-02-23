@@ -3,12 +3,13 @@
 
 use uo;
 use os;
+use cliloc;
 
 include ":itemutils:itemUtil";
 include "include/string";
 include ":containers:containers";
-include ":staticHousing:house";
-include ":gumps:yesno";
+include ":housing:housing";
+include ":gumps:yesNo";
 include ":itemutils:itemdesc";
 
 //1152360 // <CENTER>Choose a banner:</CENTER>
@@ -46,7 +47,7 @@ program gump_gump( who, deed )
 	elseif( !CheckLosAt( who, CInt( start.x ), CInt( start.y ), CInt( start.z )))
 		SendSysMessageCL( who, 500950, color := 33 ); // You cannot see that.
 		return 0;
-	elseif( !IsLocationWithinHouseSign (sign, start.x, start.y, start.realm, start.z) )
+	elseif( !IsLocationWithinHouseSign (sign, start.x, start.y, start.z) )
 		SendSysMessageCL( who, 500275, color := 33); // You can only build this in a house.
 		return 0;
 	endif

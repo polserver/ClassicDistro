@@ -5,7 +5,7 @@
  *
  * Function List
  * GFAddButton(byref gump, x, y, off_id, on_id, btn_type:=GF_PAGE_BTN, btn_value:=0)
- * GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background, scrollbar, hue := 0)
+ * GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background, scrollbar, hue := 0, customstring:="")
  * GFCheckBox(byref gump, x, y, unc_id, che_id, status:=0, btn_value:=0)
  * GFCreateGump(x:=0, y:=0, width:=0, height:=0)
  * GFDisposable(byref gump, bool)
@@ -469,7 +469,27 @@ endfunction
  * No return value.
  *
  */
-function GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background:=0, scrollbar:=0, hue:=0)
+function GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background:=0, scrollbar:=0, hue:=0, customstring:="")
+	if(hue == 0 && customstring == "")
+		(gump.layout).Append("XMFHTMLGump "+CStr(CInt(x))+" "+CStr(CInt(y))+" "
+					+ CStr(CInt(width))+" "+CStr(CInt(height))+" "+CStr(cliloc)+" "
+          + " "+ CStr(CInt(background))+" "+ CStr(CInt(scrollbar)));
+	elseif(hue > 0 && SizeOf(customstring) == 0)
+		(gump.layout).Append("XMFHTMLGumpColor "+CStr(CInt(x))+" "+CStr(CInt(y))+" "
+					+ CStr(CInt(width))+" "+CStr(CInt(height))+" "+CStr(CInt(cliloc))+" "
+					+ " "+ CStr(CInt(background))+" "+ CStr(CInt(scrollbar))+" "+CStr(CInt(hue)));
+  else
+		(gump.layout).Append("XmfHtmlTok "+CStr(CInt(x))+" "+CStr(CInt(y))+" "
+					+ CStr(CInt(width))+" "+CStr(CInt(height))+" "+CStr(CInt(background))+" "
+          + CStr(CInt(scrollbar))+" "+CStr(CInt(hue))+" "+CStr(CInt(cliloc))+" "
+					+ "@"+CStr(customstring)+"@");
+  endif
+	return 1;
+endfunction
+
+
+
+/*function GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background:=0, scrollbar:=0, hue:=0)
 	if(hue == 0)
 		(gump.layout).Append("XMFHTMLGump "+CStr(CInt(x))+" "+CStr(CInt(y))+" "
 					+ CStr(CInt(width))+" "+CStr(CInt(height))+" "+CStr(cliloc)+" "
@@ -481,7 +501,7 @@ function GFAddHTMLLocalized(byref gump, x, y, width, height, cliloc, background:
 	endif
 	return 1;
 endfunction
-
+*/
 
 /*
  * GFGumpPic(byref gump, x, y, gump_id, hue)

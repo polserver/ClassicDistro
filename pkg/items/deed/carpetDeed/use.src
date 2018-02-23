@@ -3,7 +3,7 @@ use os;
 
 include ":deed:carpet";
 include ":gumps:gumps";
-include ":staticHousing:house";
+include ":housing:housing";
 
 program gump_CarpetSelection(who, carpet_deed)
 //Check house junk such as "is in house" and "lockdowns"

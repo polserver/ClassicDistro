@@ -82,3 +82,16 @@ program gumptest(who, item)
     endif
   endif
 endprogram
+
+////////////////////////////////////////////////
+// Optional code offered by Arvax to replace a case statement.
+// He was not clear which 'case' statement it was to replace.
+////////////////////////////////////////////////
+/*
+for i := 1 to townarray.Size()
+    if(townarray[i] == city)
+        townarray.Erase(i);
+        break;
+    endif
+endfor
+*/
