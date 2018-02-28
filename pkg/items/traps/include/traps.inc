@@ -109,7 +109,7 @@ endfunction
  * Returns an error on failure.
  *
  */
-function RemoveTrap(object, index)
+function RemoveTrap(object,  index:="all")
 	var trap_list := GetObjProperty(object, "TrapList");
 	if ( trap_list == error )
 		return error{"errortext":="Object has no traps."};

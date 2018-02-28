@@ -33,6 +33,14 @@ program oncreate(who, skillids, profession)
   Sleep(2);
   
   // MoveObjectToLocation( who, 2953, 922, 0, "britannia", MOVEOBJECT_FORCELOCATION ); //Vesper
-  
+    var has_backpack := GetEquipmentByLayer(who, 0x15);
+    if (!has_backpack)
+        var newbackpack := CreateItemAtLocation(who.x, who.y, who.z, 0xe75,1, who.realm);
+        if (!EquipItem(who, newbackpack))
+          Print("Could not create a backpack on player " + who.name);
+          SysLog("Could not create a backpack on player " + who.name);
+        endif
+    endif
+
    CreateStartingEquipment(who, skillids);
 endprogram

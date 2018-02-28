@@ -5,6 +5,7 @@ use cfgfile;
 use util;
 
 include "util/bank";
+include ":containers:storageAreas";
 include "include/eventID";
 include "include/sysEvent";
 include "include/client";
@@ -41,10 +42,20 @@ program banker();
 	DisableEvents(SYSEVENT_SPEECH);
 	var text;
 	var splitted := {};
+	var bank_region := GetObjProperty( me, "StorageArea" );
+		if( !bank_region )
+			bank_region := CP_DEFAULT_AREA;
+			SetObjProperty(me, "StorageArea", bank_region);
+		endif
+
 	while(1)
 		var ev;
 		ev := os::wait_for_event(120);
 		if(ev.type == EVID_NODE)
+		if( !bank_region )
+			bank_region := CP_DEFAULT_AREA;
+			SetObjProperty(me, "StorageArea", bank_region);
+		endif
 			text := lower(ev.text);
 			splitted := SplitWords(text);
 			if(text["bankers note"] || text["banker's note"] || text["bankers order"] || text["banker's order"] || text["draft"])
@@ -55,7 +66,7 @@ program banker();
 				if(ev.source.criminal == 1)
 					say("I will not do business with criminals!");
 				else
-					OpenBank(ev.source);
+					OpenBank(ev.source, bank_region);
 				endif
 			elseif(text["balance"])
 				if(ev.source.criminal == 1)
@@ -95,7 +106,34 @@ program banker();
 	endwhile
 endprogram
 
-function OpenBank(you)
+// Using 'new' StorageAreas.inc
+function OpenBank(you, bank_region)
+	var item_word := "items";
+  TurnToward(you);
+  var bankbox := CP_GetStorageContainerForMobile( you, bank_region, CP_CREATE );
+  if(bankbox)
+    var contents := EnumerateItemsInContainer(bankbox);
+    var amt := 0;
+    foreach item in contents
+      if((item.container.objtype != 0xefa) && (item.container.objtype != 0xe3b))
+        amt := (amt + 1);
+      endif
+    endforeach
+	if(amt == 1)
+		item_word := "item";
+	endif
+    printtextaboveprivate(me, "Your bank box holds " + amt + " " + item_word + ".", you);
+	print("Banker.src: " + bankbox);
+	print("Banker.src: " + bankbox.name);
+	print("Banker.src: " + Hex(bankbox.serial));
+    SendOpenSpecialContainer(you, bankbox);
+//    SendViewContainer(you, bankbox);
+  else
+    say("You don't seem to have a bank box, "+ you.name);
+  endif
+endfunction
+
+function OpenBank2(you)
   TurnToward(you);
   var bankbox := FindBankBox(you);
   if(bankbox)

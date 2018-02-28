@@ -1,37 +1,47 @@
 /*
- * $Id: methods.src 373 2006-06-17 18:27:33Z austinheilman $
- *
- */
- 
+        Maintened by *Edwards
+        
+        2009-10-21
+*/
 use uo;
 
 program Install()
+
 	return 1;
 endprogram
 
-exported function IsKey(key)
+exported function IsKey( key )
+
 	key := key; // Avoid compiler warning
+ 
 	return 1;
 endfunction
 
-exported function GetLockId(key)
-	return GetObjProperty(key, "lockid");
+exported function GetLockId( key )
+
+	return GetObjProperty( key, "LockId" );
 endfunction
 
-exported function SetLockId(key, lock_id)
-	SetObjProperty(key, "lockid", CStr(lock_id));
+exported function SetLockId( key, lock_id )
+
+	SetObjProperty( key, "LockId", lock_id );
 endfunction
 
-exported function KeyMatchesLock(key, lock_id)
-	if ( lock_id.IsA(POLCLASS_ITEM) )
-		lock_id := GetObjProperty(lock_id, "lockid");
+exported function KeyMatchesLock( key, lock_id )
+
+	if( lock_id.IsA( POLCLASS_ITEM ))
+		lock_id := GetObjProperty( lock_id, "LockId" );
 	endif
-	
-	var key_id := GetLockId(key);
-	if ( key_id == error )
+
+	var key_id := GetLockId( key );
+	if( !key_id )
 		return 0;
-	elseif ( key_id != lock_id )
-		return 0;
+	elseif( key_id != lock_id )
+                if( key_id == "Staff" )
+		          return 1;
+                else
+                          return 0;
+                endif
 	else
 		return 1;
 	endif

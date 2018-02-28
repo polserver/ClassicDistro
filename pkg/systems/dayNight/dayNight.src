@@ -41,10 +41,12 @@ program SupportScript(realm_name)
 		
 		//Print("DayNight [Cycle="+info_struct.curphase+"] [DarkAmt="+info_struct.darkamt+"] [TickWait="+wait+"]");
 		if ( info_struct.darkamt != last_dark_amt )
-			var result := SetRegionLightLevel(info_struct.realm+"-Surface", CInt(info_struct.darkamt));
+//			var result := SetRegionLightLevel(info_struct.realm+"-Surface", CInt(info_struct.darkamt));
+			var result := SetRegionLightLevel(info_struct.realm, CInt(info_struct.darkamt));
 			last_dark_amt := info_struct.darkamt;
 			if ( result.errortext )
-				Print("Error adjusting light level for region "+info_struct.realm+"-Surface ->"+result.errortext);
+//				Print("Error adjusting light level for region "+info_struct.realm+"-Surface ->"+result.errortext);
+				Print("Error adjusting light level for region "+info_struct.realm + " -> " + result.errortext);
 			endif
 		endif
 				
@@ -99,6 +101,7 @@ function SetToNextPhase(byref info_struct)
 	info_struct.last_tick := ReadGameClock();
 	
 	var game_hour := GetGameHour();
+	game_hour := game_hour;
 	
 	return 1;
 endfunction

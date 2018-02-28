@@ -1,46 +1,45 @@
 /*
- * $Id: use.src 373 2006-06-17 18:27:33Z austinheilman $
- *
- */
- 
+        Maintened by *Edwards
+
+        2009-08-29
+*/
 use uo;
 use os;
 
 include ":keys:key";
+include ":itemutils:itemUtil";
 
-program UseKeyRing(who, keyring)
-	SendSysMessage(who, "What do you want to use that on?");
+program UseKeyRing( who, keyring )
+
+	SendSysMessage( who, "What do you want to use that on?" );
 	
-	var targ := Target(who);
-	if ( !targ.IsA(POLCLASS_ITEM) )
-		SendSysMessage(who, "Cancelled.");
+	var targ := Target( who );
+        if( !targ )
+                SendSysMessage( who, "Cancelled." );
+                return 0;
+        elseif( !useItem_check( who, keyring, ITEM_INCONTAINER ))
 		return 0;
-	elseif ( targ == keyring )
-		RemoveKeys(who, keyring);
+	elseif( targ == keyring )
+		RemoveKeys( who, keyring );
 		return 1;
-	elseif ( !KP_IsLockable(targ) )
-		SendSysMessage(who, "That is not lockable.");
+	elseif( !KP_IsLockable( targ ))
+		SendSysMessage( who, "That is not lockable." );
 		return 0;
 	endif
 
-	if ( KP_HasKeyForLock(keyring, targ) )
-		KP_ToggleLock(targ, who);
-		return 1;
+	if( KP_HasKeyForLock( keyring, targ ))
+		KP_ToggleLock( targ, who );
 	else
-		SendSysMessage(who, "You do not have a key for that lock.");
-		return 0;
+		SendSysMessage( who, "You do not have a key for that lock." );
 	endif
+ 
+        return 1;
 endprogram
 
-function RemoveKeys(who, keyring)
-	var contents := EnumerateItemsInContainer(who.backpack);
-	if ( !(keyring in contents) )
-		SendSysMessage(who, "That keyring must be in your backpack to remove its keys.");
-		return 0;
-	endif
+function RemoveKeys( who, keyring )
 	
-	foreach item in ( contents )
-		MoveItemToContainer(item, who.backpack);
+	foreach item in ( EnumerateItemsInContainer( keyring ))
+		MoveItemToContainer( item, who.backpack );
 		SleepMS(2);
 	endforeach
 	

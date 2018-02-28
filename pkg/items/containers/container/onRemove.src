@@ -1,19 +1,20 @@
-/* $Id: onRemove.src 1455 2009-03-09 20:43:51Z muaddib_pol $
- *
- */
+/*
+        Maintened by *Edwards
 
+        2009-10-20
+*/
 use uo;
 use os;
 
+program onRemove( mobile, container, item, item_amount, movetype )
 
-program onRemove(mobile, container, item, item_amount, movetype)
-	// Stop Compiler Warnings
-	item_amount := item_amount;
-	item := item;
-	movetype := movetype;
-	mobile := mobile;
-	container := container;
-
+        //Avoid compiler warnings
+        mobile := mobile;
+        container := container;
+        item := item;
+        item_amount := item_amount;
+        movetype := movetype;
+        
 	//To-do
 	//Play sound effect now that item is being removed.
 

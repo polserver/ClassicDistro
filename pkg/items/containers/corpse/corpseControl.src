@@ -1,31 +1,43 @@
-/* $Id: corpseControl.src 1118 2008-01-12 21:30:15Z AustinHeilman $
- *
- */
-
 use uo;
 use os;
 use util;
 
-include ":containers:settings";
+include "include/security";
+include ":security:report";
 
+program control_Corpse( corpse )
 
-program control_Corpse(corpse)
-	if ( corpse.NPCTemplate() )
+	if( corpse.NPCTemplate() )
 		// Dont need to do the skeleton break-down for npc corpses.
 		corpse.SetDestroyable(1);
 		return 1;
 	endif
 
-	var settings := CP_GetSettingsCfgElem("Corpse");
-	var decay_wait := CInt(settings.CorpseDecay);
-	if ( !decay_wait )
-		// Corpses.. dont decay.
-		return 1;
-	endif
+        corpse.CanDecay(0);
+        Sleep( 900 );
 
-	Sleep(decay_wait);
-	corpse.SetDestroyable(1);
-	corpse.MakeRemains();
+	corpse.color	:= 0;
+	corpse.graphic	:= 0xeca + RandomInt(9);
+
+	var name := corpse.name;
+	name["A corpse"] := "Remains";
+	SetName( corpse, name );
+
+	Sleep( 300 );
+
+	foreach item in EnumerateItemsInContainer( corpse )
+		if( item.container == corpse )
+                        var move := MoveObjectToLocation( item, corpse.x, corpse.y, corpse.z, corpse.realm, MOVEOBJECT_FORCELOCATION );
+                        if( move.errortext )
+                        	ReportText( "Error moving item serial <"+item.serial+"> on the ground --->"+ move.errortext, REPORT_SYSLOG );
+                        endif
+		endif
+                item.DecayAt := 0;
+
+		SleepMS(5);
+	endforeach
+
+        DestroyItem( corpse );
 
 	return 1;
 endprogram
