@@ -40,6 +40,7 @@ CONST CANCEL_BTN_ON	:= 0x1;
  var text_hue := 1152;
 function RequestGump(mobile, question, option := "", pre_val := "", cancel_btn:=CANCEL_BTN_OFF, text_hue := 1152)
 	
+  text_hue := text_hue;
 	if ( !pre_val || pre_val == error )
 		pre_val := "";
 	endif

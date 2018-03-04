@@ -4,7 +4,6 @@ use uo;
 use cfgfile;
 use util;
 
-include "util/bank";
 include ":containers:storageAreas";
 include "include/eventID";
 include "include/sysEvent";
@@ -21,11 +20,21 @@ include ":gumps:yesNoSizable";
 include ":currency:currency";
 include ":accounts:accounts";
 
-var bank;
-var me := Self();
-var npccfg := ReadConfigFile("npcdesc");
-var bankcity := WhatCityAmIIn(me);
-var currency := GetTownCurrency(bankcity);
+	var bank;
+	var me := Self();
+	var npccfg := ReadConfigFile("npcdesc");
+	var bankcity := WhatCityAmIIn(me);
+	var currency := GetTownCurrency(bankcity);
+	if(!currency)
+		currency := 0xEED;
+	endif
+	var bank_region := GetObjProperty( me, "StorageArea" );
+	if( !bank_region )
+		bank_region := CP_DEFAULT_AREA;
+		SetObjProperty(me, "StorageArea", bank_region);
+	endif
+	var my_speech_font := me.speech_font;
+	var my_speech_color := me.speech_color;
 
 program banker();
 	start_script("NPCKeeper", me);
@@ -42,37 +51,37 @@ program banker();
 	DisableEvents(SYSEVENT_SPEECH);
 	var text;
 	var splitted := {};
-	var bank_region := GetObjProperty( me, "StorageArea" );
-		if( !bank_region )
-			bank_region := CP_DEFAULT_AREA;
-			SetObjProperty(me, "StorageArea", bank_region);
-		endif
-
+/*	var bank_region := GetObjProperty( me, "StorageArea" );
+	if( !bank_region )
+		bank_region := CP_DEFAULT_AREA;
+		SetObjProperty(me, "StorageArea", bank_region);
+	endif
+*/
 	while(1)
 		var ev;
 		ev := os::wait_for_event(120);
 		if(ev.type == EVID_NODE)
-		if( !bank_region )
-			bank_region := CP_DEFAULT_AREA;
-			SetObjProperty(me, "StorageArea", bank_region);
-		endif
 			text := lower(ev.text);
 			splitted := SplitWords(text);
+			if(ev.source.criminal == 1)
+				SetObjProperty(me, "OriginalSpeechColor", me.speech_color);
+				me.speech_color := 33;
+				say("I will not do business with criminals!");
+				me.speech_color := GetObjProperty(me, "OriginalSpeechColor");
+				EraseObjProperty(me, "OriginalSpeechColor");
+				return 0;
+			endif
 			if(text["bankers note"] || text["banker's note"] || text["bankers order"] || text["banker's order"] || text["draft"])
 				PrintTextAbove(me, "" + ev.source.name + " one moment please.");
 				Sleep(2);
 				BuyBankersNote(ev.source, me);
 			elseif(text["bank"])
-				if(ev.source.criminal == 1)
-					say("I will not do business with criminals!");
-				else
-					OpenBank(ev.source, bank_region);
-				endif
+				OpenBank(ev.source, bank_region);
 			elseif(text["balance"])
 				if(ev.source.criminal == 1)
 					say("I will not do business with criminals!");
 				else
-					var bankbox := FindBankBox(ev.source);
+					var bankbox := CP_GetStorageContainerForMobile( ev.source, bank_region, CP_CREATE );
 					var contents := EnumerateItemsInContainer(bankbox);
 					var camt := 0;
 					var samt := 0;
@@ -122,29 +131,7 @@ function OpenBank(you, bank_region)
 	if(amt == 1)
 		item_word := "item";
 	endif
-    printtextaboveprivate(me, "Your bank box holds " + amt + " " + item_word + ".", you);
-	print("Banker.src: " + bankbox);
-	print("Banker.src: " + bankbox.name);
-	print("Banker.src: " + Hex(bankbox.serial));
-    SendOpenSpecialContainer(you, bankbox);
-//    SendViewContainer(you, bankbox);
-  else
-    say("You don't seem to have a bank box, "+ you.name);
-  endif
-endfunction
-
-function OpenBank2(you)
-  TurnToward(you);
-  var bankbox := FindBankBox(you);
-  if(bankbox)
-    var contents := EnumerateItemsInContainer(bankbox);
-    var amt := 0;
-    foreach item in contents
-      if((item.container.objtype != 0xefa) && (item.container.objtype != 0xe3b))
-        amt := (amt + 1);
-      endif
-    endforeach
-    printtextaboveprivate(me, "Your bank box holds " + amt + " items", you);
+    PrintTextAbovePrivate(me, "Your bank box holds " + amt + " " + item_word + ".", you);
     SendOpenSpecialContainer(you, bankbox);
   else
     say("You don't seem to have a bank box, "+ you.name);
@@ -187,19 +174,19 @@ function ShowBalance(who, goldamt, silveramt, copperamt)
 endfunction
 
 function BuyBankersNote(who, me, currency := 0xEED)
-	var box := FindBankBox(who);
+	var box := CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
 	var stuff := EnumerateItemsInContainer(box);
 	var payeeserial := 0;
 	var amt := 500000001;		// This is so the 'while' loop will get executed.
 	
-	while(amt > 500000000)
+//	while(amt > 500000000)
 		amt := RequestGump(who,"For what amount shall I make the Banker's Order? The coins must be in your bank box.", "The maximum is 500 million coins");
 		amt := CInt(amt);
 		if(!amt)
 			PrintTextAbove(me, "Very well then. I see you've changed your mind.", 1, 39);
 			return 0;
 		endif
-	endwhile
+//	endwhile
 	
 	var copperamt := 0;
 	var silveramt := 0;
@@ -283,8 +270,12 @@ function CashBankersOrder(me, event)
 		endif
 		type := CInt(GetObjProperty(event.item, "Currency"));
 		amnt := CInt(GetObjProperty(event.item, "Amount"));
-		bankbox := FindBankBox(event.source);
-		refund := createcoins( event.source, bankbox, type, amnt );
+		bankbox := CP_GetStorageContainerForMobile( event.source, bank_region, CP_CREATE );
+		refund := createcoins( bankbox, type, amnt );
+		if(refund < 0)
+			SendSysMessage(event.source, "This note is made out for 0 coins. Stop wasting my time!", 2, 33);
+			return 0;
+		endif
 		if(!refund)
 			PrintTextAbove(me, "I could not fit the coins in your bank box.", 1, 33);
 			PrintTextAbove(me, "You might not have enough room.", 1, 33);
@@ -294,15 +285,7 @@ function CashBankersOrder(me, event)
 		PrintTextAbove(me, "The coins have been deposited in your bank box.", 1, 66);
 		DestroyItem(event.item);
 		return 1;
-	else
-			PrintTextAbove(me, "Only the person who bought the Banker's Order or", 1, 39);
-			PrintTextAbove(me, "the payee, " + payee + ", may redeem it.", 1, 39);
-			PrintTextAbove(me, "The Banker's Order has been returned to you.", 1, 39);
-			MoveItemToContainer(event.source.backpack, event.item);
-			return 0;
-	endif
-
-	if(event.source.serial == payeeserial)
+	elseif(event.source.serial == payeeserial)
 		var accept := yesNoSizable(event.source, "Do you wish to redeem this Banker's Order for the coins?");
 		if(!accept)
 			PrintTextAbove(me, "Very well then. The Banker's Order has been returned to you.", 1, 39);
@@ -311,8 +294,12 @@ function CashBankersOrder(me, event)
 		endif
 		type := CInt(GetObjProperty(event.item, "Currency"));
 		amnt := CInt(GetObjProperty(event.item, "Amount"));
-		bankbox := FindBankBox(event.source);
-		refund := createcoins( event.source, bankbox, type, amnt );
+		bankbox := CP_GetStorageContainerForMobile( event.source, bank_region, CP_CREATE );
+		refund := createcoins( bankbox, type, amnt );
+		if(refund < 0)
+			SendSysMessage(event.source, "This note is made out for 0 coins. Stop wasting my time!", 2, 33);
+			return 0;
+		endif
 		if(!refund)
 			PrintTextAbove(me, "I could not fit the coins in your bank box.", 1, 33);
 			PrintTextAbove(me, "You might not have enough room.", 1, 33);
@@ -329,7 +316,6 @@ function CashBankersOrder(me, event)
 			MoveItemToContainer(event.source.backpack, event.item);
 			return 0;
 	endif
-
 endfunction
 
 function ReserveCoins(byref contents)
