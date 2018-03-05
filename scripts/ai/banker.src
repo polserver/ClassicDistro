@@ -47,16 +47,20 @@ program banker();
 		if(ev.type == EVID_NODE)
 			text := lower(ev.text);
 			splitted := SplitWords(text);
+			if(ev.source.criminal == 1)
+				SetObjProperty(me, "OriginalSpeechColor", me.speech_color);
+				me.speech_color := 33;
+				say("I will not do business with criminals!");
+				me.speech_color := GetObjProperty(me, "OriginalSpeechColor");
+				EraseObjProperty(me, "OriginalSpeechColor");
+				return 0;
+			endif
 			if(text["bankers note"] || text["banker's note"] || text["bankers order"] || text["banker's order"] || text["draft"])
 				PrintTextAbove(me, "" + ev.source.name + " one moment please.");
 				Sleep(2);
 				BuyBankersNote(ev.source, me);
 			elseif(text["bank"])
-				if(ev.source.criminal == 1)
-					say("I will not do business with criminals!");
-				else
-					OpenBank(ev.source);
-				endif
+				OpenBank(ev.source);
 			elseif(text["balance"])
 				if(ev.source.criminal == 1)
 					say("I will not do business with criminals!");
@@ -248,7 +252,35 @@ function CashBankersOrder(me, event)
 		type := CInt(GetObjProperty(event.item, "Currency"));
 		amnt := CInt(GetObjProperty(event.item, "Amount"));
 		bankbox := FindBankBox(event.source);
-		refund := createcoins( event.source, bankbox, type, amnt );
+		refund := createcoins( bankbox, type, amnt );
+		if(refund < 0)
+			SendSysMessage(event.source, "This note is made out for 0 coins. Stop wasting my time!", 2, 33);
+			return 0;
+		endif
+		if(!refund)
+			PrintTextAbove(me, "I could not fit the coins in your bank box.", 1, 33);
+			PrintTextAbove(me, "You might not have enough room.", 1, 33);
+			MoveItemToContainer(event.source.backpack, event.item);
+			return 0;
+		endif
+		PrintTextAbove(me, "The coins have been deposited in your bank box.", 1, 66);
+		DestroyItem(event.item);
+		return 1;
+	elseif(event.source.serial == payeeserial)
+		var accept := yesNoSizable(event.source, "Do you wish to redeem this Banker's Order for the coins?");
+		if(!accept)
+			PrintTextAbove(me, "Very well then. The Banker's Order has been returned to you.", 1, 39);
+			MoveItemToContainer(event.source.backpack, event.item);
+			return 0;
+		endif
+		type := CInt(GetObjProperty(event.item, "Currency"));
+		amnt := CInt(GetObjProperty(event.item, "Amount"));
+		bankbox := FindBankBox(event.source);
+		refund := createcoins( bankbox, type, amnt );
+		if(refund < 0)
+			SendSysMessage(event.source, "This note is made out for 0 coins. Stop wasting my time!", 2, 33);
+			return 0;
+		endif
 		if(!refund)
 			PrintTextAbove(me, "I could not fit the coins in your bank box.", 1, 33);
 			PrintTextAbove(me, "You might not have enough room.", 1, 33);
@@ -265,7 +297,7 @@ function CashBankersOrder(me, event)
 			MoveItemToContainer(event.source.backpack, event.item);
 			return 0;
 	endif
-
+/*
 	if(event.source.serial == payeeserial)
 		var accept := yesNoSizable(event.source, "Do you wish to redeem this Banker's Order for the coins?");
 		if(!accept)
@@ -293,7 +325,7 @@ function CashBankersOrder(me, event)
 			MoveItemToContainer(event.source.backpack, event.item);
 			return 0;
 	endif
-
+*/
 endfunction
 
 function ReserveCoins(byref contents)

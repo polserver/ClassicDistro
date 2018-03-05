@@ -92,3 +92,4 @@ scripts/modules/*
 pol-core*
 *.session
 pkg/commands/test/target.src
+decoration/

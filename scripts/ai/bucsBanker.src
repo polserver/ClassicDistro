@@ -12,6 +12,7 @@ include "include/anchors";
 include "include/dist";
 include "include/begging";
 
+
 var bank;
 var me := Self();
 var npccfg := ReadConfigFile("npcdesc");
