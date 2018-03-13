@@ -57,8 +57,8 @@ program make_candles (character, item)
 		MakeCandles(character, item, targetted);
 	elseif (item.objtype == UOBJ_HEAD && targetted.objtype == UOBJ_EMPTY_KETTLE)
 		MakeSkullOutOfHead(character, item);
-	elseif (item.objtype == UOBJ_SKULL)
-		MakeSkullCandle(character, item, targetted);
+//	elseif (item.objtype == UOBJ_SKULL)
+//		MakeSkullCandle(character, item, targetted);
 	else
 		SendSysMessage(character, "You don't know how to use those items together.");
 	endif
@@ -121,9 +121,10 @@ function MakeCandles(character, dipper, kettle_of_wax)
 			 SendSysMessage(character, "You fail to make any candles.");
 			else
 			 SendSysMessage(character, "You place the candles in your backpack.");
-			 CreateItemInBackpack(character, 0x142f, 1);	// Very short candle
-			 CreateItemInBackpack(character, 0x1433, 1);	// Stubby candle
-			 CreateItemInBackpack(character, 0x1437, 1);	// "regular" candle or as close as we can get
+			 CreateItemInBackpack(character, 0x0A28, 3);	// regular candle
+			 // CreateItemInBackpack(character, 0x142f, 1);	// Very short candle
+			 // CreateItemInBackpack(character, 0x1433, 1);	// Stubby candle
+			 // CreateItemInBackpack(character, 0x1437, 1);	// "regular" candle or as close as we can get
 		endif
 	endfor
  

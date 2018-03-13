@@ -83,8 +83,8 @@ SendSysMessage(who, ""+type);
 		SendSysMessage(who, "You are not skilled enough to make anything out of that.");
 		return 0;
 	endif
-	//var rtype := Lower(resource_config[materialobjtype].Type);
-	var rtype := Lower(resource_config[materialobjtype].type);
+	var rtype := Lower(resource_config[materialobjtype].Type);
+//	var rtype := Lower(resource_config[materialobjtype].type);
 
   var materialchk := 0;
 	if( rtype == type )
@@ -133,7 +133,7 @@ function CreateCraftItem(who, craft_skill, use_on, use_onobjtype, objtype, amoun
 		if( Find(nme, "plain ", 1) )
 			nme[Find(nme, "plain ", 1),6] := "";
 		endif
-		if( (rcolor == 1) && (craft_config[objtype].retain == 1) )
+		if( (rcolor == 1) && (craft_config[objtype].Retain == 1) )
 			if( resource_config[use_onobjtype].Color )
 				theitem.color := resource_config[use_onobjtype].Color;
 			endif

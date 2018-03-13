@@ -1,0 +1,298 @@
+use os;
+use uo;
+use basic;
+use cfgfile;
+
+include "include/client";
+include "include/objtype";
+include ":moongates:moongate";
+include "include/myutil";
+include ":cleric:clericmagic";
+
+include ":snooping:snooping";
+include ":cleric:clericaloptions";
+
+program usegem( who, gem )
+
+        if (!SnoopCheckCanUse ( who, gem ) )
+             return;
+        endif
+        
+        if(who.realm == REALM_BRITANNIA)
+             BritanniaMoongate(who, gem);
+        elseif(who.realm == REALM_MALAS)
+             MalasMoongate(who, gem);
+        endif
+
+endprogram
+
+function BritanniaMoongate(who, gem);
+
+        if( !IsAtBritMoonLoc(who) )
+             SendSysMessage(who, "You must be closer to a moongate location!");
+             return;
+        endif
+
+        if(IsNeerInterdicter(who))
+	     SendSysMessage(who, "Blocked!");
+	     return;
+        endif
+
+        var dest := {};
+
+        case(gem.objtype)
+             3855 : dest := a_britain;        //Britain     - starsapphire
+             3856 : dest := a_magincia;       //Magincia    - emerald
+             3857 : dest := a_moonglow;       //Moonglow    - sapphire
+             3859 : dest := a_skara;          //Skara       - ruby
+             3861 : dest := a_jhelom;         //Jhelom      - citrine
+             3862 : dest := a_trinsic;        //Trinsic     - amethyst
+             3864 : dest := a_yew;            //Yew         - tourmaline
+             3877 : dest := a_minoc;          //minoc       - amber
+             3888 : dest := 10;               //all dest.   - diamond
+             default:   dest := 0;
+        endcase
+
+        if(dest == 0)
+             return;
+        elseif(dest == 10)
+             dest := SetBritDestination(who);
+             if(!dest)
+                  return 0;
+             endif
+        endif
+        if( !IsAtBritMoonLoc(who) )
+             SendSysMessage(who, "You must be closer to a moongate location!");
+             return;
+        endif
+        SubtractAmount(gem, 1);
+        DoMoonGateEffect(who, dest[1], dest[2], dest[3], dest[4]);
+
+endfunction
+
+function MalasMoongate(who, gem);
+
+        if( !IsAtMalasMoonLoc(who) )
+             SendSysMessage(who, "You must be closer to a moongate location!");
+             return;
+        endif
+        
+        if(IsNeerInterdicter(who))
+	     SendSysMessage(who, "Blocked!");
+	     return;
+        endif
+
+        var dest := {};
+
+        case(gem.objtype)
+             3859 : dest := a_coldcreep;      //Coldcreep            - ruby
+             3857 : dest := a_crumbling;      //Crumbling Mountains  - sapphire
+             3864 : dest := a_dryhigh;        //Dry Highlands        - tourmaline
+             3856 : dest := a_grimswind;      //Grimswind            - emerald
+             3855 : dest := a_luna;           //Luna                 - starsapphire
+             3861 : dest := a_middle;         //Middle Island        - citrine
+             3877 : dest := a_northen;        //Northen Crack        - amber
+             3862 : dest := a_umbra;          //Umbra                - amethyst
+             3888 : dest := 10;               //all dest.            - diamond
+             default:   dest := 0;
+        endcase
+
+        if(dest == 0)
+             return;
+        elseif(dest == 10)
+             dest := SetMalasDestination(who);
+             if(!dest)
+                  return 0;
+             endif
+        endif
+        if( !IsAtMalasMoonLoc(who) )
+             SendSysMessage(who, "You must be closer to a moongate location!");
+             return;
+        endif
+        SubtractAmount(gem, 1);
+        DoMoonGateEffect(who, dest[1], dest[2], dest[3], dest[4]);
+
+endfunction
+
+function DoMoonGateEffect(byref caster, destinationx, destinationy, destinationz, destinationrealm)
+
+	var casterx := caster.x;
+	var castery := caster.y;
+	var casterz := caster.z;
+ 
+        if(IsNeerInterdicterXYZ(caster, casterx, castery, casterz, caster.realm))
+	     SendSysMessage(caster, "Blocked!");
+	     return;
+        endif
+
+	// set_critical(1);
+
+	PlaySoundEffect(caster, SFX_SPELL_GATE_TRAVEL);
+	var gate1 := CreateItemAtLocation(casterx, castery, casterz, UOBJ_BLUE_MOONGATE, 1, caster.realm);
+	gate1.facing := 1;
+	var gate2 := CreateItemAtLocation(destinationx, destinationy, destinationz, UOBJ_BLUE_MOONGATE, 1, destinationrealm);
+	gate2.facing := 1;
+	if (!gate1 || !gate2)
+             return;
+	endif
+
+	SetObjProperty(gate1, "GateDestX", gate2.x);
+	SetObjProperty(gate1, "GateDestY", gate2.y);
+	SetObjProperty(gate1, "GateDestZ", gate2.z);
+        SetObjProperty(gate1, "GateDestRealm", gate2.realm);
+	SetObjProperty(gate2, "GateDestX", gate1.x);
+	SetObjProperty(gate2, "GateDestY", gate1.y);
+	SetObjProperty(gate2, "GateDestZ", gate1.z);
+        SetObjProperty(gate2, "GateDestRealm", gate1.realm);
+
+	Detach();
+	// set_critical( 0 );
+
+	sleep(60);
+
+	// set_critical(1);
+	DestroyItem(gate1);
+	DestroyItem(gate2);
+	// set_critical(0);
+
+endfunction
+
+function SetBritDestination( who )
+
+        var choicelayout := array
+        {
+        "page 0",
+        "resizepic 10 10 3600 190 270",
+        "text 40 30 500 0",
+        "gumppic 30 50 50",
+        "button 30 70 2103 2104 1 0 1",
+        "text 45 65 500 1",
+        "button 30 95 2103 2104 1 0 2",
+        "text 45 90 500 2",
+        "button 30 120 2103 2104 1 0 3",
+        "text 45 115 500 3",
+        "button 30 145 2103 2104 1 0 4",
+        "text 45 140 500 4",
+        "button 30 170 2103 2104 1 0 5",
+        "text 45 165 500 5",
+        "button 30 195 2103 2104 1 0 6",
+        "text 45 190 500 6",
+        "button 30 220 2103 2104 1 0 7",
+        "text 45 215 500 7",
+        "button 30 245 2103 2104 1 0 8",
+        "text 45 240 500 8"
+        };
+
+        var choicedata := array
+        {
+        "Choose Destination",
+        "Britain",
+        "Magincia",
+        "Moonglow",
+        "Skara",
+        "Jhelom",
+        "Trinsic",
+        "Yew",
+        "Minoc"
+        };
+        SendSysMessage(who, "Where do you wanna set the moongate ?");
+    
+        var input := SendDialogGump(who, choicelayout, choicedata);
+        input := input[0];
+
+        if (!who.acctname)
+	     SendSysMessage(who, "Cancelled");
+	     return;
+        endif
+
+        if (input == 1)
+             return a_britain;
+        elseif (input == 2)
+             return a_magincia;
+        elseif (input == 3)
+             return a_moonglow;
+        elseif (input == 4)
+             return a_skara;
+        elseif (input == 5)
+             return a_jhelom;
+        elseif (input == 6)
+             return a_trinsic;
+        elseif (input == 7)
+             return a_yew;
+        elseif (input == 8)
+             return a_minoc;
+        else
+             return 0;
+        endif
+
+endfunction
+
+function SetMalasDestination( who )
+
+        var choicelayout := array
+        {
+        "page 0",
+        "resizepic 10 10 3600 190 270",
+        "text 40 30 500 0",
+        "gumppic 30 50 50",
+        "button 30 70 2103 2104 1 0 1",
+        "text 45 65 500 1",
+        "button 30 95 2103 2104 1 0 2",
+        "text 45 90 500 2",
+        "button 30 120 2103 2104 1 0 3",
+        "text 45 115 500 3",
+        "button 30 145 2103 2104 1 0 4",
+        "text 45 140 500 4",
+        "button 30 170 2103 2104 1 0 5",
+        "text 45 165 500 5",
+        "button 30 195 2103 2104 1 0 6",
+        "text 45 190 500 6",
+        "button 30 220 2103 2104 1 0 7",
+        "text 45 215 500 7",
+        "button 30 245 2103 2104 1 0 8",
+        "text 45 240 500 8"
+        };
+
+        var choicedata := array
+        {
+        "Choose Destination",
+        "Coldcreep",
+        "Crumbling Mountains",
+        "Dry Highlands",
+        "Grimswind",
+        "Luna",
+        "Middle Island",
+        "Northen Crack",
+        "Umbra "
+        };
+        SendSysMessage(who, "Where do you wanna set the moongate ?");
+
+        var input := SendDialogGump(who, choicelayout, choicedata);
+        input := input[0];
+
+        if (!who.acctname)
+             SendSysMessage(who, "Cancelled");
+             return;
+        endif
+
+        if (input == 1)
+             return a_coldcreep;
+        elseif (input == 2)
+             return a_crumbling;
+        elseif (input == 3)
+             return a_dryhigh;
+        elseif (input == 4)
+             return a_grimswind;
+        elseif (input == 5)
+             return a_luna;
+        elseif (input == 6)
+             return a_middle;
+        elseif (input == 7)
+             return a_northen;
+        elseif (input == 8)
+             return a_umbra;
+        else
+             return 0;
+        endif
+
+endfunction

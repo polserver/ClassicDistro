@@ -1,7 +1,6 @@
 use uo;
 use file;
 
-include "include/myUtil";
 
 var coinarray := {};
 var createdamt := 0;
