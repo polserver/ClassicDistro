@@ -12,7 +12,7 @@ endprogram
 
 exported function IsKeyRing( keyring )
 
-	key := key; // Avoid compiler warning
+	keyring := keyring; // Avoid compiler warning
  
 	return 1;
 endfunction
