@@ -18,40 +18,42 @@ use os;
 use cfgfile;
 
 include ":housing:housing_settings";
-include "include/yesNo";
+//include "include/yesNo";
 include ":gumps:gumpPrompt";
-include "util/bank";
-include "util/key";
+include "include/objtype";
+include ":containers:storageAreas";
+include ":keys:key";
 
 const UOBJECT_BRASS_SIGN := 0x0bd2;
 const UOBJECT_WOOD_SIGN := 0x0bd0;
 
 program ChangeHouseOwner(who, deed)
-  var infoarr      := GetObjProperty( deed, "homeinfo" );
-  var nwx        := infoarr[1];
-  var nwy        := infoarr[2];
-  var sex        := infoarr[3];
-  var sey        := infoarr[4];
-  var signserial := infoarr[5];
-  var nwz        := infoarr[6];
-  var sez        := infoarr[7];
-  sez := sez;
-  nwz := nwz;
-  var sign       := SystemFindObjectBySerial(signserial );
-  var signinfo     := GetObjProperty( sign, "homeinfo" );
-  var owner      := signinfo[1];
-  var buyerpack := EnumerateItemsInContainer(who.backpack);
-  var tileflag := 0;
-  var inpack := 0;
+	var infoarr      := GetObjProperty( deed, "homeinfo" );
+	var nwx        := infoarr[1];
+	var nwy        := infoarr[2];
+	var sex        := infoarr[3];
+	var sey        := infoarr[4];
+	var signserial := infoarr[5];
+	var nwz        := infoarr[6];
+	var sez        := infoarr[7];
+	sez := sez;
+	nwz := nwz;
+	var sign       := SystemFindObjectBySerial(signserial );
+	var signinfo     := GetObjProperty( sign, "homeinfo" );
+	var owner      := signinfo[1];
+	var buyerpack := EnumerateItemsInContainer(who.backpack);
+	var tileflag := 0;
+	var inpack := 0;
+	var bank_region := CP_DEFAULT_AREA;
     foreach item in buyerpack
 		if (item.serial == deed.serial)
 		  inpack := 1;
 		endif
 	endforeach
-  if (inpack == 0)
-    SendSysMessage(who,"You must have the deed in your backpack to take possession of this house", color := 33);
-    return;
-  endif
+	if (inpack == 0)
+	SendSysMessage(who,"You must have the deed in your backpack to take possession of this house", color := 33);
+	return;
+	endif
 
   
 	if (owner == who.serial)
@@ -62,7 +64,7 @@ program ChangeHouseOwner(who, deed)
 		SendSysMessage( who, "Deed points to an invalid sign!" );
 		return;
     endif
-    var bankbox := FindBankBox( who );
+	var bankbox		:= CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
     
     var packkey := CreateItemInBackpack( who, UOBJ_GOLD_KEY );
     if (!packkey)
@@ -77,8 +79,8 @@ program ChangeHouseOwner(who, deed)
 		GumpPrompt(who, "I could not move the deed to your bankbox. It might be full. You need to make room for it in your bank.", hue := 33);
 	endif
     var lockid := AllocLockId();
-    SetObjProperty( packkey, "lockid", lockid );
-    SetObjProperty( bankkey, "lockid", lockid );
+    packkey.SetLockId( lockid );
+    bankkey.SetLockId( lockid );
     var box := ListObjectsInBox( nwx, nwy, -50, sex, sey, 50, sign.realm );
 //    var doorcfg := ReadConfigFile("::doordesc");
 //    var doorcfg := ReadConfigFile(":doors:itemdesc");
@@ -92,15 +94,15 @@ program ChangeHouseOwner(who, deed)
 		endif
 			
 		if((item.objtype == UOBJECT_BRASS_SIGN) || (item.objtype == UOBJECT_WOOD_SIGN))
-			SetObjProperty(item, "lockid", lockid);
+			SetObjProperty(item, "LockId", lockid);
 		elseif(item.IsA(POLCLASS_DOOR))
 			item.locked := 1;
-			SetObjProperty(item, "lockid", lockid);
+			SetObjProperty(item, "LockId", lockid);
 			if(!tileflag)
 				var tile :=CreateItemAtLocation(item.x, item.y, item.z, 0x18889, 1, item.realm);
 				SetObjProperty(tile,"signserial", signserial);
 			endif
-			SetObjProperty(item, "lockid", lockid);
+			SetObjProperty(item, "LockId", lockid);
 		endif
 	//        endforeach
     endforeach

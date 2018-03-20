@@ -28,11 +28,7 @@ include ":accounts:accounts";
 	if(!currency)
 		currency := 0xEED;
 	endif
-	var bank_region := GetObjProperty( me, "StorageArea" );
-	if( !bank_region )
-		bank_region := CP_DEFAULT_AREA;
-		SetObjProperty(me, "StorageArea", bank_region);
-	endif
+	var bank_region := CP_DEFAULT_AREA;
 	var my_speech_font := me.speech_font;
 	var my_speech_color := me.speech_color;
 
@@ -51,12 +47,6 @@ program banker();
 	DisableEvents(SYSEVENT_SPEECH);
 	var text;
 	var splitted := {};
-/*	var bank_region := GetObjProperty( me, "StorageArea" );
-	if( !bank_region )
-		bank_region := CP_DEFAULT_AREA;
-		SetObjProperty(me, "StorageArea", bank_region);
-	endif
-*/
 	while(1)
 		var ev;
 		ev := os::wait_for_event(120);

@@ -4,7 +4,8 @@ use os;
 include "include/bounty";
 include ":datafile:datafile";
 include "util/bank";
-include ":gumps:old/old-gumps";
+//include ":gumps:old/old-gumps";
+include ":gumps:old-gumps";
 include "include/client";
 
 program Assign_Bounty(parms)

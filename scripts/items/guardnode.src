@@ -1,7 +1,8 @@
 use uo;
 use os;
 
-include "include/gumps";
+//include "include/gumps";
+include ":gumps:old-gumps";
 include "include/client";
 include "include/gumpUtil";
 

@@ -1,7 +1,7 @@
 use uo;
 use os;
 
-include ":gumps:old/old-gumps";
+include ":gumps:old-gumps";
 include "include/client";
 
 const CMD_LEVEL_OVERRIDE := 2;

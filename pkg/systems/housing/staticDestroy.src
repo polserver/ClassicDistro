@@ -3,8 +3,8 @@ use os;
 use basic;
 use cfgfile;
 
-include "util/bank";
-include "util/key";
+include ":containers:storageAreas";
+include ":keys:key";
 include "include/objtype";
 include ":attributes:attributes";
 include ":gumps:gumpPrompt";
@@ -12,7 +12,6 @@ include ":housing:staticlayout";
 include ":housing:coownerlayout";
 include ":housing:friendlayout";
 include ":housing:defaultlayout";
-include "include/yesNo";
 
 const UOBJECT_DOORS_START := 0x0675;
 const UOBJECT_DOORS_END   := 0x06f4;
@@ -25,40 +24,27 @@ const KEYRING := 0x1011;
 program textcmd_sign( who, sign )
 
 
-//    if(GetObjProperty(sign, "NewHouse"))
-//	var price      := CInt(GetObjProperty(sign, "Price"));
-//	var bankbox := FindBankBox( who );
 	who := who;
 	var infoarr      := GetObjProperty( sign, "homeinfo" );
 	var nwx        := infoarr[1];
 	var nwy        := infoarr[2];
 	var sex        := infoarr[3];
 	var sey        := infoarr[4];
-//	var signserial := infoarr[5];
 	var nwz        := infoarr[6];
 	var sez        := infoarr[7];
 	nwz := nwz;
 	sez := sez;
 	var builtdeed := SystemFindObjectBySerial(GetObjProperty(sign, "builtdeed"));
-//	var bankkey := CreateItemInContainer( bankbox, UOBJ_GOLD_KEY );
 	var box := ListObjectsInBox( nwx, nwy, -50, sex, sey, 50, sign.realm );
-//	var doorcfg := ReadConfigFile(":doors:itemdesc");
 	DestroyItem(builtdeed);
-//	if (doorcfg.errortext)
-//		Print ("Doorcfg = " + doorcfg.errortext);
-//	endif
 	foreach item in box
 	  if(item.objtype == 0x8889)
 	    DestroyItem(item);
 	  else
-//	    var arry := GetConfigStringKeys(doorcfg);
-//	    foreach entry in arry
-//	      if(CInt(entry) == item.objtype)
 	      if(item.IsA(POLCLASS_DOOR))
 			item.locked := 0;
-			EraseObjProperty(item, "lockid");
+			EraseObjProperty(item, "LockId");
 	      endif
-//	    endforeach
 	  endif
 	endforeach
 

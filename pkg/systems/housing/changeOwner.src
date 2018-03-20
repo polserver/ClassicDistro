@@ -2,9 +2,10 @@ use uo;
 use os;
 use cfgfile;
 
-include "util/bank";
-include "util/key";
+include ":containers:storageAreas";
+include ":keys:key";
 include "include/canAccess";
+include "include/objtype";
 
 const UOBJECT_DOORS_START := 0x0675;
 const UOBJECT_DOORS_END   := 0x06f4;
@@ -41,7 +42,8 @@ program ChangeHouseOwner(who, title)
       EraseObjProperty(house, "coownlist");
       EraseObjProperty(house, "banlist");
     endif
-    var bankbox := FindBankBox( who );
+	var bank_region := CP_DEFAULT_AREA;
+	var bankbox	:= CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
     var packkey := CreateItemInBackpack( who, UOBJ_GOLD_KEY );
     if(!packkey)
       SendSysMessage( who, "My backpack is too full!");
@@ -57,8 +59,8 @@ program ChangeHouseOwner(who, title)
     var footage := FindBoxArray(housetype, house);
     SetObjProperty(house, "footage", footage);
     var lockid := AllocLockId();
-    SetObjProperty( packkey, "lockid", lockid );
-    SetObjProperty( bankkey, "lockid", lockid );
+    packkey.SetLockId( lockid );
+    bankkey.SetLockId( lockid );
     var lists := GetObjProperty(house, "footage");
     var itemlist := {};
     var holder;
@@ -70,12 +72,12 @@ program ChangeHouseOwner(who, title)
     endforeach
     foreach itemt in itemlist
       if((itemt.objtype == UOBJECT_BRASS_SIGN) || (itemt.objtype == UOBJECT_WOOD_SIGN))
-        SetObjProperty(itemt, "lockid",       lockid);
+        SetObjProperty(itemt, "LockId",       lockid);
         SetObjProperty(itemt, "ownerserial",  who.serial);
         SetObjProperty(itemt, "owneracct",    who.acctname);
       elseif(((itemt.objtype >= UOBJECT_DOORS_START) && (itemt.objtype <= UOBJECT_DOORS_END)))
         itemt.locked := 1;
-        SetObjProperty(itemt, "lockid", lockid);
+        SetObjProperty(itemt, "LockId", lockid);
       else
         EraseObjProperty(itemt, "houseserial");
         if((GetObjProperty(itemt, "secure") == 1) && (itemt.movable == 0))

@@ -2,8 +2,8 @@ use cfgfile;
 use uo;
 use os;
 
-include "util/key";
-include "util/bank";
+include ":keys:key";
+include ":containers:storageAreas";
 include "include/objtype";
 include "include/findCity";
 include "include/canAccess";
@@ -85,19 +85,18 @@ function Buildhouse(who, deed)
     SetObjProperty(created.builtdeed, "new",          1);
     SetObjProperty(created.builtdeed, "numlockdowns", lock);
     SetObjProperty(created.builtdeed, "numsecure",    sec);
-    SetObjProperty(created.packkey,   "lockid",       lockid);
-    SetObjProperty(created.bankkey,   "lockid",       lockid);
+    SetObjProperty(created.packkey,   "LockId",       lockid);
+    SetObjProperty(created.bankkey,   "LockId",       lockid);
     SetObjProperty(created.house,     "numlockdowns", lock);
     SetObjProperty(created.house,     "numsecure",    sec);
     SetObjProperty(created.house,     "footage",      created.footage);
-    var logdoor, item, abc := 0, staticbanstrip, number_ := 0;
     foreach item in(created.house.components)
       if(((item.objtype >= UOBJECT_DOORS_START) &&(item.objtype <= UOBJECT_DOORS_END)) || item.objtype == UOBJECT_TENT_CHEST || item.objtype == 0x6ad)
         item.locked := 1;
-        SetObjProperty(item, "lockid", lockid);
+        SetObjProperty(item, "LockId", lockid);
         SetObjProperty(item, "signserial", created.house.serial);
       elseif((item.objtype == UOBJECT_BRASS_SIGN) || (item.objtype == UOBJECT_WOOD_SIGN) || (item.objtype == UOBJECT_WOOD_SIGNTWO))
-        SetObjProperty(item,"lockid",lockid);
+        SetObjProperty(item,"LockId",lockid);
         SetObjProperty(item, "signserial", created.house.serial);
         SetObjProperty(created.house, "signserial", item.serial);
       endif
@@ -114,23 +113,24 @@ function Buildhouse(who, deed)
 endfunction
 
 function CreatehouseKeysAndBuiltDeed2(character, housetype, where, deed)
-	var bankbox := FindBankBox(character);
-	var logdoor, x := where.x, y := where.y, z := where.z, map := where.realm;
+	var bank_region := CP_DEFAULT_AREA;
+	var bankbox	:= CP_GetStorageContainerForMobile( character, bank_region, CP_CREATE );
+	var x := where.x, y := where.y, z := where.z, map := where.realm;
 	var packkey := CreateItemInBackpack(character, UOBJ_GOLD_KEY);
 	if(!packkey)
-		PrintTextAbovePrivate(character, "My backpack is too full!", character);
+		PrintTextAbovePrivate(character, "Your backpack is too full!", character);
 		return 0;
 	endif
 	var bankkey := CreateItemInContainer(bankbox, UOBJ_GOLD_KEY);
 	if(!bankkey)
-		PrintTextAbovePrivate(character, "My bankbox is too full!", character);
+		PrintTextAbovePrivate(character, "Your bankbox is too full!", character);
 		DestroyItem(packkey);
 		return 0;
 	endif
 	var builtdeed := CreateItemInContainer(bankbox, 0x14ef);
 	SetName(builtdeed, deed.desc + " at " + x + ", " + y + ", " + z + "(built)");
 	if(!builtdeed)
-		PrintTextAbovePrivate(character, "My bankbox is too full!", character);
+		PrintTextAbovePrivate(character, "Your bankbox is too full!", character);
 		DestroyItem(packkey);
 		DestroyItem(bankkey);
 		return 0;
@@ -179,7 +179,7 @@ function CreatehouseKeysAndBuiltDeed2(character, housetype, where, deed)
 		DestroyItem(builtdeed);
 		return;
 	endif
-	var result array;
+	var result := array;
 	result .+ packkey := packkey;
 	result .+ bankkey := bankkey;
 	result .+ builtdeed := builtdeed;
@@ -189,23 +189,23 @@ function CreatehouseKeysAndBuiltDeed2(character, housetype, where, deed)
 endfunction 
 
 function CreatehouseKeysAndBuiltDeed(who, housetype, where, deed)
-  var bankbox := FindBankBox(who);
+	var bankbox	:= CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
   var logdoor, x := where.x, y := where.y, z := where.z, map := where.realm;
   var packkey := CreateItemInBackpack(who, UOBJ_GOLD_KEY);
   if(!packkey)
-    PrintTextAbovePrivate(who, "My backpack is too full!", who);
+    PrintTextAbovePrivate(who, "Your backpack is too full!", who);
     return 0;
   endif
   var bankkey := CreateItemInContainer(bankbox, UOBJ_GOLD_KEY);
   if(!bankkey)
-    PrintTextAbovePrivate(who, "My bankbox is too full!", who);
+    PrintTextAbovePrivate(who, "Your bankbox is too full!", who);
     DestroyItem(packkey);
     return 0;
   endif
   var builtdeed := CreateItemInContainer(bankbox, 0x14ef);
   SetName(builtdeed, deed.desc + " at " + x + ", " + y + ", " + z + ", " + map + "(built)");
   if(!builtdeed)
-    PrintTextAbovePrivate(who, "My bankbox is too full!", who);
+    PrintTextAbovePrivate(who, "Your bankbox is too full!", who);
     DestroyItem(packkey);
     DestroyItem(bankkey);
     return 0;

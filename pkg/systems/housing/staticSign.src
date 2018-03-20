@@ -3,8 +3,9 @@ use os;
 use basic;
 use cfgfile;
 
-include "util/bank";
-include "util/key";
+include ":containers:storageAreas";
+include ":currency:currency";
+include ":keys:key";
 include "include/objtype";
 include ":attributes:attributes";
 include ":gumps:gumpPrompt";
@@ -12,7 +13,7 @@ include ":housing:staticlayout";
 include ":housing:coownerlayout";
 include ":housing:friendlayout";
 include ":housing:defaultlayout";
-include "include/yesNo";
+include ":gumps:yesNoSizable";
 include ":housing:housing_settings";
 
 const UOBJECT_DOORS_START := 0x0675;
@@ -29,7 +30,12 @@ program use_static_sign( who, sign )
     // This is for a house that has never been purchased.    
     if(GetObjProperty(sign, "NewHouse"))
 		var price		:= CInt(GetObjProperty(sign, "Price"));
-		var bankbox		:= FindBankBox( who );
+		var bank_region := CP_DEFAULT_AREA;
+		var bankbox		:= CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
+		if(!bankbox)
+			SendSysMessage(who, "Error: " + bankbox.errortext, 2, 33);
+			return;
+		endif
 		var infoarr		:= GetObjProperty( sign, "newhomeinfo" );
 		var nwx			:= infoarr[1];
 		var nwy			:= infoarr[2];
@@ -90,8 +96,8 @@ program use_static_sign( who, sign )
 		endif
 	
 		var lockid := AllocLockId();
-		SetObjProperty( packkey, "lockid", lockid );
-		SetObjProperty( bankkey, "lockid", lockid );
+		packkey.SetLockId( lockid );
+		bankkey.SetLockId( lockid );
 		var box := ListObjectsInBox( nwx, nwy, -50, sex, sey, 50, sign.realm );
 		var doorcfg := ReadConfigFile(":doors:itemdesc");
 		if (!doorcfg)
@@ -99,7 +105,7 @@ program use_static_sign( who, sign )
 		endif
 		foreach item in box
 		  if((item.objtype == UOBJECT_BRASS_SIGN) || (item.objtype == UOBJECT_WOOD_SIGN))
-			SetObjProperty(item, "lockid", lockid);
+			SetObjProperty(item, "LockId", lockid);
 		  else
 	//	    var arry := GetConfigStringKeys(doorcfg);
 	//	    foreach entry in arry
@@ -111,7 +117,7 @@ program use_static_sign( who, sign )
 					SetObjProperty(tile,"signserial", signserial);
 					tile.invisible := 1;
 					tile.movable := 0;
-					SetObjProperty(item, "lockid", lockid);
+					SetObjProperty(item, "LockId", lockid);
 				endif
 	//	    endforeach
 		  endif
@@ -331,9 +337,9 @@ function demolish( who, sign, nwx, nwy, sex, sey )
       itemt.movable := 1;
       EraseObjProperty(itemt, "lockeddown");
       SetObjProperty( sign, "numlockdowns", GetObjProperty( sign, "numlockdowns") + 1 );
-    elseif (GetObjProperty(itemt,"lockid"))
+    elseif (GetObjProperty(itemt,"LockId"))
       itemt.locked := 0;
-      EraseObjProperty(itemt,"lockid");
+      EraseObjProperty(itemt,"LockId");
       EraseObjProperty(itemt,"decay");
     elseif ((itemt.movable == 0) && ((itemt.x != sign.x) && (itemt.y != sign.y)))
 	if(!itemt.IsA(POLCLASS_DOOR))
@@ -345,7 +351,7 @@ function demolish( who, sign, nwx, nwy, sex, sey )
   EraseObjProperty(sign,"friendinfo");
   EraseObjProperty(sign,"builtdeed");
   EraseObjProperty(sign,"decay");
-  EraseObjProperty(sign,"lockid");
+  EraseObjProperty(sign,"LockId");
   EraseObjProperty(sign,"numsecure");
   EraseObjProperty(sign,"numlockdowns");
   EraseObjProperty(sign,"lastownername");
@@ -384,18 +390,18 @@ endfunction
 function ChangeHouseLocks( who, house, nwx, nwy, sex, sey )
   SendSysMessage( who, "Target the new master key." );
   var newkey := Target( who, "" );
-  if( (newkey.objtype >= KEYSTART) && (newkey.objtype <= KEYEND) && (newkey.objtype != KEYRING) )
+  if( (newkey.IsKey()) && (!newkey.IsKeyRing()) )
     var lockid := AllocLockId();
     var box := ListObjectsInBox( nwx, nwy, -50, sex, sey, 50, who.realm );
-    SetObjProperty( newkey, "lockid", lockid );
+    newkey.SetLockId( lockid );
     foreach item in box
       if( ((item.objtype >= UOBJECT_DOORS_START) && (item.objtype <= UOBJECT_DOORS_END)))
         if (Distance(house, item) <= 2);
           item.locked := 1;
-          SetObjProperty(item, "lockid", lockid);
+          SetObjProperty(item, "LockId", lockid);
         endif
       elseif( (item.objtype == UOBJECT_BRASS_SIGN) || (item.objtype == UOBJECT_WOOD_SIGN) )
-        SetObjProperty(item, "lockid", lockid);
+        SetObjProperty(item, "LockId", lockid);
       endif
     endforeach
     SendSysMessage( who, "Locks Changed." );
@@ -418,10 +424,10 @@ function ChangeInteriorLocks( who, house, nwx, nwy, sex, sey )
             SendSysMessage(who, "canceled");
             return;
           endif
-          if( (newkey.objtype >= KEYSTART) && (newkey.objtype <= KEYEND) && (newkey.objtype != KEYRING) )
-            SetObjProperty( newkey, "lockid", lockid );
+          if( (newkey.IsKey() && !newkey.IsKeyRing()) )
+            newkey.SetLockId( lockid );
             item.locked := 1;
-            SetObjProperty(item, "lockid", lockid);
+            SetObjProperty(item, "LockId", lockid);
             SendSysMessage( who, "The lock has been changed." );
           else
             SendSysMessage( who, "That is not a key!" );

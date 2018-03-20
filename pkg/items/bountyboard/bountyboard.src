@@ -6,7 +6,7 @@ include ":datafile:datafile";
 include "include/sorting";
 include "include/client";
 include "include/bounty";
-include ":gumps:old/old-gumps";
+include ":gumps:old-gumps";
 
 var loop := 1;
 

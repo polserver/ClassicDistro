@@ -2,9 +2,9 @@
 use uo;
 use os;
 
-include "util/key";
+include ":keys:key";
 include "include/yesNo";
-include "util/bank";
+include ":containers:storageAreas";
 
 const UOBJECT_DOORS_START := 0x0675;
 const UOBJECT_DOORS_END   := 0x06f4;
@@ -747,117 +747,119 @@ var checkdata := array(
 );
 
 program Mulit_House_sign(who, sign)
-  var hserial := GetObjProperty(sign, "signserial");
-  if(!hserial)
-    return;
-  endif
-  var house := SystemFindObjectBySerial(CInt(hserial));
-    if(!house)
-	SendSysMessage(who, "Cannot find this house in the world data.", color := 33);
-    endif
-  var oserial := GetObjProperty(house, "ownerserial");
+	var hserial := GetObjProperty(sign, "signserial");
+	if(!hserial)
+		return;
+	endif
+	var house := SystemFindObjectBySerial(CInt(hserial));
+	if(!house)
+		SendSysMessage(who, "Cannot find this house in the world data.", color := 33);
+		return 0;
+	endif
+	var bank_region := CP_DEFAULT_AREA;
+	var oserial := GetObjProperty(house, "ownerserial");
 
-  SetPlaqueName(sign, house);
-  if(GetObjProperty(house, "Public"))
-    data[31] := "Declare this house Private";
-    data[30] := "Change the sign type";
-    layout.append("page 3");
-    layout.append("button 160 190 2714 2715 0 4 26");
-  else
-    data[31] := "Declare this house Public";
-    data[30] := "Change the master key";
-    layout.append("page 3");
-    layout.append("button 160 190 2714 2715 1 4 16");
-  endif
-  if(who.serial == oserial)
-    data[6] := who.name;
-    SetObjProperty(sign, "lastownername", who.name);
-  else
-    data[6] := GetObjProperty(sign, "lastownername");
-  endif
-  data[8]  := GetObjProperty(house, "numlockdowns");
-  data[10] := GetObjProperty(house, "numsecure");
-  var friend_ := 0, cown := 0;
-  var friendlist := GetObjProperty(house, "friendlist");
-  var coown := GetObjProperty(house, "coownlist");
-  if(who.serial in friendlist)
-    friend_ := 1;
-  elseif(who.serial in coown)
-    cown := 1;
-  endif
-  var result;
-  var acct := GetObjProperty(house, "owneracct");
-  if((cown == 1) || (friend_ == 1) || (who.acctname == acct) || (who.cmdlevel > 2))
-    result := SendDialogGump(who, layout, data);
-  else
-    SendDialogGump(who, nonlayout, data);
-  endif
-  if((oserial == who.serial) ||(cown))
-    SetObjProperty(house,"decay",(ReadGameClock()+ 2592000));
-  endif
-  if((acct == who.acctname) || (cown) || (who.cmdlevel > 2))
-    if(result[0] > 2979 && result[0] < 3085)
-      ChangeSign(who, house, sign, result[0]);
-    endif
-    case(result[0])
-      1: var newname := RequestInput(who, sign, "Enter a name for this house.(esc to exit)");
-         if(!newname)
-           SendSysMessage(who, "Canceled!");
-         elseif((len(newname) > 20))
-           SendSysMessage(who, "House sign names may not be longer than 20 characters.");
-         elseif(len(SplitWords(newname)) > 5)
-           SendSysMessage(who, "House sign names are limited to 5 words or less.");
-         else
-           SetName(sign, newname);
-           SetObjProperty(house, "signname", newname);
-         endif
-      2: ListCoowner(house, who);                                   //list co-owners
-      3: AddCoowner(house, who);                                    //add co-owner
-      4: DeleteCoowner(house, who);                                 //delete co-owner
-      5: ListFriend(house, who);                                    //list friends
-      6: AddFriend(house, who);                                     //add friend
-      7: DeleteFriend(house, who);                                  //delete friend
-      8: if(YesNo(who,"Clear List?"))                               //clear friend list
-           EraseObjProperty(house, "friendlist");
-           SendSysMessage(who,"Friend list has been cleared.");
-         else
-           SendSysMessage(who,"Canceled!");
-         endif
-      9: AddBan(house, who,sign);                                   //add a ban
-     10: Eject(house,who,sign);                                     //eject someone
-     11: ListBan(house, who);                                       //list bans
-     12: DeleteBan(house, who);                                     //remove a ban
-     13: if((oserial == who.serial) or (who.cmdlevel > 2))          //transfer ownership
-           var targetow := Target(who);
-           SendSysMessage(who, "Transfer the house to who?");
-           if(ChangeHouseOwner(who, targetow,house) == 1)
-             SendSysMessage(who, "House transfer was successful.");
-           else
-             SendSysMessage(who, "House transfer was NOT successful.");
-           endif
-         endif
-     14: if(oserial == who.serial)                                   //demolish house
-           if(YesNo(who, "are you sure?"))
-             demolish(house, sign, who);
-           else
-             SendSysMessage(who, "Cancelled");
-           endif
-           return;
-         endif
-     16: if(oserial == who.serial)                                   //change locks
-           ChangeLocks(who, house);
-         endif
-     17: if(YesNo(who,"Clear List?"))                               //clear co-owner list
-           EraseObjProperty(house, "coownlist");
-           SendSysMessage(who,"Co-owner list has been cleared.");
-         else
-           SendSysMessage(who,"Canceled!");
-         endif
-     19: if(oserial == who.serial)                                   //make private
-           DeclarePrivPub(who, house, sign);
-         endif
-    endcase
-  endif
+	SetPlaqueName(sign, house);
+	if(GetObjProperty(house, "Public"))
+		data[31] := "Declare this house Private";
+		data[30] := "Change the sign type";
+		layout.append("page 3");
+		layout.append("button 160 190 2714 2715 0 4 26");
+	else
+		data[31] := "Declare this house Public";
+		data[30] := "Change the master key";
+		layout.append("page 3");
+		layout.append("button 160 190 2714 2715 1 4 16");
+	endif
+	if(who.serial == oserial)
+		data[6] := who.name;
+		SetObjProperty(sign, "lastownername", who.name);
+	else
+		data[6] := GetObjProperty(sign, "lastownername");
+	endif
+	data[8]  := GetObjProperty(house, "numlockdowns");
+	data[10] := GetObjProperty(house, "numsecure");
+	var friend_ := 0, cown := 0;
+	var friendlist := GetObjProperty(house, "friendlist");
+	var coown := GetObjProperty(house, "coownlist");
+	if(who.serial in friendlist)
+		friend_ := 1;
+	elseif(who.serial in coown)
+		cown := 1;
+	endif
+	var result;
+	var acct := GetObjProperty(house, "owneracct");
+	if((cown == 1) || (friend_ == 1) || (who.acctname == acct) || (who.cmdlevel > 2))
+		result := SendDialogGump(who, layout, data);
+	else
+		SendDialogGump(who, nonlayout, data);
+	endif
+	if((oserial == who.serial) ||(cown))
+		SetObjProperty(house,"decay",(ReadGameClock()+ 2592000));
+	endif
+	if((acct == who.acctname) || (cown) || (who.cmdlevel > 2))
+		if(result[0] > 2979 && result[0] < 3085)
+			ChangeSign(who, house, sign, result[0]);
+		endif
+		case(result[0])
+			1: var newname := RequestInput(who, sign, "Enter a name for this house.(esc to exit)");
+				if(!newname)
+					SendSysMessage(who, "Canceled!");
+				elseif((len(newname) > 20))
+					SendSysMessage(who, "House sign names may not be longer than 20 characters.");
+				elseif(len(SplitWords(newname)) > 5)
+					SendSysMessage(who, "House sign names are limited to 5 words or less.");
+				else
+					SetName(sign, newname);
+					SetObjProperty(house, "signname", newname);
+				endif
+			2: ListCoowner(house, who);                                   //list co-owners
+			3: AddCoowner(house, who);                                    //add co-owner
+			4: DeleteCoowner(house, who);                                 //delete co-owner
+			5: ListFriend(house, who);                                    //list friends
+			6: AddFriend(house, who);                                     //add friend
+			7: DeleteFriend(house, who);                                  //delete friend
+			8:	if(YesNo(who,"Clear List?"))                               //clear friend list
+					EraseObjProperty(house, "friendlist");
+					SendSysMessage(who,"Friend list has been cleared.");
+				else
+					SendSysMessage(who,"Canceled!");
+				endif
+			9: AddBan(house, who,sign);                                   //add a ban
+			10: Eject(house,who,sign);                                     //eject someone
+			11: ListBan(house, who);                                       //list bans
+			12: DeleteBan(house, who);                                     //remove a ban
+			13:	if((oserial == who.serial) or (who.cmdlevel > 2))          //transfer ownership
+					var targetow := Target(who);
+					SendSysMessage(who, "Transfer the house to who?");
+					if(ChangeHouseOwner(who, targetow, house, bank_region) == 1)
+						SendSysMessage(who, "House transfer was successful.");
+					else
+						SendSysMessage(who, "House transfer was NOT successful.");
+					endif
+				endif
+			14:	if(oserial == who.serial)                                   //demolish house
+					if(YesNo(who, "are you sure?"))
+						demolish(house, sign, who, bank_region);
+					else
+						SendSysMessage(who, "Cancelled");
+					endif
+					return;
+				endif
+			16:	if(oserial == who.serial)                                   //change locks
+					ChangeLocks(who, house);
+				endif
+			17:	if(YesNo(who,"Clear List?"))                               //clear co-owner list
+					EraseObjProperty(house, "coownlist");
+					SendSysMessage(who,"Co-owner list has been cleared.");
+				else
+					SendSysMessage(who,"Canceled!");
+				endif
+			19:	if(oserial == who.serial)                                   //make private
+					DeclarePrivPub(who, house, sign);
+				endif
+		endcase
+	endif
 endprogram
 
 //////////////////////////////////
@@ -1168,7 +1170,7 @@ function ListCoowner(house, who)
   return retval;
 endfunction
 
-function ChangeHouseOwner(oldowner, who, house)
+function ChangeHouseOwner(oldowner, who, house, bank_region)
   var oldownerserial:=GetObjProperty(house, "ownerserial");
   if(oldownerserial == who.serial)
     return 0;
@@ -1191,7 +1193,7 @@ function ChangeHouseOwner(oldowner, who, house)
       SendSysMessage(who, "Error: Could not find built deed. Page a GM.", 3, 40);
       return 0;
     endif
-    var hisbank := FindBankBox(who);
+    var hisbank := CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
     if(!hisbank)
       SendSysMessage(who,      "House transfer was NOT successful.");
       SendSysMessage(oldowner, "House transfer was NOT successful.");
@@ -1311,7 +1313,7 @@ function checklists(house, who, list1, list2)
   endif
 endfunction
 
-function demolish(house, sign, who)
+function demolish(house, sign, who, bank_region)
 sign := sign;
   var lists := GetObjProperty(house, "footage");
   var itemlist := {};
@@ -1349,23 +1351,23 @@ sign := sign;
   if(chk == 0)
     var lockids := {}, id;
     foreach thing in (house.components)
-      id := GetObjProperty(thing, "lockid");
+      id := GetObjProperty(thing, "LockId");
       if(id)
         lockids.append(id);
       endif
     endforeach
     foreach thing in EnumerateItemsInContainer(who.backpack)
-      id := GetObjProperty(thing, "lockid");
+      id := GetObjProperty(thing, "LockId");
       if(id)
         if(id in lockids)
           DestroyItem(thing);
         endif
       endif
     endforeach
-    var bankbox := FindBankBox(who);
+	var bankbox	:= CP_GetStorageContainerForMobile( who, bank_region, CP_CREATE );
     if(bankbox)
       foreach thing in EnumerateItemsInContainer(bankbox)
-        id := GetObjProperty(thing, "lockid");
+        id := GetObjProperty(thing, "LockId");
         if(id)
           if(id in lockids)
             DestroyItem(thing);
@@ -1466,17 +1468,17 @@ function ChangeLocks(who,house)
   var addonitem,newkey:=Target(who);
   if((newkey.objtype>=KEYSTART) &&(newkey.objtype<=KEYEND) &&(newkey.objtype!=KEYRING))
     var lockid:=AllocLockId();
-    SetObjProperty(newkey,"lockid",lockid);
+    newkey.SetLockId(lockid);
     foreach item in(house.components)
       if(((item.objtype>=UOBJECT_DOORS_START) &&(item.objtype<=UOBJECT_DOORS_END)))
         item.locked := 1;
-        SetObjProperty(item,"lockid",lockid);
+        SetObjProperty(item,"LockId",lockid);
       endif
     endforeach
     addonitem:=CInt(GetObjProperty(house,"component2"));
     if(addonitem)
       addonitem.locked:=1;
-      SetObjProperty(addonitem,"lockid",lockid);
+      SetObjProperty(addonitem,"LockId",lockid);
     endif
     SendSysMessage(who,"Locks have been changed.");
   else

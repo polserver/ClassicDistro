@@ -6,7 +6,7 @@ use util;
 include "include/client";
 include "include/objtype";
 include "include/utility";
-include "include/yesNo";
+//include "include/yesNo";
 include "include/crafting";
 
 const UACTION_CHOP := 0x0d;

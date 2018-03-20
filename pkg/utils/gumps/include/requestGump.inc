@@ -12,13 +12,12 @@ use uo;
 use os;
 
 include ":gumps:gumps";
-include ":gumps:gumps_ex";
 
 CONST CANCEL_BTN_OFF	:= 0x0;
 CONST CANCEL_BTN_ON	:= 0x1;
 
 /* 
- * RequestGump(mobile, question, option, pre_val, cancel_btn, hue := 1152)
+ * RequestGump(mobile, question, option, pre_val, cancel_btn)
  *
  * Purpose
  * Template to create a single field input gump.
@@ -36,37 +35,42 @@ CONST CANCEL_BTN_ON	:= 0x1;
  * Returns 0 or the text that was entered.
  *
  */
- 
- var text_hue := 1152;
-function RequestGump(mobile, question, option := "", pre_val := "", cancel_btn:=CANCEL_BTN_OFF, text_hue := 1152)
+function RequestGump(mobile, question, option := "", pre_val := "", cancel_btn:=CANCEL_BTN_OFF, txt_lmt := 0)
 	
-  text_hue := text_hue;
 	if ( !pre_val || pre_val == error )
 		pre_val := "";
 	endif
 	
 	var r_gump := GFCreateGump(140, 100);
 	GFClosable(r_gump, 0);
-	GFResizePic(r_gump, 0, 0, GetCfgConst("Defaults", "BackGround"), 400, 205);
-	GFResizePic(r_gump, 15, 15, GetCfgConst("Defaults", "ForeGround"), 370, 175);
+ 
+	GFResizePic(r_gump, 0, 0, GFGetCfgConst("Defaults", "BackGround"), 400, 205);
+	GFResizePic(r_gump, 15, 15, GFGetCfgConst("Defaults", "ForeGround"), 370, 175);
+ 
+        GFAddAlphaRegion( r_gump, 0, 0, 400, 205 );
 	
 	var y_pos := 20;
 	foreach line in (GFWordWrap(question, 370))
 		GFTextLine(r_gump, 20, y_pos, 1153, line);
-		y_pos := y_pos+20;
+		y_pos += 20;
 		SleepMS(2);
 	endforeach
 	
 	y_pos := 75;
 	foreach line in (GFWordWrap(option, 370))
 		GFTextLine(r_gump, 20, y_pos, 1153, line);
-		y_pos := y_pos+20;
+		y_pos += 20;
 		SleepMS(2);
 	endforeach
 	
-	GFResizePic(r_gump, 20, 100, GetCfgConst("BackGrounds", "GOLDTRIM"), 360, 30);
-	var r_txt := GFTextEntry(r_gump, 30, 105, 335, 25, 1153, pre_val);
-	
+	GFResizePic(r_gump, 20, 100, GFGetCfgConst("BackGrounds", "GOLDTRIM"), 360, 30);
+	var r_txt;
+	if ( !txt_lmt )
+    r_txt := GFTextEntry(r_gump, 30, 105, 335, 25, 1153, pre_val);
+	else
+    r_txt := GFTextEntry(r_gump, 30, 105, 335, 25, 1153, pre_val, 0, txt_lmt);
+  endif
+  
 	if ( cancel_btn )
 		GFAddButton(r_gump, 90, 160, 2128, 2129, GF_CLOSE_BTN, 100);
 		GFAddButton(r_gump, 240, 160, 2119, 2120, GF_CLOSE_BTN, 200);
@@ -85,7 +89,6 @@ function RequestGump(mobile, question, option := "", pre_val := "", cancel_btn:=
 		return text_area;
 	endif
 endfunction
-
 
 /* 
  * RequestGump2(mobile, question, option, pre_val, cancel_btn)
@@ -114,8 +117,8 @@ function RequestGump2 (mobile, question, option := "", pre_val := "", cancel_btn
 	
 	var r_gump := GFCreateGump(140, 100);
 	GFClosable(r_gump, 0);
-	GFResizePic(r_gump, 0, 0, GetCfgConst("Defaults", "BackGround"), 400, 205);
-	GFResizePic(r_gump, 15, 15, GetCfgConst("Defaults", "ForeGround"), 370, 175);
+	GFResizePic(r_gump, 0, 0, GFGetCfgConst("Defaults", "BackGround"), 400, 205);
+	GFResizePic(r_gump, 15, 15, GFGetCfgConst("Defaults", "ForeGround"), 370, 175);
 	
 	var y_pos := 20;
 	foreach line in (GFWordWrap(question, 370))
@@ -131,7 +134,7 @@ function RequestGump2 (mobile, question, option := "", pre_val := "", cancel_btn
 		SleepMS(2);
 	endforeach
 	
-	GFResizePic(r_gump, 20, 100, GetCfgConst("BackGrounds", "GOLDTRIM"), 360, 65);
+	GFResizePic(r_gump, 20, 100, GFGetCfgConst("BackGrounds", "GOLDTRIM"), 360, 65);
 	var r_txt := GFTextEntry(r_gump, 30, 105, 335, 50, 1153, pre_val);
 	
 	if ( cancel_btn )
