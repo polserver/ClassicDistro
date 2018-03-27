@@ -8,8 +8,7 @@ program BoneThrone_WalkOn ( who, couch )
 	who := who; // Avoid compiler warnings
 	var sounds := GetObjTypeArray ( couch.graphic, "Sounds" );
 	
-	var soundids := SplitWords ( sounds, " " );
-	var playsound := soundids.randomentry();
+	var playsound := sounds.randomentry();
 	
 	PlaySoundEffect ( couch, CInt ( playsound ) );
 	return 1;

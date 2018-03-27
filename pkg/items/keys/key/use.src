@@ -6,7 +6,7 @@
 use uo;
 
 include ":keys:key";
-include ":gumps:requestgump";
+include ":gumps:requestGump";
 include "include/string";
 include ":itemutils:itemUtil";
 

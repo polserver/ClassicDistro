@@ -77,7 +77,7 @@ program TimedScript_Incognito(params)
 	endif
 	
 	// Give mobile a random name
-	var names := ReadConfigFile(":brainAI:names");
+	var names := ReadConfigFile("::names");
 	var name_list := GetConfigStringArray(names[name_template], "Name");
 	SetName(mobile, name_list[RandomInt(name_list.Size()) + 1]);	
 

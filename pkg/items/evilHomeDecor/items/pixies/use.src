@@ -8,8 +8,7 @@ program Pixie_use ( who, pixie )
 	who := who; // Avoid compiler warnings
 	var sounds := GetObjTypeArray ( pixie.graphic, "Sounds" );
 	
-	var soundids := SplitWords ( sounds, " " );
-	var playsound := soundids.randomentry();
+	var playsound := sounds.randomentry();
 	
 	PlaySoundEffect ( pixie, CInt ( playsound ) );
 	return 1;

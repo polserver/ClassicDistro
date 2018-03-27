@@ -12,7 +12,7 @@ include ":attributes:attributes";
 include "include/clock";
 include "include/accounts";
 include ":timeutils:time";
-include ":combat:equip";
+include "include/equipment";
 
 program onlogon(who)
   TrackIP(who);
@@ -125,7 +125,7 @@ program onlogon(who)
   endif
   foreach thing in ListEquippedItems(who)
     if(Cint(GetObjProperty(thing, "#equipped")) != who.serial)
-	HandleMods(who, thing);
+		ApplyEquipmentMods(who, thing);
     endif
   endforeach
   var time := FormatTime(GetTimeStruct(GetTime()), "<HH>:<MM>:<SS> on <DAY>-<MON>-<YY>");
