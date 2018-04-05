@@ -460,7 +460,7 @@ endfunction
 function ClilocObjtype(objtype)
 	return -1;
 
-	if( (objtype >= 0) && (objtype <= 16383) && objtype != error )
+	if( (objtype >= 0) && (objtype <= 65535) && objtype != error )
 		return CInt(objtype)+1020000;
 	else
 		return -1;

@@ -5,13 +5,11 @@
 use cfgfile;
 use util;
 
-include ":attributes:attributeConstants";
 include ":attributes:attributes";
-include ":attributes:skillCheck";
 include ":containers:containers";
-include ":crafting:old/include/crafting";
-include ":crafting:old/include/craftingRepair";
-include ":crafting:old/include/toolWear";
+include ":crafting:crafting";
+include ":crafting:craftingRepair";
+include ":crafting:toolWear";
 
 CONST CARP_WOOD_SOUND := 0x23e;
 
@@ -44,7 +42,6 @@ program use_carptool(who, tool)
 	var the_objtype := rinfo[1];
 	var amt         := rinfo[2];
 	var repairit    := rinfo[3];
-
 	if(repairit)
 		repair_this(who, craft_skill);
 		return 0;
@@ -114,14 +111,13 @@ endfunction
 
 function CarpentryItems(who, tool, objtype, amt)
 
-	var itemchk := MaterialSelection(who, craft_skill, lower(craft_config[objtype].type));
+	var itemchk := MaterialSelection(who, craft_skill, lower(craft_config[objtype].Type));
 	if( !itemchk )
 		return 0;
 	endif
 	var item1 := itemchk[1];
 	var item1objtype := itemchk[2];
 	var ptmod := itemchk[3];
-
 	var x := who.x, y := who.y, item2 := 0;
 	var material2obj := craft_config[objtype].material2obj;
 	if( TypeOf(material2obj) == "String" )
@@ -146,11 +142,10 @@ function CarpentryItems(who, tool, objtype, amt)
 	var diff      := Cint(craft_config[objtype].difficulty);
 	var pts       := Cint(craft_config[objtype].points);
 	pts           := CInt(pts + ptmod);
-
 	var counter := 0;
 
 	if( skillid2 )
-		if( (skill2 <= AP_GetSkill(who, skillid2)) )
+		if( (skill2 >= AP_GetSkill(who, skillid2)) )
 			SendSysMessage(who, "You do not have the required skill.");
 			return 0;
 		endif

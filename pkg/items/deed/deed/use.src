@@ -20,17 +20,20 @@ var opposing  := 0;
 //500270 //You cannot build that there.
 //500272 //You cannot build near the stairs.
 program Place_Deeded_Item ( who, deed )
-	//Sign stuff
+
 	var sign := FindHouseForLocation (who.x, who.y, who.z, who.realm);
-	if ( !sign )
-		SendSysMessageCL(who, 500275, color := 33); // You can only build this in a house.
-	return 0;
-	endif	
-	
-	if ( !sign.IsCoOwnerOrOwner( who ) )
-		SendSysMessageCL(who, 1152907, color := 33); // You must be owner or co-owner of a house to place addons in it.
-	return 0;
-	endif 	
+	if(who.cmdlevel <= 2)
+		//Sign stuff
+		if ( !sign )
+			SendSysMessageCL(who, 500275, color := 33); // You can only build this in a house.
+		return 0;
+		endif	
+		
+		if ( !sign.IsCoOwnerOrOwner( who ) )
+			SendSysMessageCL(who, 1152907, color := 33); // You must be owner or co-owner of a house to place addons in it.
+		return 0;
+		endif
+	endif
 	
 	var InBackpack := useItem_check ( who, deed, ITEM_INCONTAINER );
 	if(!InBackpack)

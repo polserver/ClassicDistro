@@ -1,159 +1,118 @@
-use uo;
-use os;
+/* $Id$
+ *
+ */
+
 use cfgfile;
+use util;
 
-include "include/client";
+include ":attributes:attributeConstants";
 include ":attributes:attributes";
-include "include/yesNo";
-include "include/canAccess";
+include ":attributes:skillCheck";
+include ":containers:containers";
+include ":crafting:old/include/crafting";
+include ":crafting:old/include/craftingRepair";
+include ":crafting:old/include/toolWear";
 
-program cook(who, item)
-  EraseObjProperty(who, "IsMeditating");
-  EraseObjProperty(who, "HealTimer");
-  if(!can_access(who, item))
-    return;
-  endif
-  if(!ReserveItem(item))
-    return;
-  endif
-  if(cookon(who, item))
-    cookit(who, item);
-  endif
+var item_config     := ReadConfigFile(":*:itemdesc");
+var craft_config    := ReadConfigFile(":cooking:cooking");
+
+program use_cookingtool(who, tool)
+
+	if ( !ReserveItem(tool) )
+		SendSysMessage(who, "That is already in use.");
+		return 0;
+	elseif( (!tool.movable) || !ReserveItem(tool) )
+		SendSysMessage(who, "You cannot use that");
+		return 0;
+	elseif( !(tool in EnumerateItemsInContainer(who.backpack)) )
+		SendSysMessage(who, "That item is not in your backpack.");
+		return 0;
+	endif
+
+	EraseObjProperty(who, "#IsMeditating");
+	EraseObjProperty(who, "#HealTimer");
+
+	var rinfo := sendCraftGump(who, COOKING);
+
+	// OK was pressed, close it on out
+	if(rinfo == 0)
+		return 0;
+	endif
+
+	var the_objtype := rinfo[1];
+	var amt         := rinfo[2];
+
+	var CraftNear := isNearRequiredObject(who, the_objtype);
+	if ( CraftNear == 0 )
+		RequiredObjectMissing(who, the_objtype);
+		return 0;
+	endif
+
+	if(craft_config[Hex(the_objtype)].assemble == 1)
+		CraftAssembly(who, craft_skill, tool, the_objtype, amt);
+	else
+		CookItems(who, the_objtype, amt, tool);
+	endif
+
 endprogram
 
-function cookon(who, item)
-  if(!item)
-    return 0;
-  endif
-  SendSysMessage(who, "Select the heat source to cook that on.");
-  var trg := Target(who);
-  if(!trg)
-    SendSysMessage(who, "cancelled.");
-    return 0;
-  endif
-  if(!Accessible(who, trg))
-    SendSysMessage(who, "You cannot reach that.");
-    return 0;
-  endif
-  if((trg.objtype >= 0x08cf) && (trg.objtype <= 0x08df))
-    return 1;
-  elseif((trg.objtype >= 0x092b) && (trg.objtype <= 0x096c))
-    return 1;
-  elseif((trg.objtype >= 0x45d) && (trg.objtype <= 0x48e))
-    return 1;
-  elseif((trg.objtype >= 0x0de3) && (trg.objtype <= 0x0de9))
-    return 1;
-  elseif((trg.objtype >= 0x0e31) && (trg.objtype <= 0x0e33))
-    return 1;
-  elseif((trg.objtype >= 0x1849) && (trg.objtype <= 0x1850))
-    return 1;
-  elseif((trg.objtype >= 0x197a) && (trg.objtype <= 0x19a9))
-    return 1;
-  elseif((trg.objtype >= 0x0de3) && (trg.objtype <= 0x0de9))
-    return 1;
-  elseif((trg.objtype == 0x19bb) || (trg.objtype == 0x0fb1))
-    return 1;
-  else
-    SendSysMessage(who, "You cannot cook food on that.");
-    return 0;
-  endif
-endfunction
+function CookItems(who, what, amt, tool)
 
-function cookit(who,item);
-  var cfg := ReadConfigFile(":cooking:cooking");
-  var skill_needed := -1;
-  var points       := cfg[item.objtype].points;
-  var elem      := FindConfigElem(cfg, item.objtype);  
-  var products  := GetConfigStringArray(elem,"product");
-  var product   := Cint(products[RandomInt(len(products))+1]);
-  var ingredients := GetConfigStringArray(elem, "ingredient");
-  var theIngredients := {};
-  var newitem;
-  if (ingredients)
-    theIngredients := GetIngredients(who, ingredients);
-    if (theIngredients == error)
-      SendSysMessage(who, "You do not have the proper ingredients.");
-      return;
-    endif
-  endif
-  if(!points)
-    points := AP_GetSkill(who, COOKING) * 2;
-  endif
-  if(skill_needed)
-    if(SkillCheck( who, COOKING, skill_needed, 0));
-      var amt := item.amount;
-      if(DestroyItem(item))
-        newitem := CreateItemInBackpack(who, product, amt);
-        if(newitem)
-	      SendSysMessage(who, "You put the item in your pack");
-	      AwardRawSkillPoints(who, SKILLID_COOKING, GetPoints(who, skill_needed, points));
-	    else
-	      SendSysMessage(who, "You dont have any room in your backpack.");
-	    endif
-	  endif
-    else
-      SendSysMessage(who, "You burnt it!");
-      SubtractAmount(item, 1);
-    endif
-    foreach thing in theIngredients
-      DestroyItem(thing);
-    endforeach
-  else
-    SendSysMessage(who, "You cannot cook that.");
-  endif
-endfunction
+	if( !what )
+		SendSysMessage(who, "Cancelled");
+		return 0;
+	endif
 
-function GetPoints(who, diff, pts)
-  var skill := AP_GetSkill(who, COOKING);
-  if(skill > (diff - 20))
-    if((skill - diff) <= 5)
-      pts := pts;
-    elseif((skill - diff) <= 10)
-      pts := (pts * 3) / 4;
-    elseif((skill - diff) <= 15)
-      pts := pts / 2;
-    elseif((skill - diff) <= 15)
-      pts := pts / 4;
-    else
-      pts := 0;
-    endif
-  endif
-  return pts;
-endfunction
+	// Metal is sent for the ResourceList entry type.
+	var itemchk := MaterialSelection(who, craft_skill, lower(craft_config[what].type));
+	if( !itemchk )
+		return 0;
+	endif
+	var use_on := itemchk[1];
+	var ptmod := itemchk[3];
 
-function GetIngredients(who, ingredients)
-var words := {};
-var objtypes;
-var tgt;
-var result := {};
+	var num, theitem;
+	var itemname := craft_config[what].name;
+	var material := Cint(craft_config[what].material);
+	var reqd := Cint(craft_config[what].skill);
+	var diff := Cint(craft_config[what].difficulty);
+	var pts  := Cint(craft_config[what].points);
+	pts      := CInt(pts + ptmod);
+	var counter := 0, x := who.x, y := who.y;
 
-  foreach list in ingredients
-  
-    words := SplitWords(list);
-    objtypes := {};
-    foreach word in words
-      objtypes.append(CInt(word));
-    endforeach
-    
-    SendSysMessage(who, "Select an ingredient for cooking this.");
-    tgt := Target(who);
-    
-    if (tgt.objtype in objtypes)
-      SendSysMessage(who, "Good choice!");
-      result.append(tgt);
-    else
-      SendSysMessage(who, "That is not the right ingredient!");
-      return error;
-    endif
-  endforeach
+	while( counter < amt )
+		if( (who.x != x) || (who.y != y) )
+			SendSysMessage(who, "You stop cooking. Was that a rat!?");
+			break;
+		elseif( !tool )
+			break;
+		endif
 
-  foreach item in result
-    if (!can_access(who, item) || !ReserveItem(item))
-      SendSysMessage(who, "But, you can't get to some of the ingredients!");
-      return error;
-    endif
-  endforeach
+		Sleep(2);
 
-  return result;
+		if( GetAmount(use_on) >= material )
+			if( CraftCheckSkill(who, craft_skill, diff, pts) )
+				theitem := CreateCraftItem(who, craft_skill, use_on, use_on.objtype, what, material, itemname, reqd);
+				if( TypeOf(theitem) != "ItemRef" )
+					SubtractAmount(use_on, (material / 2));
+					SendSysMessage(who, "You failed to create the item, and some of your materials are lost.");
+					counter := counter + 1;
+					continue;
+				endif
+			else
+				num := CInt(randomint(material)/2) + 1;
+				if(SubtractAmount(use_on, num))
+					SendSysMessage(who, "You lost some material");
+				endif
+			endif
+			CheckToolWear (who, tool, craft_skill);
+		else
+			SendSysMessage(who, "You don't have the resources required to make that item.");
+			return 0;
+		endif
+		counter := counter + 1;
+	endwhile
+
+	return 0;
 
 endfunction

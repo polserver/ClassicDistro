@@ -16,6 +16,7 @@ use cfgfile;
 
 include ":attributes:attributes";
 //include ":blood:blood";
+include "include/hitscriptinc";
 include ":combat:hitScripts";
 include ":combat:settings";
 include ":timedscripts:timedScripts";

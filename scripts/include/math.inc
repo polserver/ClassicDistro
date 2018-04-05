@@ -726,3 +726,23 @@ function normal_distribution_dice ( minimum, maximum )
 	return val;
 endfunction
 
+
+///////////////////////////////////////
+//
+// function round( num )
+//
+// Parameter: 'num' is a real number
+//
+// Returns:  The number sent either
+// rounded up or down
+//
+//////////////////////////////////////
+
+function Round ( num ) 
+ var checker := CDbl ( num - Floor ( num ) );
+ if ( checker < 0.5 )
+  return Floor ( num );
+ else
+  return Ceil ( num );
+ endif
+endfunction
