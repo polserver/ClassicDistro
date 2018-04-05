@@ -18,7 +18,7 @@ include ":gumps:gumps";
 include ":gumps:gumpPrompt";
 include ":gumps:requestGump";
 include ":gumps:yesNo";
-include "include/storageAreas";
+include ":containers:storageAreas";
 include "include/weaponInfo";
 include "include/arrays";
 

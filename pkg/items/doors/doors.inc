@@ -132,7 +132,7 @@ function IsLocked (who, door)
 		return 0;
 	endif
 
-	var doorlockid := GetObjProperty (door, "lockid");
+	var doorlockid := GetObjProperty (door, "LockId");
 	if (!doorlockid)
 		return 1;
 	endif
