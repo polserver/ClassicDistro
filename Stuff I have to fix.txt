@@ -1,5 +1,0 @@
-Housing system to work with the new keys pkg.
-Fix boat keys to work with the new crafting system.
-
-Change lock picking level CProp from level to LockPickDiff
-
