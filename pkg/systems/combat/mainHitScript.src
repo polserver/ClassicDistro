@@ -137,6 +137,17 @@ function SkillChecks(attacker, defender, weapon, rawdamage)
 	endif
 endfunction
 
+function NPCDamageMod(byref attacker, byref defender, damage)
+	Print("debug message - mainHitScript: unmodified damage = " + CStr(damage));
+	var NPCMod := CS_GetSettingsCfgElem("NPCMod");
+	var PlayerAdvantage := CInt(NPCMod.PlayerAdvantage);
+	if(defender.isA(POLCLASS_NPC)
+		damage := damage * PlayerAdvantage;
+	endif
+	Print("debug message - mainHitScript: modified damage = " + CStr(damage));
+	return damage;
+endfunction
+
 function WearDownArmor(defender, armor)
 	if ( armor )
 		var armor_elem := CS_GetSettingsCfgElem("Armor");
