@@ -1,0 +1,121 @@
+#!/bin/bash
+
+#
+### SETTINGS
+#
+SERVICE='./pol'
+CONSOLE='./starthere.sh'
+
+# Linux Username
+USERNAME='pol'
+SCREEN='pol'
+
+# Server Root Folder
+POLPATH="/path/to/pol"
+ECOMPILE_PATH="path/to/pol/scripts/ecompile"
+
+ME=`whoami`
+as_user() {
+	if [ $ME == $USERNAME ] ; then
+		bash -c "$1"
+	else
+		su - $USERNAME -c "$1"
+	fi
+}
+
+pol_start() {
+	if pgrep -u $USERNAME -f $SERVICE > /dev/null
+	then
+		echo "$SCREEN is already running."
+	else
+		echo "Starting $SCREEN..."
+		cd $POLPATH
+		as_user "cd $POLPATH && screen -dmS $SCREEN $SERVICE"
+		# Wait 5 seconds to start up
+		sleep 5
+		if pgrep -u $USERNAME -f $SERVICE > /dev/null
+		then
+			# Print output
+			echo "$SCREEN started."
+		else
+			echo "Could not start $SCREEN."
+		fi
+	fi
+}
+
+pol_stop() {
+	if pgrep -u $USERNAME -f $SERVICE > /dev/null
+	then
+		echo "$SCREEN is running. Stopping server..."
+		as_user "screen -p 0 -S $SCREEN -X stuff $'\003'"
+		
+		sleep 30
+		if pgrep -u $USERNAME -f $SERVICE > /dev/null
+		then
+			# Print output
+			echo "$SCREEN has not been stopped."
+		else
+			echo "$SCREEN has been stopped."
+		fi
+	else
+		echo "$SCREEN is not running..."
+	fi
+}
+
+pol_console() {
+    cd $POLPATH
+    as_user "cd $POLPATH && $CONSOLE"
+}
+
+pol_recompileall() {
+    chown -R ancaria:root $POLPATH
+    as_user "$ECOMPILE_PATH -A -b -f 2>&1 > ecompile.log && mcedit $POLPATH/../ecompile.log"
+}
+
+pol_compiledir() {
+	chown -R ancaria:root $POLPATH/$1
+    as_user "$ECOMPILE_PATH -A -b -f \"$POLPATH/$1\""
+}
+
+pol_compile() {
+	chown ancaria:root $POLPATH/$1
+    as_user "$ECOMPILE_PATH \"$POLPATH/$1\""
+}
+
+#Start-Stop here
+case "$1" in
+	start)
+		pol_start
+	;;
+	stop)
+		pol_stop
+	;;
+	restart)
+		pol_stop
+		pol_start
+	;;
+	recompileall)
+		pol_stop
+		pol_recompileall
+		rm -f $POLPATH/../ecompile.log
+		pol_start
+	;;
+	compiledir)
+		pol_stop
+		pol_compiledir $2
+		pol_start
+	;;
+	compile)
+		pol_stop
+		pol_compile $2
+		pol_start
+	;;
+	console)
+		pol_console
+    ;;
+	*)
+		echo "Usage: pol-ctl {start | stop | restart | recompileall | compiledir | compile | console}" >&2
+	;;
+esac
+
+exit 0
