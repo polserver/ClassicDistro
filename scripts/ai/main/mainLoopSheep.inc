@@ -28,7 +28,7 @@ function main_AI_loop()
                                   PlaySoundEffect(me, SFX_SPELL_EXPLOSION);
                                   PlayStationaryEffect(me.x, me.y, me.z, FX_EXPLODE_3, 7, 0x10, 0, me.realm);
                                   sleepms(5);
-                                  MoveObjectToLocation(me,0,0,0,"britannia_alt",MOVEOBJECT_FORCELOCATION); // problem for new map
+                                  MoveObjectToLocation(me,0,0,0,"britannia_alt",MOVEOBJECT_FORCELOCATION);
                                   ApplyRawDamage(me, GetHp(me) + 3);
                                 endif
         SYSEVENT_ENGAGED:       RunLikeHell(ev.source);

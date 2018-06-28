@@ -31,7 +31,7 @@ function summon_creature( caster, circle := 8, npctemplate, cast_loc, gate)
   sleep(duration);
   PlaySoundEffect( thecritter, SFX_SPELL_MANA_VAMPIRE );
   PlayStationaryEffect( thecritter.x, thecritter.y, thecritter.z, FX_SMOKE, 0xa, 0xa, 0, thecritter.realm );
-  MoveObjectToLocation(thecritter,0,0,0,"britannia_alt",MOVEOBJECT_FORCELOCATION); // problem for new map
+  MoveObjectToLocation(thecritter,0,0,0,"britannia_alt",MOVEOBJECT_FORCELOCATION);
   Damage(thecritter, GetHp(thecritter) + 3);
 endfunction
 
