@@ -17,24 +17,16 @@ exported function NewCombatAdvancement(attacker, weapon, defender)
   if(attacker.npctemplate)
     cfg := ReadConfigFile(":*:npcdesc");
     attribid := cfg[attacker.npctemplate].AttackAttribute;
-	broadcast("NPC attrib: " + attribid);
-
   else
     cfg := ReadConfigFile(":*:itemdesc");
     attribid := cfg[Hex(weapon.objtype)].Attribute;
-	broadcast("Weapon attrib: " + attribid);
   endif
   if(!attribid)
     return;
   endif
-	//SkillCheck(attacker, AP_GetSkill(attacker, attribid), -1, -3, 3);
-	SkillCheck(attacker, attribid, -1, -3, 3);
-	SkillCheck(attacker, TACTICS, -1, -3, 3);
-	SkillCheck(defender, TACTICS, -1, -3, 3);
-/*  var skillid := FindSkillidByIdentifier(attribid);
-  AwardPoints(attacker, skillid, 15);
-  AwardPoints(attacker, AP_AttributeNameToSkillId(TACTICS), 7);
-  AwardPoints(defender, AP_AttributeNameToSkillId(TACTICS), 7);*/
+	SkillCheck(attacker, attribid, -1, "", ADV_ALL);
+	SkillCheck(attacker, TACTICS, -1, "", ADV_ALL);
+	SkillCheck(defender, TACTICS, -1, "", ADV_ALL);
 endfunction
 
 function FindSkillidByIdentifier(attribid)

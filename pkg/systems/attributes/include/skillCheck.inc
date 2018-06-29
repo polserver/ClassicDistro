@@ -32,6 +32,7 @@ var g_skill_debug	:= 0;
  * Parameters
  * mobile:		Mobile reference to do the skill check for.
  * attribute_name:	Name of the attribute to perform the check on.
+ * difficulty:  
  * award_diff:		Advanced as if the difficulty were this value - defaults to difficulty.
  * advance_flags:	Controls the turning on/off of stat and skill advancements for the check.
  *
@@ -40,6 +41,8 @@ var g_skill_debug	:= 0;
  *
  */
 function SkillCheck(mobile, attrib_name, difficulty, award_diff:="", advance_flags:=ADV_ALL)
+    //broadcast("Just entered skillCheck");
+
 	if ( mobile.dead )
 		SendSysMessage(mobile, "You can't use skills while dead.");
 		return -100;
@@ -49,12 +52,13 @@ function SkillCheck(mobile, attrib_name, difficulty, award_diff:="", advance_fla
 	elseif ( GetObjProperty(mobile, "NoGains") )
 		advance_flags := ADV_DISABLE;
 	endif
-	
+    //broadcast("skillCheck - past dead check");
+
 	// Global skill-debug ( for SkillDbgMsg() )
 	g_skill_debug := (GetObjProperty(mobile, "SkillDebug") != error);
 	
 	var effective_skill := AP_GetTrueSkill(mobile, attrib_name);
-	
+	broadcast("Award_diff is " + CStr(award_diff));
 	// Difficulty checks
 	if ( difficulty == -1 )
 		// -1 = Check skill against its self.
@@ -70,15 +74,18 @@ function SkillCheck(mobile, attrib_name, difficulty, award_diff:="", advance_fla
 	var pass_success := (pass_chance - check_roll)+1;
 	// Ensure skill- and stat-gain if it's a -1 skillcheck
 	// Do this AFTER the CalcSuccessPercent() call so '-1' isn't messed up
-	if ( difficulty == -1 )
+	if ( difficulty == CInt(-1) )
 		difficulty := effective_skill;
 	endif
 	if ( award_diff == "" )
 		award_diff := difficulty;
 	endif
-	
-	if ( award_diff == -3 )
-		award_diff := CInt(AP_GetAttributeCfgElem(attrib_name).AwardDefault);
+	// Use default points (AwardDefault) for this attribute from attributes.cfg.
+	if ( award_diff == CInt(-3) )
+		//award_diff := CInt(AP_GetAttributeCfgElem(attrib_name).AwardDefault);
+		award_diff := CDbl(AP_GetAttributeCfgElem(attrib_name).AwardDefault);
+    broadcast("skillCheck.inc debug msg - attrib_name is " + attrib_name);
+    broadcast("AwardDefault is " + CStr(award_diff));
     //SendSysMessage(mobile, "Award default for " + attrib_name + " is " + CStr(award_diff), 2, 88);
 	endif
 	
