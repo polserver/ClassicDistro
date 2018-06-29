@@ -1,5 +1,6 @@
 use uo;
 use os;
+use basic;
 use cfgfile;
 
 include ":attributes:attributes";
@@ -11,30 +12,34 @@ program newcombat()
 endprogram
 
 exported function NewCombatAdvancement(attacker, weapon, defender)
-  var skid;
+  var attribid;
   var cfg;
   if(attacker.npctemplate)
-    cfg := ReadConfigFile("::npcdesc");
-    skid := cfg[attacker.npctemplate].AttackAttribute;
+    cfg := ReadConfigFile(":*:npcdesc");
+    attribid := cfg[attacker.npctemplate].AttackAttribute;
+	broadcast("NPC attrib: " + attribid);
+
   else
     cfg := ReadConfigFile(":*:itemdesc");
-    skid := cfg[weapon.objtype].Attribute;
+    attribid := cfg[Hex(weapon.objtype)].Attribute;
+	broadcast("Weapon attrib: " + attribid);
   endif
-  if(!skid)
+  if(!attribid)
     return;
   endif
-  var skillid := FindSkillidByIdentifier(skid);
-	SkillCheck(attacker, AP_SkillIDToAttributeName(skillid), -1, -3, 3);
+	//SkillCheck(attacker, AP_GetSkill(attacker, attribid), -1, -3, 3);
+	SkillCheck(attacker, attribid, -1, -3, 3);
 	SkillCheck(attacker, TACTICS, -1, -3, 3);
 	SkillCheck(defender, TACTICS, -1, -3, 3);
-  /*AwardPoints(attacker, skillid, 15);
+/*  var skillid := FindSkillidByIdentifier(attribid);
+  AwardPoints(attacker, skillid, 15);
   AwardPoints(attacker, AP_AttributeNameToSkillId(TACTICS), 7);
   AwardPoints(defender, AP_AttributeNameToSkillId(TACTICS), 7);*/
 endfunction
 
-function FindSkillidByIdentifier(skid)
+function FindSkillidByIdentifier(attribid)
   var retval;
-  case(skid)
+  case(attribid)
     "Wrestling": retval := AP_AttributeNameToSkillId(WRESTLING);
     "Fencing":   retval := AP_AttributeNameToSkillId(FENCING);
     "Swordsmanship":    retval := AP_AttributeNameToSkillId(SWORDSMANSHIP);
