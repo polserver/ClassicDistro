@@ -196,8 +196,8 @@ function CheckSkillAdvance(mobile, skill_name, award_diff, pass_chance, pretend:
 	if ( true_skill < CDbl(settings.FreeGainUntil) )
 		SkillDbgMsg(mobile, "Skill is < "+CDbl(settings.FreeGainUntil)+". Allowing for advancement.");
 		
-		if ( (true_skill + advance > settings.FreeGainUntil) && !(adv_check <= pass_chance) )
-			limit_left := settings.FreeGainUntil - true_skill;
+		if ( (true_skill + advance > CDbl(settings.FreeGainUntil)) && !(adv_check <= pass_chance) )
+			limit_left := CDbl(settings.FreeGainUntil) - true_skill;
 			
 			if ( limit_left < 0.1 )
 				SkillDbgMsg(mobile, "No free points left and did not pass advance check.");
