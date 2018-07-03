@@ -1,6 +1,6 @@
 include ":attributes:attributes";
 function process_combat_event(opponent)
-  if((GetHp(me) * 100/GetMaxHp(me)) < flee_point)
+  if((AP_GetStat(me, HITS) * 100/GetMaxHp(me)) < flee_point)
 	EraseObjProperty(me,"#flees");
     flee(opponent);
   endif
