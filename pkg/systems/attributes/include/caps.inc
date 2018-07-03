@@ -65,7 +65,7 @@ function AP_SetSkillCap( who, skill_name, points )
 	return 1;
 endfunction
 
-function AP_GetStatCap( skill_name )
+function AP_GetStatCapByName( skill_name )
 
 	var cfg_elem := AP_GetSettingsCfgElem( "Stats" );
 
