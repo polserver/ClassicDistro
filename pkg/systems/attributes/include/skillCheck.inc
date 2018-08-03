@@ -40,6 +40,8 @@ const ADV_DISABLE	:= 0x4; // 4 - because the default is ADV_ALL.
  */
 function SkillCheck( mobile, attrib_name, difficulty, award_diff:="", advance_flags:=ADV_ALL )
 
+  var skill_check_result := 0;
+
 	if( mobile.dead )
 		SendSysMessage( mobile, "You can't use skills while dead." );
 		return -100;
@@ -95,7 +97,12 @@ function SkillCheck( mobile, attrib_name, difficulty, award_diff:="", advance_fl
 		CheckStatsForSkill( mobile, attrib_name );
 	endif
 
-	return (( pass_chance - check_roll ) + 1 );
+  skill_check_result := (( pass_chance - check_roll ) + 1 );
+  if( skill_check_result < 0)
+    skill_check_result := 0;
+  endif
+  
+	return skill_check_result;
 endfunction
 
 /*
