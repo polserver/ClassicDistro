@@ -79,10 +79,10 @@ function GFCreateGump(x:=0, y:=0, width:=0, height:=0)
 	gump.+data	:= array;	// Storage array for static-text and
 					// text-entry initialisation strings
 					// Indexes/KeyIDs for...
-	
+
 	// Starting points for data values
 	gump.+data_id	:= 1;
-	
+
 	// Current page the gump is writing to
 	gump.+cur_page := 0;
 
@@ -231,9 +231,9 @@ function GFMovable(byref gump, bool)
  */
 function GFPage(byref gump, page_num)
 	gump.cur_page := CInt(page_num);
-	
+
 	(gump.layout).Append("Page "+CStr(gump.cur_page));
-	
+
 	return 1;
 endfunction
 
@@ -318,6 +318,8 @@ endfunction
  *
  * Return value
  * Return value is the button value.
+ * A return value of 0 means cancelled or the client force closed it
+ * or a right click to close. For this reason you cannot have a button value of zero (0).
  *
  */
 function GFAddButton(byref gump, x, y, off_id, on_id, btn_type:=GF_PAGE_BTN, btn_value:=0)
@@ -715,7 +717,7 @@ function GFSendGump(who, byref gump)
 		SendSysMessage(who, "Error - Unable to display gump.");
 		SendSysMessage(who, "Error text is ->"+ret_val.errortext);
 	endif
-	
+
 	return ret_val;
 endfunction
 
@@ -735,7 +737,7 @@ endfunction
  */
 function XGFError(text)
 	var temp := error{"errortext":=text};
-	
+
 	SysLog("Gump Error:: "+text);
 
 	return temp;
@@ -1134,7 +1136,7 @@ function GFPicTiled(byref gump, x, y, width, height, gump_id)
  if ( !height )
   height := gump.base.width;
  endif
-  
+
  (gump.layout).Append("gumppictiled "+CStr(CInt(x))+" "+CStr(CInt(y))+" "
     + CStr(width)+" "+CStr(height) +" "+ CStr(CInt(gump_id)));
  return 1;
