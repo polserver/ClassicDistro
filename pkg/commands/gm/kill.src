@@ -11,8 +11,8 @@ program textcmd_kill( who )
         if (!mob.dead)
             RevokePrivilege( mob, "invul" );
             SetObjProperty(mob, "guardkill", 1);
-            ApplyRawDamage( mob, GetHp(mob) );
-           
+            ApplyRawDamage( mob, CInt(AP_GetVital(mob, HITS)) + 1000 );
+
         else
             SendSysMessage( who, "That Tickles!" );
         endif

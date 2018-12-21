@@ -595,15 +595,15 @@ function makeBlacksmithItems(who, what, amt, cont, hammer)
   var is_ingot := 0;
   var ptmod := 0;
   case(use_on.objtype)
-    0x6309: is_ingot := 1; ptmod := 0;
-	0x630a: is_ingot := 1; ptmod := 5;
-    0x630b: is_ingot := 1; ptmod := 5;
-    0x630c: is_ingot := 1; ptmod := 10;
-    0x630d: is_ingot := 1; ptmod := 10;
-    0x630e: is_ingot := 1; ptmod := 15;
-    0x630f: is_ingot := 1; ptmod := 15;
-    0x6310: is_ingot := 1; ptmod := 20;
-    0x6311: is_ingot := 1; ptmod := 25;
+    0x16309: is_ingot := 1; ptmod := 0;
+	0x1630a: is_ingot := 1; ptmod := 5;
+    0x1630b: is_ingot := 1; ptmod := 5;
+    0x1630c: is_ingot := 1; ptmod := 10;
+    0x1630d: is_ingot := 1; ptmod := 10;
+    0x1630e: is_ingot := 1; ptmod := 15;
+    0x1630f: is_ingot := 1; ptmod := 15;
+    0x16310: is_ingot := 1; ptmod := 20;
+    0x16311: is_ingot := 1; ptmod := 25;
   endcase
   if(is_ingot == 0)
     SendSysMessage(who, "You can only use that on ingots!");
@@ -670,15 +670,15 @@ function makeBlacksmithItems(who, what, amt, cont, hammer)
           CheckToolWear(who, hammer, BLACKSMITHY);
           if(!theitem.isa(POLCLASS_WEAPON))
             case(use_on.objtype)
-              0x6309:   nme := ""             + itemname; theitem.color := 0x0;
-	          0x630a:   nme := "dull copper " + itemname; theitem.color := 0x8415;
-              0x630b:   nme := "shadow "      + itemname; theitem.color := 0x8455;
-              0x630c:   nme := "copper "      + itemname; theitem.color := 0x845e;
-              0x630d:   nme := "bronze "      + itemname; theitem.color := 0x86b2;
-              0x630e:   nme := "golden "      + itemname; theitem.color := 0x88a6;
-              0x630f:   nme := "agapite "     + itemname; theitem.color := 0x83ea;
-              0x6310:   nme := "verite "      + itemname; theitem.color := 0x889f;
-              0x6311:   nme := "valorite "    + itemname; theitem.color := 0x8539;
+              0x16309:   nme := ""             + itemname; theitem.color := 0x0;
+	          0x1630a:   nme := "dull copper " + itemname; theitem.color := 0x8415;
+              0x1630b:   nme := "shadow "      + itemname; theitem.color := 0x8455;
+              0x1630c:   nme := "copper "      + itemname; theitem.color := 0x845e;
+              0x1630d:   nme := "bronze "      + itemname; theitem.color := 0x86b2;
+              0x1630e:   nme := "golden "      + itemname; theitem.color := 0x88a6;
+              0x1630f:   nme := "agapite "     + itemname; theitem.color := 0x83ea;
+              0x16310:   nme := "verite "      + itemname; theitem.color := 0x889f;
+              0x16311:   nme := "valorite "    + itemname; theitem.color := 0x8539;
             endcase
           else
             nme := itemname;
@@ -848,15 +848,15 @@ endfunction
 
 function checkSkillForDifferentMetals(who, ingot)
   case( ingot.objtype )
-    0x6309:   return(checkHisSkill(who,  0));
-	0x630a:   return(checkHisSkill(who, 65));
-    0x630b:   return(checkHisSkill(who, 70));
-    0x630c:   return(checkHisSkill(who, 75));
-    0x630d:   return(checkHisSkill(who, 80));
-    0x630e:   return(checkHisSkill(who, 85));
-    0x630f:   return(checkHisSkill(who, 90));
-    0x6310:   return(checkHisSkill(who, 95));
-    0x6311:   return(checkHisSkill(who, 99));
+    0x16309:   return(checkHisSkill(who,  0));
+	0x1630a:   return(checkHisSkill(who, 65));
+    0x1630b:   return(checkHisSkill(who, 70));
+    0x1630c:   return(checkHisSkill(who, 75));
+    0x1630d:   return(checkHisSkill(who, 80));
+    0x1630e:   return(checkHisSkill(who, 85));
+    0x1630f:   return(checkHisSkill(who, 90));
+    0x16310:   return(checkHisSkill(who, 95));
+    0x16311:   return(checkHisSkill(who, 99));
     default:  SendSysMessage(who, "You can't forge that.");
   endcase
 endfunction
