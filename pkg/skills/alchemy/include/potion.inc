@@ -128,7 +128,7 @@ function try_to_make_potion(user, potion, in_mortar, mortar, reg)
     if(!take_regs(user, potion, reg))
       return;
     endif
-    if(CheckSkill(user, SKILLID_ALCHEMY, difficulty, points))
+    if(SkillCheck(user, ALCHEMY, difficulty, points))
       var hasbottle:= 0;
       set_critical(1);
       foreach item in EnumerateItemsInContainer(user.backpack)
@@ -239,7 +239,7 @@ function try_to_make_last(user, potion, mortar)
   PlaySoundEffect(user, SOUND_EFFECT_GRIND);
   PrintTextAbovePrivate(user, "You grind the reagent",user);
   sleep(2);
-  if(CheckSkill(user, SKILLID_ALCHEMY, difficulty, points))
+  if(SkillCheck(user, ALCHEMY, difficulty, points))
     var hasbottle:= 0;
     set_critical(1);
     foreach item in EnumerateItemsInContainer(user.backpack)
