@@ -91,6 +91,8 @@ function CalcNextTick()
 
 		SleepMS(10);
 	endforeach
+	
+	delay_time := delay_time - Polcore().systime;
 
 	if( delay_time <= 0 )
 		delay_time := 60;
