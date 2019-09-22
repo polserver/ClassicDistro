@@ -196,19 +196,19 @@ program use_picktool(who, tool)
           var patch := CreateItemAtLocation(chestx, chesty, chestz, 2324, 1, who.realm);
           patch.movable := 0;
           parts.append(patch);
-          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION | MOVEITEM_IGNOREMOVABLE);
+          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION + MOVEITEM_IGNOREMOVABLE);
         elseif(i == 6)
           var patch := CreateItemAtLocation(chestx, chesty, chestz, 2324, 1, who.realm);
           patch.movable := 0;
           parts.append(patch);
-          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION | MOVEITEM_IGNOREMOVABLE);
+          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION + MOVEITEM_IGNOREMOVABLE);
         elseif(i == 7)
           var patch := CreateItemAtLocation(chestx, chesty, chestz, 2324, 1, who.realm);
           patch.movable := 0;
           parts.append(patch);
-          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION | MOVEITEM_IGNOREMOVABLE);
+          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION + MOVEITEM_IGNOREMOVABLE);
         elseif(i == 8)
-          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION | MOVEITEM_IGNOREMOVABLE);
+          MoveObjectToLocation(chest, chest.x, chest.y, chest.z+2, chest.realm, MOVEOBJECT_FORCELOCATION + MOVEITEM_IGNOREMOVABLE);
           foreach thing in parts
             DestroyItem(thing);
           endforeach
