@@ -8,7 +8,9 @@ include "include/client";
 include ":attributes:attributes";
 include "include/eventID";
 include "include/sysEvent";
+include "include/speech";
 include "include/randName";
+include "include/trainSkill";
 include "include/vetement";
 include "include/dist";
 include "include/anchors";
@@ -29,7 +31,6 @@ var nextchk     := ReadGameClock() + 120;
 
 program CastleGuard()
   SetObjProperty(me, "MerchantType", "BattleMage");
-  me.concealed := 1;
   start_script("NPCKeeper", me);
   var myanchor := GetObjProperty(me, "Anchor");
   if(myanchor)
@@ -37,8 +38,11 @@ program CastleGuard()
   endif
   drop_anchor();
   myanchor := GetObjProperty(me, "Anchor");
-  EnableEvents(SYSEVENT_ENGAGED);
-  EnableEvents(EVID_NODE);
+  EnableEvents(SYSEVENT_SPEECH, 3);
+  EnableEvents( SYSEVENT_ENGAGED + SYSEVENT_DISENGAGED + SYSEVENT_DAMAGED );
+  EnableEvents( SYSEVENT_ENTEREDAREA + SYSEVENT_LEFTAREA, HALT_THRESHOLD );
+  EnableEvents(SYSEVENT_OPPONENT_MOVED);
+
   SetWarMode(0);
   set_priority(100);
   var ev;
@@ -49,12 +53,24 @@ program CastleGuard()
   var ph := SplitWords(me.name);
   var myname := lower(ph[1]);
   while (1)
-    ev := os::wait_for_event(120);
+    ev := os::wait_for_event(60);
 	if (ev)
       case(ev.type)
-        EVID_NODE:           foreach thing in (ev.crims)
-                               Fight(thing);
-                             endforeach
+		SYSEVENT_ENTEREDAREA:	if(ev.murderer)
+														Fight(ev);
+													endif
+		SYSEVENT_SPEECH:      var tspeech := process_text(ev.text, "default","default");
+                        txt := lower(ev.text);
+                        if(tspeech)
+                          say(tspeech);
+                        elseif(txt[myname] && (txt["train"] || txt["teach"]))
+                          TurnToward(ev.source);
+                          MerchantTrain(me, ev.source, ev.text);
+                        endif
+		SYSEVENT_ITEM_GIVEN:  TrainSkill(me, ev.source, ev.item);
+		SYSEVENT_ENTEREDAREA:	if(ev.murderer)
+														Fight(ev);
+													endif
         SYSEVENT_ENGAGED:    if((ev.source) && (!ev.source.dead))
 		                       say("Thou wilt regret thine actions, swine!");
                                Fight(ev.source);
@@ -63,6 +79,8 @@ program CastleGuard()
 		                       say("Thou wilt regret thine actions, swine!");
                                Fight(ev.source);
                              endif
+		SYSEVENT_LEFTAREA:
+
       endcase
 	endif
 	if(ReadGameClock() >= next_wander)
@@ -158,7 +176,7 @@ function Fight(opponent)
   PlayLightningBoltEffect(opponent);
   sleepms(100);
   PlayLightningBoltEffect(opponent);
-  sleepms(100);	
+  sleepms(100);
   PlayLightningBoltEffect(opponent);
   sleepms(100);
   PlayLightningBoltEffect(opponent);
@@ -281,11 +299,11 @@ function in_combat_event_loop(opponent, loops)
   endif
 endfunction
 
-function GoldForSkillGain( npc_skill, pc_skill, skillid )
-  var maxskill := npc_skill - pc_skill;
-  return maxskill*10;
-endfunction
+// function GoldForSkillGain( npc_skill, pc_skill, skillid )
+  // var maxskill := npc_skill - pc_skill;
+  // return maxskill*10;
+// endfunction
 
-function SkillGainForGold(npc_level, pc_level, trainskillid, goldreceived)
-  return (goldreceived/10) + pc_level;
-endfunction
+// function SkillGainForGold(npc_level, pc_level, trainskillid, goldreceived)
+  // return (goldreceived/10) + pc_level;
+// endfunction
