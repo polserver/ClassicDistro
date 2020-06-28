@@ -57,7 +57,7 @@ program eat_food(who, food)
     endif
     var lasthitparms := {attacker.name, attacker.serial, "poison food"};
     SetObjProperty(who, "LastHit", lasthitparms);
-    var parms := { who, attacker, "poison food" }
+    var parms := { who, attacker, "poison food" };
 	start_script(":spells:poisonDamage", parms);
   endif
 endprogram

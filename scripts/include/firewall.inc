@@ -34,13 +34,13 @@ if (!CheckLosAt( caster, x, y, z ))
         return;
 endif
 var dir := get_direction(caster, x, y, z);
-case dir
+case (dir)
 	"north" : fires:= CreateNorthSouthField(caster, UOBJ_FIREFIELD_NS, x, y, z, 5);
 	"south"  :fires:= CreateNorthSouthField(caster, UOBJ_FIREFIELD_NS, x, y, z, 5);
 	"east"  : fires:= CreateEastWestField(caster, UOBJ_FIREFIELD_EW, x, y, z, 5);
         "west"  : fires:= CreateEastWestField(caster, UOBJ_FIREFIELD_EW, x, y, z, 5);
         default:  var firetype := RandomInt(2) + 1;
-        	  case firetype
+        	  case (firetype)
         	  	1: fires:= CreateNorthSouthField(caster, UOBJ_FIREFIELD_NS, x, y, z, 5);
         	  	2: fires:= CreateEastWestField(caster, UOBJ_FIREFIELD_EW, x, y, z, 5);
         	  endcase
