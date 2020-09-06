@@ -676,7 +676,7 @@ function CheckForBeingLostAtSea ()
 
 	var oldmovable;
 	foreach item in (boat.items)
-		if (item.objtype = UOBJ_CORPSE)
+		if (item.objtype == UOBJ_CORPSE)
 			foreach item2 in ListRootItemsInContainer (item)
 				if (!item2.newbie and item2.movable)
 					if (item2.objtype < UOBJ_STARTHAIR or item2.objtype > UOBJ_ENDHAIR)
