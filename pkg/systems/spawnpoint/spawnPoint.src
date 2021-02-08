@@ -127,7 +127,6 @@ program use_spawnpoint(who, spawnpoint)
 	  SendSysMessage(who, "Invalid creature type.");
 	  spawn := "NONE";
     else
-	Print("Getting ready to kill.");
 	  SetObjProperty(thecritter, "summoned", 1);
 	  thecritter.kill();
     endif
