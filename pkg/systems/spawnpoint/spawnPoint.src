@@ -119,24 +119,26 @@ program use_spawnpoint(who, spawnpoint)
     endif
   endforeach
   SendSysMessage(who, i);
+  var override := struct;	// This is a dummy variable for the CreateNpc function call.
   var critterarray := {"ettins", "orchorde", "trolls", "lesserundead", "undead", "vermin", "orcs", "dracos", "lizardmen", "ratmen"};
   if(!i in critterarray)
-    var thecritter := CreateNpcFromTemplate(i, spawnpoint.x, spawnpoint.y, spawnpoint.z, 0, spawnpoint.realm);
+    var thecritter := CreateNpcFromTemplate(i, spawnpoint.x, spawnpoint.y, spawnpoint.z, override, spawnpoint.realm);
     if(!thecritter)
 	  SendSysMessage(who, "Invalid creature type.");
 	  spawn := "NONE";
     else
+	Print("Getting ready to kill.");
 	  SetObjProperty(thecritter, "summoned", 1);
-	  ApplyRawDamage(thecritter, GetHp(thecritter)+3);
+	  thecritter.kill();
     endif
   else
-    var thecritter := CreateNpcFromTemplate(GetCritter(i), spawnpoint.x, spawnpoint.y, spawnpoint.z, 0, spawnpoint.realm);
+    var thecritter := CreateNpcFromTemplate(GetCritter(i), spawnpoint.x, spawnpoint.y, spawnpoint.z, override, spawnpoint.realm);
     if(!thecritter)
 	  SendSysMessage(who, "Invalid creature type.");
 	  spawn := "NONE";
     else
 	  SetObjProperty(thecritter, "summoned", 1);
-	  ApplyRawDamage(thecritter, GetHp(thecritter)+3);
+	  thecritter.kill();
     endif
   endif
   SetObjProperty(spawnpoint, "Amount",   amount);
