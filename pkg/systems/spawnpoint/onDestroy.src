@@ -1,0 +1,14 @@
+use uo;
+use os;
+use vitals;
+
+program DestroySpawnPoint(spawn_point)
+
+	var children := GetObjProperty(spawn_point, "Children");
+	foreach child in children
+		var kid := SystemFindObjectBySerial(child);
+		SetObjProperty(kid, "guardkill", 1);
+		kid.kill();
+	endforeach
+
+endprogram

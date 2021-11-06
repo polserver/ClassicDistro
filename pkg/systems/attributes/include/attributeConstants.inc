@@ -11,7 +11,7 @@ const VITALID_STAMINA              := "Stamina";
 
 
 enum VITALS
-	HITS			:= "Hits",
+//	HITS			:= "Hits",
 	MANA			:= "Mana",
 	STAMINA			:= "Stamina",
 	HUNGER			:= "Hunger"
