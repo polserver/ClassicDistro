@@ -26,7 +26,7 @@ program createlightsource(caster)
     thecritter := CreateNpcFromTemplate("wisp", cast_loc.x, cast_loc.y,cast_loc.z, parms, caster.realm);
     SetObjProperty(thecritter,"master", caster.serial);
     SetObjProperty(thecritter, "summoned",1);
-	var thelight := CreateItemAtLocation(1, 1, 1, 0xa22, 1, caster.realm);
+	var thelight := CreateItemAtLocation(1, 1, 1, 0xa22, 1, "britannia");
 	thelight.newbie := 1;
 	EquipItem(thecritter, thelight);
 	SetHp(thecritter, 1);

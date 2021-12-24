@@ -178,7 +178,7 @@ program carpentry(who, tool)
       if(item2.container)
         var bag := item2.container;
         var counter := 1;
-        MoveObjectToLocation(item2, 5855, 1158, 0, who.realm, MOVEOBJECT_FORCELOCATION);
+        MoveObjectToLocation(item2, 5855, 1158, 0, "britannia", MOVEOBJECT_FORCELOCATION);
         var holder := CreateItemInContainer(who.backpack, 0x1766, 50);
         if(holder)
           while(counter < item2.amount)
@@ -204,8 +204,8 @@ program carpentry(who, tool)
         var x := item2.x;
         var y := item2.y;
         var z := item2.z;
-        if(MoveObjectToLocation(item2, 5855, 1158, 0, who.realm, MOVEOBJECT_FORCELOCATION))
-          var temppack := CreateItemAtLocation(5854, 1158, 0, 0xe40, 1);
+        if(MoveObjectToLocation(item2, 5855, 1158, 0, "britannia", MOVEOBJECT_FORCELOCATION))
+          var temppack := CreateItemAtLocation(5854, 1158, 0, 0xe40, 1, "britannia");
           var holder := CreateItemInContainer(temppack, 0x1766, totalcloth);
           if(MoveObjectToLocation(holder, x, y, z, who.realm, MOVEOBJECT_NORMAL))
             DestroyItem(item2);

@@ -94,7 +94,7 @@ program place_deed(who, deed)
     x_mod := CInt(xmods[i]);
     y_mod := CInt(ymods[i]);
     i := i + 1;
-    the_item := CreateItemAtLocation(5886, 1179, 0, obj, 1, who.realm);
+    the_item := CreateItemAtLocation(5886, 1179, 0, obj, 1, "britannia");
     the_item.movable := 1;
     the_item.graphic := 1;
     if(!MoveObjectToLocation(the_item, start.x + x_mod, start.y + y_mod, start.z, who.realm, MOVEOBJECT_NORMAL))
