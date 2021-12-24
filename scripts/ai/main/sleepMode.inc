@@ -8,7 +8,7 @@ function sleepmode()
   endforeach
   if(GetObjProperty(me,"killme"))
     SetObjProperty(me, "guardkill", 1);
-    MoveObjectToLocation(me, 5276, 1185, 0, MOVEOBJECT_FORCELOCATION);
+    MoveObjectToLocation(me, 5276, 1185, 0, "britannia", MOVEOBJECT_FORCELOCATION);
     ApplyRawDamage(me, AP_GetStat(me, HITS)+1);
   endif
   EraseObjProperty(me,"#flees");

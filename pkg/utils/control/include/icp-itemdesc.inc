@@ -1,7 +1,7 @@
 /* $Id: icp-itemdesc.inc 375 2006-06-17 19:26:32Z austinheilman $
  *
  */
- 
+
 include ":itemutils:itemdesc";
 
 function ICP_ItemDescGump(pkg_name)
@@ -69,7 +69,7 @@ function ICP_CreateItem(who, object)
 	if ( create_method )
 		item := CreateItemInBackPack(who, object, 1);
 	else
-		item := CreateItemAtLocation(who.x, who.y, who.z, object, 1);
+		item := CreateItemAtLocation(who.x, who.y, who.z, object, 1, who.realm);
 	endif
 
 	if ( !item )

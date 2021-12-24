@@ -80,7 +80,7 @@ program textcmd_go( who, text )
       traveler := who;
     endif
     // Teleport moble
-    MoveObjectToLocation(traveler, dest.X, dest.Y, GetMapInfo(dest.X, dest.Y, who.realm).z, who.realm); // newmap problem -  needs updsated for realms
+    MoveObjectToLocation(traveler, dest.X, dest.Y, GetMapInfo(dest.X, dest.Y, who.realm).z, who.realm);
   else
     text := lower( text );
     // Open files and set veriables
@@ -96,7 +96,7 @@ program textcmd_go( who, text )
         // If name matches, make sure type does as well
         if ((elem.TYPE == "all") || (elem.TYPE == tname))
           // If so, teleport user
-          MoveObjectToLocation(who, elem.x, elem.y, elem.z, who.realm); // newmap problem -  needs updsated for realms
+          MoveObjectToLocation(who, elem.x, elem.y, elem.z, who.realm);
           return;
         endif
       endif

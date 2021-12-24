@@ -19,7 +19,7 @@ program npcdeath(corpse)
     var stocklist := SystemFindObjectBySerial(CInt(GetObjProperty(corpse, "restockserial")));
     DestroyItem(stocklist);
   endif
-  
+
   var killer := GetObjProperty(corpse, "LastHit");
       if (killer != error)
         i := SystemFindObjectBySerial(killer[2]);
@@ -59,19 +59,19 @@ program npcdeath(corpse)
   dismount(corpse);
 
 // The following piece of code reports to new regional spawner the death of any NPCs spawned by it.
-     Set_Critical(1); 
-      if ( GetObjProperty(corpse, "regspawn") ) 
-         var SpawnName := GetObjProperty(corpse, "regspawn"); 
-         var numspawns := CInt(GetGlobalProperty(SpawnName)); 
-         if ( numspawns and numspawns > 1 ) 
-            numspawns := numspawns - 1; 
-            SetGlobalProperty(SpawnName, numspawns); 
-         else 
-            EraseGlobalProperty(SpawnName); 
-         endif 
-      elseif ( !GetObjProperty(corpse, "guardkill") ) 
-//         AddToSpawner(corpse, npctemplate); 
-      endif 
+     Set_Critical(1);
+      if ( GetObjProperty(corpse, "regspawn") )
+         var SpawnName := GetObjProperty(corpse, "regspawn");
+         var numspawns := CInt(GetGlobalProperty(SpawnName));
+         if ( numspawns and numspawns > 1 )
+            numspawns := numspawns - 1;
+            SetGlobalProperty(SpawnName, numspawns);
+         else
+            EraseGlobalProperty(SpawnName);
+         endif
+      elseif ( !GetObjProperty(corpse, "guardkill") )
+//         AddToSpawner(corpse, npctemplate);
+      endif
    Set_Critical(0);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -206,7 +206,7 @@ function RemakeTotem(corpse, npctemplate)
 
 	if (RandomInt(10) == 1)
 		foreach item in ListRootItemsInContainer(corpse)
-			MoveObjectToLocation(item, corpse.x, corpse.y, corpse.z, MOVEOBJECT_FORCELOCATION );
+			MoveObjectToLocation(item, corpse.x, corpse.y, corpse.z, corpse.realm, MOVEOBJECT_FORCELOCATION );
 		endforeach
 		DestroyItem(corpse);
 		return;
@@ -248,7 +248,7 @@ function RemakeTotem(corpse, npctemplate)
 	SetObjProperty(totem, "broken", RandomInt(20) + 20);
 
 	foreach item in ListRootItemsInContainer(corpse)
-		MoveObjectToLocation(item, corpse.x, corpse.y, corpse.z, MOVEOBJECT_FORCELOCATION );
+		MoveObjectToLocation(item, corpse.x, corpse.y, corpse.z, corpse.realm, MOVEOBJECT_FORCELOCATION );
 	endforeach
 	DestroyItem(corpse);
 	set_critical(0);

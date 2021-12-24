@@ -186,7 +186,7 @@ function MakeClothItems(who, cloth, kit)
     if(cloth.container)
       var bag := cloth.container;
       var counter := 1;
-      MoveObjectToLocation(cloth, 5855, 1158, 0, MOVEOBJECT_FORCELOCATION);
+      MoveObjectToLocation(cloth, 5855, 1158, 0, "britannia", MOVEOBJECT_FORCELOCATION);
       var holder := CreateItemInContainer(who.backpack, 0x1766, 50);
       if(holder)
         while(counter < cloth.amount)
@@ -212,14 +212,14 @@ function MakeClothItems(who, cloth, kit)
       var x := cloth.x;
       var y := cloth.y;
       var z := cloth.z;
-      if(MoveObjectToLocation(cloth, 5855, 1158, 0, MOVEOBJECT_FORCELOCATION))
-        var temppack := CreateItemAtLocation(5854, 1158, 0, 0xe40, 1);
+      if(MoveObjectToLocation(cloth, 5855, 1158, 0, "britannia", MOVEOBJECT_FORCELOCATION))
+        var temppack := CreateItemAtLocation(5854, 1158, 0, 0xe40, 1, "britannia");
         var holder := CreateItemInContainer(temppack, 0x1766, totalcloth);
-        if(MoveObjectToLocation(holder, x, y, z, MOVEOBJECT_NORMAL))
+        if(MoveObjectToLocation(holder, x, y, z, who.realm, MOVEOBJECT_NORMAL))
           mainclothused := holder;
           DestroyItem(cloth);
         else
-          MoveObjectToLocation(cloth, x, y, z, MOVEOBJECT_FORCELOCATION);
+          MoveObjectToLocation(cloth, x, y, z, who.realm, MOVEOBJECT_FORCELOCATION);
           DestroyItem(holder);
           mainclothused := 0;
         endif

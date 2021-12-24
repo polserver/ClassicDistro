@@ -128,14 +128,14 @@ function ClearGuard()
   SetProperty("guardkill", 1);
   PlaySoundEffect(me, 0x1ff);
   PlayStationaryEffect( me.x, me.y, me.z, FX_SMOKE, speed:=0xa, loop:=0xa, realm := me.realm );
-  MoveObjectToLocation(me, 5283,1184,0);
+  MoveObjectToLocation(me, 5283,1184,0, "britannia");
   ApplyRawDamage(me, 510);
 endfunction
 
 function Closedistance(targ)
   if(Distance( me, targ ) >= 12)
 	PlayStationaryEffect( me.x, me.y, me.z, FX_SMOKE, speed:=0xa, loop:=0xa, realm := me.realm);
-	MoveObjectToLocation(me, targ.x, targ.y, targ.z);
+	MoveObjectToLocation(me, targ.x, targ.y, targ.z, targ.realm);
 	PlayStationaryEffect( me.x, me.y, me.z, FX_SMOKE, speed:=0xa, loop:=0xa, realm := me.realm );
   endif
   case (Distance( me, targ ))

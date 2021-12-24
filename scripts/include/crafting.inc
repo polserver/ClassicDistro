@@ -15,7 +15,7 @@ var itemdesc_cfg := ReadConfigFile (":*:itemdesc");
 function FindCraftingBag (who)
 	//Make absolutely certain that they have a backpack
 	if (!who.backpack)
-		var newbackpack := CreateItemAtLocation (5288, 1176, 0, UOBJ_BACKPACK, 1, who.realm);
+		var newbackpack := CreateItemAtLocation (5288, 1176, 0, UOBJ_BACKPACK, 1, "britannia");
 		if (!EquipItem (who, newbackpack))
 			DestroyItem (newbackpack);
 		endif
@@ -25,7 +25,7 @@ function FindCraftingBag (who)
 	if (!craftingbagserial)
 		return who.backpack;
 	endif
-	
+
 	foreach item in EnumerateItemsInContainer (who.backpack)
 		if (item.serial == craftingbagserial)
 			if (item.isa (POLCLASS_CONTAINER))
@@ -53,7 +53,7 @@ function get_item_name(item_number, plural := 0)
 	if(!item_name)
             item_name:=GetConfigString(elem,"Name");
 	endif
-	
+
 	if ( !item_name["%"] ) // Plain desc line - easy enough to deal with.
 		if ( plural == 0 )
 			return item_name;
@@ -65,8 +65,8 @@ function get_item_name(item_number, plural := 0)
 			return item_name+"s";
 		endif
 	endif
-	
-	
+
+
 	/* This section will deal with:
 	 	Bread Stick%s
 		Bread Loa%ves/f%
@@ -76,7 +76,7 @@ function get_item_name(item_number, plural := 0)
 	var first := Find(item_name, "%", 1);
 	var slash := Find(item_name, "/", first);
 	var second := Find(item_name, "%", first + 1);
-	
+
 	if ( slash && !second )
 		// Force-append a % if a '/' exists!
 		item_name := item_name+"%";
@@ -105,7 +105,7 @@ function get_item_name(item_number, plural := 0)
 	if ( plural == 0 )
 		s_middle := s_sing;
 	endif
-	
+
 	if ( !s_first )
 		s_first := "";
 	endif
@@ -115,7 +115,7 @@ function get_item_name(item_number, plural := 0)
 	if ( !s_last )
 		s_last := "";
 	endif
-	
+
 	return s_first + s_middle + s_last;
 
 //        return item_name;

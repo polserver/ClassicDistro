@@ -52,7 +52,7 @@ program spell_gate(parms)
   var toy := CInt(dest.y);
   var toz := CInt(dest.z);
   var torealm := dest.realm;
-  if (torealm != caster.realm) 
+  if (torealm != caster.realm)
 	SendSysMessage (caster, "You do not have enough power to cross the boundary to that realm.");
 	return;
   endif
@@ -80,7 +80,7 @@ program spell_gate(parms)
     endif
     chk := 1;
   endif
-  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1, caster.realm); // newmap problem
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1, "britannia");
   multicheck.hidden := 1;
   if(!MoveObjectToLocation(multicheck, tox, toy, toz, caster.realm, MOVEOBJECT_NORMAL)) // realm gating and recall issues
     SendSysMessage(caster, "Something is blocking the location");
@@ -101,13 +101,13 @@ program spell_gate(parms)
     chk := 1;
   endif
   DestroyItem(multicheck);
-  
+
   // Added next 20 lines for Interdictions.
 	success := 0;
 	var j;
 	var interdiction := ListItemsNearLocationOfType(caster.x, caster.y, caster.z, 20, 0x1aa07, caster.realm);
 	foreach i in interdiction
-		if (Distance(caster, i) <= Cint( GetObjProperty(i, "Range"))) 
+		if (Distance(caster, i) <= Cint( GetObjProperty(i, "Range")))
 			success := 1;
 		endif
 	endforeach
@@ -139,8 +139,8 @@ program spell_gate(parms)
     endforeach
 // End static house check.
 
-  
-  
+
+
   if(chk == 1)
     return;
   endif

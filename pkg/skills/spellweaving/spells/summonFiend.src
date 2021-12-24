@@ -15,7 +15,7 @@ program chrcast_sfamiliar( parms )
 var fey :=systemfindobjectbyserial(getobjproperty(caster, "fey"));
 
 if(fey)
-MoveObjectToLocation(fey,0,0,0, fey.realm,MOVEOBJECT_FORCELOCATION);
+MoveObjectToLocation(fey,0,0,0, "britannia",MOVEOBJECT_FORCELOCATION);
 ApplyRawDamage(fey, GetHp(fey) + 10);
 eraseobjproperty(caster, "fey");
 endif

@@ -389,7 +389,7 @@ function MoveItem (item, byref place, flags := MOVEOBJECT_NORMAL)
 				place[3] := GetWorldHeight(place[1], place[2], item.realm);
 				continue;
 			default:
-				return MoveObjectToLocation(item, place[1], place[2], place[3], flags);
+				return MoveObjectToLocation(item, place[1], place[2], place[3], item.realm, flags);
 		endif
 	endif
 	var result := error;

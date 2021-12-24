@@ -18,7 +18,7 @@ include ":boat:plankUtil";
  *        15  6  2
  *        16  7  1 N P
  *        17  8  3
- *        18  9 10 
+ *        18  9 10
  *        19 20 21
  *
  */
@@ -62,7 +62,7 @@ var searchoffset := array{
 program plankwalk( who, plank, lastx, lasty, lastz )
     // print( "plankwalk last=(" + lastx + "," + lasty + "," + lastz + ")" );
 
-    
+
         //
         // see if someone is walking onto a locked plank from off the boat
         // if so, bounce them.
@@ -80,7 +80,7 @@ program plankwalk( who, plank, lastx, lasty, lastz )
             endif
         endif
     endif
-    
+
 	if (ListMobilesNearLocation( plank.x, plank.y, plank.z, 0, plank.realm ).size() > 1)
 		MoveObjectToLocation( who, lastx, lasty, lastz, plank.realm, MOVEOBJECT_FORCELOCATION );
 //		SetWeatherForPlayer (who);
@@ -98,7 +98,7 @@ program plankwalk( who, plank, lastx, lasty, lastz )
             yidx := 2;
             xmul := 1;
             ymul := 1;
-        
+
         GID_PLANK_EXTENDED_FACING_EAST:
             if (! (who.facing in { DIR_E, DIR_NE, DIR_SE }))
                 return;
@@ -116,7 +116,7 @@ program plankwalk( who, plank, lastx, lasty, lastz )
             yidx := 1;
             xmul := 1;
             ymul := +1;
-           
+
         GID_PLANK_EXTENDED_FACING_SOUTH:
             if (! (who.facing in { DIR_S, DIR_SE, DIR_SW }))
                 return;
@@ -125,8 +125,8 @@ program plankwalk( who, plank, lastx, lasty, lastz )
             yidx := 1;
             xmul := 1;
             ymul := -1; // flip across y-axis
-        
-        default: 
+
+        default:
             print( "unrecognized plank type" );
             return;
     endcase
@@ -143,7 +143,7 @@ program plankwalk( who, plank, lastx, lasty, lastz )
     foreach offset in searchoffset
         if (TryMove( who, offset[xidx] * xmul, offset[yidx] * ymul ))
             return;
-        endif        
+        endif
     endforeach
 
     // gah, can't get off the ship!
@@ -158,7 +158,7 @@ function TryMove( who, dx, dy )
     // print( "Trying (" + tryx + "," + tryy + ")" );
     var h := GetStandingHeight( tryx, tryy, who.z, who.realm );
     if (h and (not h.multi)) // CHECKME should check line of sight?
-		MoveObjectToLocation( who, tryx, tryy, h.z, who.realm, flags := MOVEOBJECT_FORCELOCATION );
+		MoveObjectToLocation( who, tryx, tryy, h.z, who.realm, MOVEOBJECT_FORCELOCATION );
 //		SetWeatherForPlayer (who);
         res := 1;
     endif

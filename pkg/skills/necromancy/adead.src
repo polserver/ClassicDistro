@@ -35,7 +35,7 @@ program animate_dead( params )
 	DestroyItem(cast_on);
 	Detach();
 	sleep(200);
-	MoveObjectToLocation(deadnpc,0,0,0, deadnpc.realm, MOVEOBJECT_FORCELOCATION);
+	MoveObjectToLocation(deadnpc,0,0,0, "britannia", MOVEOBJECT_FORCELOCATION);
 	ApplyRawDamage(deadnpc, GetHp(deadnpc) + 20);
 
 

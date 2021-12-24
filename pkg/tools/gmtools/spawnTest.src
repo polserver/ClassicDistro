@@ -70,7 +70,7 @@ function CreateTreasureChests(item, amt)
           4: gfx := 3648;
           5: gfx := 3708;
         endcase
-        chest := CreateItemAtLocation(newx, newy, newz, gfx, 1);
+        chest := CreateItemAtLocation(newx, newy, newz, gfx, 1, item.realm);
         if(chest)
           checker := 1;
         else

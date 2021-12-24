@@ -82,7 +82,7 @@ function EquipItemString(who, str, lastcolor)
     chance := 100;
   endif
   if(CInt(RandomInt(99)+1) <= CInt(chance))
-    var item := CreateItemAtLocation(5852, 1163, 0, objname, 1, who.realm);
+    var item := CreateItemAtLocation(5852, 1163, 0, objname, 1, "britannia");
     if(!item)
       var itemg := FindConfigElem(vetements, objname);
       if(itemg)
@@ -113,7 +113,7 @@ function EquipItemString(who, str, lastcolor)
           endif
         endforeach
         objname := CInt(newarray[RandomInt(len(newarray))+1]);
-        item := CreateItemAtLocation(5852, 1163, 0, objname, 1, who.realm);
+        item := CreateItemAtLocation(5852, 1163, 0, objname, 1, "britannia");
       endif
     endif
     item.color := color;

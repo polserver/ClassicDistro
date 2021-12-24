@@ -44,7 +44,7 @@ program use_scissors( who, scissors )
   if(material)
     amt := (material * cloth.amount);
     if(SubtractAmount(cloth, amt))
-      newcloth := CreateItemAtLocation(who.x, who.y, who.z, newitem, amt);
+      newcloth := CreateItemAtLocation(who.x, who.y, who.z, newitem, amt, who.realm);
       newcloth.color := clr;
       if (cont)
         MoveItemToContainer(newcloth, cont);
@@ -68,7 +68,7 @@ program use_scissors( who, scissors )
       if(!material)
         SendSysMessage (who, "You can't use scissors on that.");
         return;
-      endif   
+      endif
     endif
     PlaySoundEffect(who, 0x0249);
     amt := CInt((material * AP_GetSkill(who,TAILORING) * 75) / 10000);
@@ -86,5 +86,5 @@ program use_scissors( who, scissors )
       return;
     endif
   endif
-  
+
 endprogram

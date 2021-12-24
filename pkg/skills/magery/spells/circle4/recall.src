@@ -14,7 +14,7 @@ program recall(parms)
   var caster := parms[1];
   var info := parms[2];
   var success := 0;
-  
+
   var cast_on := MS_Target(caster, info.targ, "Select a target.", TGTOPT_CHECK_LOS+TGTOPT_NEUTRAL);
 
     if (!cast_on)
@@ -54,7 +54,7 @@ program recall(parms)
   var toy := CInt(dest.y);
   var toz := CInt(dest.z);
   var torealm := dest.realm;
-  if (torealm) 
+  if (torealm)
         if (torealm != caster.realm)
             SendSysMessage (caster, "You do not have enough power to cross the boundary to that realm.");
             return;
@@ -92,13 +92,13 @@ program recall(parms)
     endif
     chk := 1;
   endif
-  
+
   // Added next 20 lines for Interdictions.
 	success := 0;
 	var j;
 	var interdiction := ListItemsNearLocationOfType(caster.x, caster.y, caster.z, 20, 0x1aa07, caster.realm);
 	foreach i in interdiction
-		if (Distance(caster, i) <= Cint( GetObjProperty(i, "Range"))) 
+		if (Distance(caster, i) <= Cint( GetObjProperty(i, "Range")))
 			success := 1;
 		endif
 	endforeach
@@ -134,7 +134,7 @@ program recall(parms)
     return;
   endif
   if (failure == 0);
-	MoveObjectToLocation( caster, tox, toy, toz );
+	MoveObjectToLocation( caster, tox, toy, toz, "britannia" );
   elseif (failure == 2)
     SendSysMessage(caster, "your spell fails and consumes the rune!");
     if(cast_on.objtype == UOBJ_RUNE)

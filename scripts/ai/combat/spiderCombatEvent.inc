@@ -66,6 +66,6 @@ PrintTextAbove(me, "The spider spits a web!");
 //	-causes client crash-
 
 sleepms(1250);
-CreateItemAtLocation(opponent.x, opponent.y, opponent.z,UOBJ_SPIDERWEB,  1);
+CreateItemAtLocation(opponent.x, opponent.y, opponent.z,UOBJ_SPIDERWEB,  1, opponent.realm);
 
 endfunction

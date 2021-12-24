@@ -108,7 +108,7 @@ program CastleGuard()
       endif
       next_wander := ReadGameClock() + 10;
     elseif((ReadGameClock() > killtime) && (killtime != 0))
-      MoveObjectToLocation(me, 5555, 1111, 0, "britannia", MOVEOBJECT_FORCELOCATION); // newmap problem
+      MoveObjectToLocation(me, 5555, 1111, 0, "britannia", MOVEOBJECT_FORCELOCATION);
       SetObjProperty(me, "guardkill", 1);
       ApplyRawDamage(me, GetHp(me) + 100);
       break;
@@ -172,7 +172,7 @@ function idleloop()
       grabloot();
       next_wander := ReadGameClock() + 10;
     elseif((ReadGameClock() > killtime) && (killtime != 0))
-      MoveObjectToLocation(me, 5555, 1111, 0, "britannia", MOVEOBJECT_FORCELOCATION); // newmap problem
+      MoveObjectToLocation(me, 5555, 1111, 0, "britannia", MOVEOBJECT_FORCELOCATION);
       ApplyRawDamage(me, GetHp(me) + 100);
       break;
     endif
