@@ -235,7 +235,7 @@ var tmenu2 := CreateMenu("Select a spell to inscribe"),
     scroll_types := {};
 foreach scroll in  GetConfigIntKeys(config_file);
    var spellname := config_file[scroll].name;
-   if ( spellname in names && config_file[scroll].Circle == circles[circle_choice.index])
+   if ( spellname in names && config_file[scroll].circle == circles[circle_choice.index] )
       spell_names.append( spellname );
       scroll_types.append( scroll );
       AddMenuItem(tmenu2, config_file[scroll].graphic, spellname);
