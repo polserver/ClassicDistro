@@ -25,7 +25,7 @@ program exploder(parms)
   // and it goes out in a bang!
   PlayStationaryEffect( potion.x, potion.y, potion.z, 0x36b0, 7, 10, 1, potion.realm);
   PlaySoundEffect(potion, 0x208);
-  DestroyItem(potion);
+  SubtractAmount( potion, 1 );
 
   // It damages everything near it.
   foreach critter in ListMobilesNearLocationEx( location.x, location.y, location.z, 1, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN, location.realm );

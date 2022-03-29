@@ -8,6 +8,16 @@ include "include/canAccess";
 program use_explosion(who, potion)
   EraseObjProperty(who, "IsMeditating");
   EraseObjProperty(who, "HealTimer");
+
+  if( potion.amount > 1 )
+    var split_item := potion.SplitStackInto( potion.container, 1 );
+    if( !split_item.IsA( POLCLASS_ITEM ) )
+      SendSysMessage( who, "Unable to split stack.", 0x3, 0x32 );
+      return 0;
+    endif
+    potion := split_item;
+  endif
+
   if(!can_access(who, potion))
     return;
   endif
@@ -22,10 +32,7 @@ program use_explosion(who, potion)
   who.hidden := 0;
   SendSysMessage(who, "Select a target");
   if(!GetObjProperty(potion, "#bomb"))
-    var parms := {};
-    parms[1] := potion;
-    parms[2] := who;
-    start_script(":alchemy:explosionTimer", parms);
+    Start_Script(":alchemy:explosionTimer", { potion, who });
   endif
   SetObjProperty(potion, "#bomb", 1);
   ReleaseItem(potion); // allows bomb to be destroyed in pack
