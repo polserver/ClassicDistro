@@ -27,10 +27,7 @@ program use_explosion(who, potion)
   endif
   who.hidden := 0;
   SendSysMessage(who, "Select a target");
-  if(!GetObjProperty(potion, "#bomb"))
-    Start_Script(":alchemy:explosionTimer", { potion, who });
-  endif
-  SetObjProperty(potion, "#bomb", 1);
+  Start_Script(":alchemy:explosionTimer", { potion, who });
   ReleaseItem(potion); // allows bomb to be destroyed in pack
   var cast_on := TargetCoordinates( who );
   if(!cast_on)
