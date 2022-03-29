@@ -68,7 +68,7 @@ function DeleteAccount(acctname, act);
       WipeBankBox(chr);
       foreach thing in ListEquippedItems(chr)
         if(thing != chr.backpack)
-          if(thing.objtype == 0xf021)
+          if(thing.objtype == 0x1F021)
             ms := GetObjProperty(thing, "serial");
             mt := SystemFindObjectBySerial(ms);
             ApplyRawDamage(mt, 2000);

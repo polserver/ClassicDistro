@@ -63,7 +63,7 @@ program npcdeath(corpse)
       if ( GetObjProperty(corpse, "regspawn") )
          var SpawnName := GetObjProperty(corpse, "regspawn");
          var numspawns := CInt(GetGlobalProperty(SpawnName));
-         if ( numspawns and numspawns > 1 )
+         if ( numspawns && numspawns > 1 )
             numspawns := numspawns - 1;
             SetGlobalProperty(SpawnName, numspawns);
          else
@@ -131,7 +131,7 @@ endprogram
 function dismount(corpse)
 	var mount := 0;GetEquipmentByLayer( corpse, 25 );
 	foreach item in EnumerateItemsInContainer(corpse)
-	  if (item.objtype == 0xf021)
+	  if (item.objtype == 0x1F021)
 		mount := item;
 		break;
 	  endif

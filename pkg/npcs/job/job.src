@@ -4,190 +4,180 @@ use util;
 
 include "include/client";
 include "include/yesNo";
-// include "include/skills";
 include ":attributes:attributes";
 
 Const JOBS_AVAILABLE_PER_MERCHANT		:= 5;
 Const MERCHANT_JOB_ERASE_TIMER		:= 1800;
 Const PLAYER_MAX_JOBVALUE_PER_DAY		:= 5000;
 
-program job (parms)
+program job( parms )
+
 	var player := parms[1];
 	var merchant := parms[2];
-	if (!player or !merchant)
+	if( !player || !merchant )
 		return;
 	endif
 
 	//Figure out if they're already working on something else
-	set_critical (1);
-	if (GetObjProperty (player, "#workingonajob"))
-		if (GetProcess (GetObjProperty (player, "#workingonajob")))
-			PrintTextAbovePrivate (merchant, "You're already working on something.", player, color := 33);
+	Set_Critical( 1 );
+	if( GetObjProperty( player, "#workingonajob" ) )
+		if( GetProcess( GetObjProperty( player, "#workingonajob" ) ) )
+			PrintTextAbovePrivate( merchant, "You're already working on something.", player, color := 33 );
 			return;
 		endif
 	endif
-	SetObjProperty (player, "#workingonajob", GetPid ());
-	set_critical (0);
+	SetObjProperty( player, "#workingonajob", GetPid() );
+	Set_Critical( 0 );
 	
 	//Check to see if the merchant has any jobs available
-	var merchantjobs := GetObjProperty (merchant, "#jobsgiven");
-	if (!merchantjobs)
+	var merchantjobs := GetObjProperty( merchant, "#jobsgiven" );
+	if( !merchantjobs )
 		merchantjobs := dictionary;
 	endif
-	foreach key in (merchantjobs.keys())
-		if (key + MERCHANT_JOB_ERASE_TIMER < ReadGameClock())
-			merchantjobs.erase (key);
+	foreach key in ( merchantjobs.Keys() )
+		if( key + MERCHANT_JOB_ERASE_TIMER < ReadGameClock() )
+			merchantjobs.Erase( key );
 		endif
 	endforeach
-	SetObjProperty (merchant, "#jobsgiven", merchantjobs);
-	if (len (merchantjobs.keys()) >= JOBS_AVAILABLE_PER_MERCHANT)
-		PrintTextAbovePrivate(merchant, "I don't have any work available right now, I'm afraid", player, color := 33);
+	SetObjProperty( merchant, "#jobsgiven", merchantjobs );
+	if( merchantjobs.Keys().Size() >= JOBS_AVAILABLE_PER_MERCHANT )
+		PrintTextAbovePrivate( merchant, "I don't have any work available right now, I'm afraid", player, color := 33 );
 		return;
 	endif
 	
 	//Now check to see if the player can do any more jobs today
-	var playerjobs := GetGlobalProperty ("#jobs_for_account_"+player.acctname);
-	if (!playerjobs)
+	var playerjobs := GetGlobalProperty( "#jobs_for_account_"+player.acctname );
+	if( !playerjobs )
 		playerjobs := dictionary;
 	endif
 	var playerjobvalue := 0;
-	foreach key in (playerjobs.keys())
-		if (key + 86400 < ReadGameClock())
+	foreach key in ( playerjobs.Keys() )
+		if( key + 86400 < ReadGameClock() )
 			playerjobs.erase (key);
 		else
 			playerjobvalue := playerjobvalue + playerjobs[key];
 		endif
 	endforeach
-	SetGlobalProperty ("#jobs_for_account_"+player.acctname, playerjobs);
+	SetGlobalProperty( "#jobs_for_account_"+player.acctname, playerjobs );
 	
-	if (playerjobvalue >= PLAYER_MAX_JOBVALUE_PER_DAY)
-  		PrintTextAbovePrivate(merchant, "I don't have any work for you.  Come back tomorrow.", player, color := 33);
+	if( playerjobvalue >= PLAYER_MAX_JOBVALUE_PER_DAY )
+  		PrintTextAbovePrivate( merchant, "I don't have any work for you.  Come back tomorrow.", player, color := 33 );
 		return;
 	endif
 
-	var jobtype := GetJobType (player, merchant);
-	if (jobtype == -1)
+	var jobtype := GetJobType( player, merchant );
+	if( jobtype == -1 )
 		PrintTextAbovePrivate(merchant, "I don't think there's anything you can help me with right now.", player, color := 33);
-		EraseObjProperty (player, "#workingonajob");
+		EraseObjProperty( player, "#workingonajob" );
 		return;
 	endif
 
-	var itemtype := GetItemTypeByJobType (jobtype);
-	if (!itemtype)
-		PrintTextAbovePrivate (merchant, "I don't think there's anything you can help me with right now.", player, color := 33);
-		EraseObjProperty (player, "#workingonajob");
+	var itemtype := GetItemTypeByJobType( jobtype );
+	if( !itemtype )
+		PrintTextAbovePrivate( merchant, "I don't think there's anything you can help me with right now.", player, color := 33 );
+		EraseObjProperty( player, "#workingonajob" );
 		return;
 	endif
 
-	var itemname := GetItemNameByItemType (itemtype);
-	var amount := RandomInt(10)+10;
+	var itemname := GetItemNameByItemType( itemtype );
+	var amount := RandomInt( 10 )+10;
 	var endtime := ReadGameClock() + 300;
 
-	PrintTextAbovePrivate (merchant, "If you will make " + amount + " " + itemname + ", I will pay you for them.", player, color := 88);
-	if (!YesNo (player,"Accept?") )
-		PrintTextAbovePrivate (merchant, "Very well.", player, color := 33);
-		EraseObjProperty (player, "#workingonajob");
+	PrintTextAbovePrivate( merchant, "If you will make " + amount + " " + itemname + ", I will pay you for them.", player, color := 88 );
+	if( !YesNo( player,"Accept?" ) )
+		PrintTextAbovePrivate( merchant, "Very well.", player, color := 33 );
+		EraseObjProperty( player, "#workingonajob" );
 		return;
 	endif
 	
-	merchantjobs.insert (ReadGameClock(), 1);
-	SetObjProperty (merchant, "#jobsgiven", merchantjobs);
+	merchantjobs.Insert( ReadGameClock(), 1 );
+	SetObjProperty( merchant, "#jobsgiven", merchantjobs );
 
-	var bag := CreateItemInContainer (player.backpack, "bag");
-	if (!bag)
-		PrintTextAbovePrivate (player, "*Your backpack is full!*", player, color := 33);
-		EraseObjProperty (player, "#workingonajob");
+	var bag := CreateItemInContainer( player.backpack, "bag" );
+	if( !bag )
+		PrintTextAbovePrivate( player, "*Your backpack is full!*", player, color := 33 );
+		EraseObjProperty( player, "#workingonajob" );
 		return;
 	endif
 
 	bag.name := "a bag for " + merchant.name + "'s request for " + amount + " " + itemname;
 	bag.color := 1154;
-	SetObjProperty (player, "job", bag.serial);
-	SetObjProperty (bag, "itemtype", itemtype);
-	SetObjProperty (bag, "amount", amount);
-	SetObjProperty (bag, "endtime", endtime);
-	SetObjProperty (bag, "merchant", merchant.serial);
-	SetObjProperty (bag, "jobtype", jobtype);
+	SetObjProperty( player, "job", bag.serial );
+	SetObjProperty( bag, "itemtype", itemtype );
+	SetObjProperty( bag, "amount", amount );
+	SetObjProperty( bag, "endtime", endtime );
+	SetObjProperty( bag, "merchant", merchant.serial );
+	SetObjProperty( bag, "jobtype", jobtype );
 
-	PrintTextAbovePrivate (merchant, "Just hand me the bag when you are done.", player, color := 88);
+	PrintTextAbovePrivate( merchant, "Just hand me the bag when you are done.", player, color := 88 );
 
-	var worknoise := GetWorkNoise (jobtype);
-	var workaction := GetWorkAction (jobtype);
+	var worknoise := GetWorkNoise( jobtype );
+	var workaction := GetWorkAction( jobtype );
 
-	SendSysMessage (player, "You begin working", color := 66);
-	while (amount)
-		DoWorkNoiseAndAction (player, worknoise, workaction);
-		var it := CreateItemInContainer (bag, 0xF021, 1);
-		if (it)
+	SendSysMessage( player, "You begin working", color := 66 );
+	while( amount )
+		DoWorkNoiseAndAction( player, worknoise, workaction );
+		var it := CreateItemInContainer( bag, 0x1F021, 1 );
+		if( it )
 			it.graphic := itemtype;
 			it.movable := 0;
-			SetObjProperty (it, "job", bag.serial);
-			SetObjProperty (it, "ownerserial", merchant.serial);
-			SetObjProperty (it, "ownername", merchant.name);
-			var total_made := GetObjProperty (bag, "amount") - amount + 1;
-			PrintTextAbovePrivate (bag, "*"+total_made+"*", player);
-			AwardRawSkillPoints (player, jobtype, 12);
+			SetObjProperty( it, "job", bag.serial );
+			SetObjProperty( it, "ownerserial", merchant.serial );
+			SetObjProperty( it, "ownername", merchant.name );
+			var total_made := GetObjProperty( bag, "amount" ) - amount + 1;
+			PrintTextAbovePrivate( bag, "*"+total_made+"*", player );
+			AwardRawSkillPoints( player, jobtype, 12 );
 		endif
 		amount := amount - 1;
-		if (bag.container != player.backpack)
-			DestroyItem(bag);
+		if( bag.container != player.backpack )
+			DestroyItem( bag );
 		endif
-		if (	(!player) or (!bag) or (!it) or (player.dead) or (distance(player,merchant) > 5) or (ReadGameClock() > endtime) )
-			SendSysMessage (player, "You stop working.", color := 33);
-			EraseObjProperty (player, "#workingonajob");
+		if( ( !player ) || ( !bag ) || ( !it ) || ( player.dead ) || ( Distance( player, merchant ) > 5 ) || ( ReadGameClock() > endtime ) )
+			SendSysMessage( player, "You stop working.", color := 33 );
+			EraseObjProperty( player, "#workingonajob" );
 			return;
 		endif
 	endwhile
 
-	if (player)
-		SendSysMessage (player, "You finish working", color := 66);
-		if (!amount)
-			EraseObjProperty (player, "bag");
+	if( player )
+		SendSysMessage( player, "You finish working", color := 66 );
+		if( !amount )
+			EraseObjProperty( player, "bag" );
 		endif
 	endif
-	EraseObjProperty (player, "#workingonajob");
+	EraseObjProperty( player, "#workingonajob" );
 endprogram
-
-
-
 
 ///////////////////
 //  plays sound effects based on the skill being used
 ///////////////////
-
-function DoWorkNoiseAndAction (byref who, worknoise, workaction )
+function DoWorkNoiseAndAction( byref who, worknoise, workaction )
 
 	for workloop := 1 to 3
-		if (worknoise) PlaySoundEffectPrivate(who, worknoise, who); endif
-		if (workaction) PerformAction(who, workaction); endif
-		sleep(2);
+		if( worknoise )
+			PlaySoundEffectPrivate( who, worknoise, who );
+		endif
+
+		if( workaction )
+			PerformAction( who, workaction );
+		endif
+		Sleep(2);
 	endfor
-
 endfunction
-
-
-
 
 ///////////////////
 //  figures out what type of job the merchant should give
 ///////////////////
-
 function GetJobType (byref player, byref merchant)
-// The following mods were added by Yukiko on 04-Oct-2006 to make this a general purpose "job" system.
 
-    var tradelist := {};
-
-    tradelist := {34, 37, 7, 11, 13, 23, 12, 44, 45, 18};
-    var index:= RandomInt(9) +1;
-    return tradelist[index];
-
+    return {34, 37, 7, 11, 13, 23, 12, 44, 45, 18}.RandomEntry();
 endfunction
 
-function GetItemTypeByJobType (jobtype)
+function GetItemTypeByJobType( jobtype )
 
-	case (jobtype)
+	case( jobtype )
 		SKILLID_TAILORING:
-			case ( randomint (10) )
+			case( RandomInt( 10 ) )
 				0: return 0x1517;	// Shirt
 				1: return 0x1F01;	// Plain Dress
 				2: return 0x1515;	// Cloak
@@ -201,7 +191,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_BLACKSMITHY:
-			case( randomint (10) )
+			case( RandomInt( 10 ) )
 				0: return 0x1b73;	//Buckler
 				1: return 0x1b72;	//Bronze Shield
 				2: return 0x1b7b;	//Metal Shield
@@ -215,7 +205,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_CARPENTRY:
-			case ( randomint (12) )
+			case( RandomInt( 12 ) )
 				0:  return 0X0B2C;	//Bench
 				1:  return 0X0B56;	//Chair
 				2:  return 0X0B53;	//CushionedChair
@@ -231,7 +221,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_COOKING:
-			case ( randomint (10) )
+			case( RandomInt( 10 ) )
 				0: return 0x09d8;	//plate of food
 				1: return 0x09d9;	//plate of food
 				2: return 0x09db;	//plate of food
@@ -245,7 +235,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_INSCRIPTION:
-			case ( randomint(10) )
+			case( RandomInt(10) )
 				0: return 0x1f2d;	//reactivearmorscroll
 				1: return 0x1f2e;	//clumsyscroll
 				2: return 0x1f2f;	//createfoodscroll
@@ -259,7 +249,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_TINKERING:
-			case (randomint (10))
+			case( RandomInt( 10 ) )
 				0: return 0x09b3;	//goblet
 				1: return 0x1053;	//Gears
 				2: return 0x1059;	//Sextantparts
@@ -276,7 +266,7 @@ function GetItemTypeByJobType (jobtype)
 			return 0x14eb;//map
 
 		SKILLID_LUMBERJACKING:
-			case ( randomint (4) )
+			case( RandomInt( 4 ) )
 				0: return 0x1BDE;	//small pile of logs
 				1: return 0x1BDF;	//large pile of logs
 				2: return 0x1BD8;	//small pile of boards
@@ -284,7 +274,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_MINING:
-			case ( randomint (4) )
+			case( RandomInt( 4 ) )
 				0: return 0x1BE4;	//copper ingots
 				1: return 0x1BEA;	//gold ingots
 				2: return 0x1BF1;	//iron ingots
@@ -292,7 +282,7 @@ function GetItemTypeByJobType (jobtype)
 			endcase
 
 		SKILLID_FISHING:
-			case ( randomint(6) )
+			case( RandomInt( 6 ) )
 				0: return 0x0DD0;	//fishing net
 				1: return 0x1E62;	//trophy fish
 				2: return 0x1E16;	//cleaned fish
@@ -304,17 +294,12 @@ function GetItemTypeByJobType (jobtype)
 		default:
 			return 0;
 	endcase
-
 endfunction
-
-
-
 
 ///////////////////
 //  figures out the name of the item based on the passed itemtype
 ///////////////////
-
-function GetItemNameByItemType ( itemtype )
+function GetItemNameByItemType( itemtype )
 	case (itemtype)
 		0x1517: return "Shirts";
 		0x1F01: return "Plain Dresses";
@@ -404,17 +389,12 @@ function GetItemNameByItemType ( itemtype )
 		0xFD2: return "strings of shells";
 		0xDCC: return "fishing weights";
 	endcase
-
 endfunction
-
-
-
 
 ///////////////////
 //  figures out if the passed skill is a crafting skill
 ///////////////////
-
-function IsACraftSkill ( skillid )
+function IsACraftSkill( skillid )
 
 	case (skillid)
 		SKILLID_TAILORING:
@@ -431,32 +411,29 @@ function IsACraftSkill ( skillid )
 		default:
 			return 0;
 	endcase
-
 endfunction
 
 function GetWorkNoise( jobtype )
 
 	case (jobtype)
-	34: return 0x0249;//tailoring
-	37: return SFX_ANVIL;//tinkering
-	7: return SFX_ANVIL;//blacksmithy
-	11: return SFX_HAMMER;//carpentry
-	13: return 0x248;//cooking
-	23: return 0x50;//inscription
-	12: return 0x50;//cartography
-	44: return SFX_SKILL_LUMBERJACK;//lumberjacking
-	45: return 0x226;//smelting
-	18: return 0x50;//fishing
-	default: return 0;
+		34: return 0x0249;//tailoring
+		37: return SFX_ANVIL;//tinkering
+		7: return SFX_ANVIL;//blacksmithy
+		11: return SFX_HAMMER;//carpentry
+		13: return 0x248;//cooking
+		23: return 0x50;//inscription
+		12: return 0x50;//cartography
+		44: return SFX_SKILL_LUMBERJACK;//lumberjacking
+		45: return 0x226;//smelting
+		18: return 0x50;//fishing
+		default: return 0;
 	endcase
-
 endfunction
 
 function GetWorkAction( jobtype )
 
-	case (jobtype)
-	44: return 0x0D;//lumberjacking
-	default: return ANIM_SALUTE;
+	case( jobtype )
+		44: return 0x0D;//lumberjacking
+		default: return ANIM_SALUTE;
 	endcase
-
 endfunction

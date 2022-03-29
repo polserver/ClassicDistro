@@ -83,7 +83,7 @@ endfunction
 function dismount(corpse)
   var mount := GetEquipmentByLayer( corpse, 25 );
   foreach item in EnumerateItemsInContainer(corpse)
-	if (item.objtype == 0xf021)
+	if (item.objtype == 0x1F021)
 	  mount := item;
 	  break;
 	endif

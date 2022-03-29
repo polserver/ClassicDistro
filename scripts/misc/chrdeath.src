@@ -113,16 +113,12 @@ function CheckForDivineRes(who, corpse)
 endfunction
 
 function dismount(corpse)
-  var mount := GetEquipmentByLayer( corpse, 25 );
-  foreach item in EnumerateItemsInContainer(corpse)
-	if (item.objtype == 0xf021)
-	  mount := item;
-	  break;
-	endif
-  endforeach
-  if (!mount)
-	return;
+
+  var mount := FindObjtypeInContainer( corpse, 0x1F021, FINDOBJTYPE_ROOT_ONLY );
+  if( mount.errortext )
+    return 0;
   endif
+
   var animal := SystemFindObjectBySerial(CInt(GetObjProperty(mount,"serial")));
   animal.facing := corpse.facing;
   EraseObjProperty(animal, "mounted");
