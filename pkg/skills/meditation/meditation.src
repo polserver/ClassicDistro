@@ -17,7 +17,7 @@ program meditation(who)
 	var shrinelist := ListItemsNearLocationOfType(who.x, who.y, who.z, 3, UOBJ_WAYPOINT, who.realm);
 	if ( GetObjProperty(shrinelist[1], "LocationType") == "Shrine" )
 		SendSysMessage(who, "Do you wish to pray at this shrine?");
-		if (yesno(who, "Pray here?") )
+		if (YesNo(who, "Pray here?") )
 //			var theshrine := shrinelist[1];
 			start_script( (GetObjProperty(shrinelist[1], "Virtue") ), { who, shrinelist[1] } );
 			return 1;
@@ -59,7 +59,7 @@ program meditation(who)
 		EraseObjProperty(who, "#ISMEDITATING");
 	endif
 
-	var diff := CInt(GetAttribute(who,MEDITATION) - GetMana(who)) + (loss / 1000);
+	var diff := CInt( GetAttribute( who, MEDITATION ) - CInt( AP_GetVital( who, MANA ) ) ) + ( loss / 1000 );
 	if (diff < 0)
 		diff := 0;
 	elseif (diff > 110)
@@ -74,9 +74,9 @@ program meditation(who)
 	if(SkillCheck(who, MEDITATION, diff, pts))
 		var oldx := who.x;
 		var oldy := who.y;
-		var oldstamina := GetStamina(who);
-		var chp := GetHp(who);
-		var cmana := GetMana(who);
+		var oldstamina := AP_GetVital( who, STAMINA );
+		var chp := AP_GetVital( who, HITS );
+		var cmana := AP_GetVital( who, MANA );
 		lastmed := CInt(ReadGameClock()) + 60;
 		SetObjProperty(who, "LastMeditation", lastmed);
 		SendSysMessage(who, "You start to meditate.");
@@ -84,7 +84,7 @@ program meditation(who)
 		PrintTextAbove(who, "* Meditating *");
 		SetObjProperty(who, "#ISMEDITATING", 1);
 
-		while( (oldstamina <= GetStamina(who)) && (oldx==who.x) && (oldy==who.y) && (poisoned < 1) && (!who.warmode) && (!IsThingOnHand(who)) && (!who.hidden) )
+		while( (oldstamina <= AP_GetVital( who, STAMINA ) ) && (oldx==who.x) && (oldy==who.y) && (poisoned < 1) && (!who.warmode) && (!IsThingOnHand(who)) && (!who.hidden) )
 
 			loss := manaloss(who);
 			if(loss == "nomed")
@@ -92,21 +92,22 @@ program meditation(who)
 				EraseObjProperty(who, "#ISMEDITATING");
 				return 0;
 			endif
-			if(GetMana(who) >= GetIntelligence(who))
+
+			if( AP_GetVital( who, MANA ) >= AP_GetVitalMaximumValue( who, MANA ) )
 				SendSysMessage(who, "Your mana has recharged.", color := 66);
 				EraseObjProperty(who, "#ISMEDITATING");
 				return 1;
 			endif
-			if((GetHp(who) < chp) || (GetMana(who) < cmana))
+			if((AP_GetVital( who, HITS ) < chp) || (AP_GetVital( who, MANA ) < cmana))
 				SendSysMessage(who, "You lose your concentration.", color := 33);
 				EraseObjProperty(who, "#ISMEDITATING");
 				return 0;
 			endif
-			sleepms( CInt(50000 / GetAttribute(who,MEDITATION) ) );
-			SetMana(who, GetMana(who) + 1);
-			chp := GetHp(who);
-			cmana := GetMana(who);
-			oldstamina := GetStamina(who);
+			SleepMS( CInt(50000 / GetAttribute(who,MEDITATION) ) );
+			AP_SetVital( who, MANA, AP_GetVital( who, MANA )+1.0 );
+			chp := AP_GetVital( who, HITS );
+			cmana := AP_GetVital( who, MANA );
+			oldstamina := AP_GetVital( who, STAMINA );
 //			poisoned := CInt( GetObjProperty(who,"poison_level") );
 			poisoned := who.poisoned;
 		endwhile
