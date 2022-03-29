@@ -10,12 +10,8 @@ program use_explosion(who, potion)
   EraseObjProperty(who, "HealTimer");
 
   if( potion.amount > 1 )
-    var split_item := potion.SplitStackInto( potion.container, 1 );
-    if( !split_item.IsA( POLCLASS_ITEM ) )
-      SendSysMessage( who, "Unable to split stack.", 0x3, 0x32 );
-      return 0;
-    endif
-    potion := split_item;
+    SendSysMessage( who, "You cannot use that potion while it is stacked with other potions." );
+    return 0;
   endif
 
   if(!can_access(who, potion))
@@ -26,8 +22,8 @@ program use_explosion(who, potion)
     return;
   endif
   if(!Accessible( who, potion))
-	SendSysMessage(who,"You can't get to that!");
-	return;
+  SendSysMessage(who,"You can't get to that!");
+  return;
   endif
   who.hidden := 0;
   SendSysMessage(who, "Select a target");

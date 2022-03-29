@@ -97,7 +97,7 @@ endfunction
  */
 function AP_GetVital( mobile, vital_name )
 
-	return CDbl( GetVital( mobile, vital_name )) / 100.0;
+	return CDbl( GetVital( mobile, vital_name ) ) / 100.0;
 endfunction
 
 /*
@@ -155,7 +155,7 @@ endfunction
  */
 function AP_SetVital( mobile, vital_name, amount )
 
-	return SetVital( mobile, vital_name, CInt( CDbl( amount ) * 100.0 ));
+	return SetVital( mobile, vital_name, CInt( CDbl( amount ) * 100.0 ) );
 endfunction
 
 /*
