@@ -20,11 +20,11 @@ function checkifcandrink(character, type)
   var equippedleft := GetEquipmentByLayer(character, 0x02);
   var cfg := ReadConfigFile(":*:itemdesc");
   var twohanded := Cint(cfg[equippedleft.objtype].TwoHanded);
-  if (equippedright and equippedleft || twohanded)
+  if (equippedright && equippedleft || twohanded)
     SendSysMessage(character, "You must have at least one hand free to drink a potion!");
     return 0;
   endif
-  if((type != "red") and (type != "green_potion"))
+  if((type != "red") && (type != "green_potion"))
     if(GetObjProperty(character, type))
       if(GetObjProperty(character, type) > ReadGameClock())
         SendSysMessage(character, "You must wait until you can drink another potion!");
@@ -43,9 +43,9 @@ function checkifcandrink(character, type)
 endfunction
 
 function empty_bottle(character, potion)
-  PlaySoundEffect(character, DRINK_SOUND);
-  CreateItemInBackpack(character, UOBJ_EMPTY_BOTTLE, 1);
-  DestroyItem(potion);
+  PlaySoundEffect( character, DRINK_SOUND );
+  SubtractAmount( potion, 1 );
+  CreateItemInBackpack( character, UOBJ_EMPTY_BOTTLE, 1 );
 endfunction
 
 function is_poison(potion)
