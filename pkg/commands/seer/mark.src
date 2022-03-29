@@ -5,7 +5,7 @@ use uo;
 use cfgfile;include "include/objtype";
 
 program cast_mark( caster, text )
-       
+
     SendSysMessage( caster, "Select a rune to mark." );
     var cast_on := Target( caster, TGTOPT_CHECK_LOS );
 
@@ -18,7 +18,7 @@ program cast_mark( caster, text )
 		cast_on.SetDestination(caster.x, caster.y, caster.z, caster.realm);
 		SendSysMessage( caster, "You marked: " +  caster.x + " " + caster.y + " " + caster.z + " " + caster.realm );
 		if(text)
-			SetName (cast_on, "A recall rune for " + text);
+			SetName (cast_on, text);
 		else
 			SetName(cast_on, "a Marked Recall Rune");
 		endif
@@ -37,5 +37,5 @@ program cast_mark( caster, text )
 		return 0;
     endif
 
-   
+
 endprogram
