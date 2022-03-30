@@ -1,0 +1,226 @@
+use uo;
+use os;
+use util;
+use basic;
+use cfgfile;
+
+include ":attributes:attributes";
+
+var cWeapon := ReadConfigFile(":combat:itemdesc");
+var weaponElement;
+var arrowElement;
+var cNPC := ReadConfigFile("::npcdesc");
+
+program archeryScript(params)
+
+	var attacker := params[1];
+	var weapon := params[2];
+	var defender := params[3];
+	weaponElement := FindConfigElem(cWeapon, Weapon.objtype);
+
+// debug code for old-style system
+if (GetObjProperty(attacker, "OSS") == "1")
+	return 0;
+endif
+
+	if (!CheckAmmunition(attacker, weapon) )
+		SendSysMessage(attacker, "You are out of ammunition.", color := 33);
+		return 1;
+	endif
+
+	PerformAction(attacker, CInt(weaponElement.Anim) );
+	PlaySoundEffect(attacker, CInt(weaponElement.MissSound) );
+	PlayMovingEffect(attacker, defender, weaponElement.ProjectileAnim, 1);
+
+	if (!CheckToHit(attacker, defender) )
+		return 1;
+	endif
+
+	var damageRoll := FindDamage(attacker, weapon, defender);
+	var hitParams := {
+		attacker,
+		defender,
+		weapon,
+		CInt(damageRoll[1]),	// armor
+		CInt(damageRoll[2]),	// basedamage
+		CInt(damageRoll[3])		// rawdamage
+	};
+	Start_Script(":combat:archeryhitscript", hitParams);
+	return 1;
+
+endprogram
+
+
+function CheckAmmunition(who, weapon);
+
+	var ammoType := CInt(GetObjProperty(weapon, "AmmoType"));
+	if (!ammoType)
+		ammoType := weaponElement.ProjectileType;
+		if (!ConsumeSubstance(who.backpack, ammoType, 1) )
+			SendSysMessage(who, "You are out of ammunition.", color := 33);
+			return 0;
+		endif
+
+	else
+
+		if (!ConsumeSubstance(who.backpack, ammoType, 1) )
+			SendSysMessage(who, "Switching to normal ammunition...", color := 33);
+			EraseObjProperty(weapon, "AmmoType");
+			EraseObjProperty(weapon, "MissleHit");
+			return 0;
+		endif
+	endif
+	arrowElement := cWeapon[ammoType];
+	return 1;
+
+endfunction
+
+
+// ToHit Algorithm:
+//
+// % Success = 100 - (Sqrt(100 - Skill Level) * 10), max @ 95%
+// Range > 2/3 of max = 20% more difficult to hit
+// Range < 1/3 of max = 20% easier to hit
+// if defender dex > attacker tacs, 20% harder to hit.
+
+function CheckToHit(attacker, defender);
+
+	var aSkill := GetAttribute(attacker, "Archery");
+	var range := Distance(attacker, defender);
+	var success := CInt(100 - (Sqrt(100.0 - aSkill) * 10.0) );
+
+	if (range > (CInt(weaponElement.maxrange) * 0.66) )
+		success := CInt(success * 0.80);
+	elseif (range < (CInt(weaponElement.maxrange) * 0.33) )
+		success := CInt(success * 1.20);
+	endif
+
+	if (GetAttribute(defender, "Dexterity") > GetAttribute(attacker, "Tactics") )
+		AwardPoints(attacker, AP_AttributeNameToSkillId(TACTICS), CInt(GetAttribute(defender, "Dexterity")) );
+		success := success * 0.80;
+	else
+		AwardPoints(attacker, AP_AttributeNameToSkillId(TACTICS), CInt(GetAttribute(defender, "Dexterity") / 2) );
+	endif
+
+	if (success < 1)
+		success := 1;
+	elseif (success > 90)
+		success := 90;
+	endif
+
+	var hitRoll := RandomDiceRoll("1d100");
+
+	if (HitRoll <= success)
+		var defenderShield := GetEquipmentByLayer(defender, 0x02);
+		if (defenderShield.isa(POLCLASS_ARMOR))
+			var pSkill := GetAttribute(defender, "Parry");
+			var hitRate := success - HitRoll;
+			var parrySuccess := CInt(100 - (Sqrt(100.0 - pSkill) * 10.0) ) - hitRate + CInt(defenderShield.ar);
+			if (parrySuccess < 5)
+				parrySuccess := 5;
+			elseif (parrySuccess > 90)
+				parrySuccess := 90;
+			endif
+			var parryRoll := RandomDiceRoll("1d100");
+			if (parryRoll <= parrySuccess)
+				AwardPoints(defender, AP_AttributeNameToSkillId(PARRYING), (110 - parrySuccess) );
+				PlaySoundEffect(defender, 0x141);
+				return 0;
+			endif
+		endif
+		AwardPoints(attacker, AP_AttributeNameToSkillId(ARCHERY), CInt(120 - success) );
+		PlaySoundEffect(defender, weaponElement.ProjectileSound);
+		return 1;
+	else
+		AwardPoints(attacker, AP_AttributeNameToSkillId(ARCHERY), 15 );
+		return 0;
+	endif
+
+endfunction
+
+
+// odds for hitting locations:
+//
+// --LOC--	LAYER	ODDS	D. MOD
+// Head		0x06	07%		125%
+// Hands	0x07	05%		75%
+// Neck		0x0a	03%		125%
+// Body		0x0d	44%		100%
+// Arms		0x13	15%		75%
+// Legs		0x04	20%		100%
+// Feet		0x03	06%		75%
+
+// Return variables are:
+// armor			an armor object or an NPC object
+// dRoll			base damage
+// dRoll - aRoll	raw damage
+
+function FindDamage(attacker, weapon, defender)
+
+	var qualityMod := weapon.quality;
+	if (qualityMod > 1.25)
+		qualityMod := 1.25;
+	endif
+	var dRoll := CInt(RandomDiceRoll(CStr(weaponElement.Damage)) * qualityMod);
+	var hitLoc;
+	var lRoll := RandomDiceRoll("1d100");
+	if (lRoll > 93)
+		hitLoc := 0x06;			// HEAD
+		dRoll := CInt(dRoll * 1.25);
+	elseif (lRoll > 88)
+		hitLoc := 0x07;			// HANDS
+		dRoll := CInt(dRoll * 0.75);
+	elseif (lRoll > 85)
+		hitLoc := 0x0a;			// NECK
+		dRoll := CInt(dRoll * 0.75);
+	elseif (lRoll > 41)
+		hitLoc := 0x0d;			// CHEST
+	elseif (lRoll > 26)
+		hitLoc := 0x13;			// ARMS
+		dRoll := CInt(dRoll * 0.75);
+	elseif (lRoll > 6)
+//		hitLoc := 0x18;			//  Original layer for armour on legs
+		hitLoc := 0x04;			// LEGS
+	else
+		hitLoc := 0x03;			// FEET
+		dRoll := CInt(dRoll * 0.75);
+	endif
+
+	dRoll := CInt(dRoll * (1.0 + (CDbl(GetAttribute(attacker, "Anatomy")) / 200.0)) );
+
+	var armor := GetEquipmentByLayer(defender, hitLoc);
+
+	var armorElement;
+	var aRoll;
+
+	// If there's a piece of armour equipped on that layer then get its AR and calc a value from half its AR to its full AR
+	if (armor.isa(POLCLASS_ARMOR) )
+		armorElement := FindConfigElem(cWeapon, armor.objtype);
+		aRoll := CInt(RandomInt(CInt(armorElement.ar) / 2) + (CInt(armorElement.ar) / 2) );
+	else
+	// If not then are we dealing with a non-human NPC that has an intrinsic aarmour rating?
+		if (defender.isa(POLCLASS_NPC) )
+			armorElement := FindConfigElem(cNPC, CStr(defender.npctemplate) );
+			armor := defender;
+			aRoll := CInt(RandomInt(CInt(armorElement.ar) / 2) + (CInt(armorElement.ar) / 2) );
+		endif
+	endif
+
+	if ( (arrowElement.DamageEffect == "piercing") and (aRoll > 5) )
+		var pierce := (0.5 + (RandomDiceRoll("3d10") / 40.0) );
+		if (pierce < 1.0)
+			PrintTextAbove(defender, "The missile pierces " + CStr(defender.name) + "'s armor!");
+			aRoll := CInt(aRoll * pierce);
+		endif
+	endif
+
+	if (aRoll >= dRoll)
+		aRoll := dRoll;
+	elseif ( (arrowElement.DamageEffect == "bleeding") and (dRoll >= (aRoll * 1.75) ) )
+		PrintTextAbove(defender, "The missile tears through " + CStr(defender.name) + "'s body!");
+		dRoll := CInt(dRoll * 1.25);
+	endif
+
+	return ({armor, CInt(dRoll), CInt(dRoll - aRoll)});
+
+endfunction
