@@ -1,4 +1,5 @@
 function can_access(who, item, flags := 0)
+
   var owner := Cint(GetObjProperty(item, "Owner"));
   if((owner) && (owner != who.serial))
     SendSysMessage(who, "That item does not belong to you.");

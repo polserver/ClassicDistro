@@ -1,0 +1,74 @@
+use uo;
+use os;
+use util;
+
+include "include/eventID";
+include "include/canAccess";
+
+program throwing_potions_usescript( mobile, potion )
+
+	var last_explosion := GetObjProperty( mobile, "#LastExplosionPotion" );
+	if( last_explosion && last_explosion > ReadGameClock() )
+		SendSysMessage( mobile, "You can't throw another one yet!" );
+		return 0;
+	elseif( !can_access( mobile, potion, "unmovable" ) )
+    	return 0;
+	endif
+
+	SetObjProperty( mobile, "#LastExplosionPotion", ReadGameClock()+15 );
+	mobile.hidden := 0;
+
+	var oldamount := potion.amount;
+	ReleaseItem( potion );
+	var script := Start_Script( ":alchemy:throwPotion", { mobile, potion, 40 } );
+	if( script.errortext )
+		Print( script.errortext );
+	endif
+
+	SendSysMessage(mobile, "Select a target");
+	var cast_on := TargetCoordinates( mobile );
+	if(!potion)
+		return 0;
+	elseif( Distance( mobile, potion ) > 2 )
+		SendSysMessage( mobile, "You can't reach the potion from here." );
+		if( oldamount == potion.amount )
+			SubtractAmount( potion, 1 );
+		endif
+		return 0;
+	elseif( !CheckLineOfSight( mobile, potion ) )
+		SendSysMessage( mobile, "You can't see the potion anymore." );
+		if( oldamount == potion.amount )
+			SubtractAmount( potion, 1 );
+		endif
+		return 0;
+	elseif( !cast_on )
+		SendSysMessage( mobile, "You can't see that!" );
+		if( oldamount == potion.amount )
+			SubtractAmount( potion, 1 );
+		endif
+		return 0;
+	elseif( !CheckLosAt( mobile, cast_on.x, cast_on.y, cast_on.z ) )
+		SendSysMessage( mobile, "You can't see that!" );
+		if( oldamount == potion.amount )
+			SubtractAmount( potion, 1 );
+		endif
+		return 0;
+	endif
+	SetObjProperty( potion, "%Location%", Struct{ "X":=cast_on.x, "Y":=cast_on.y, "Z":=cast_on.z, "Realm":=cast_on.realm } );
+
+	if( oldamount == potion.amount )
+		if( potion.amount == 1 )
+			potion.graphic := 3821;
+			potion.color := 2000;
+			Sleep( 4 );
+		endif
+		var tries := 0;
+		while( !SubtractAmount( potion, 1 ) )
+			SleepMS( 100 );
+			tries++;
+			if( tries > 50 )
+				break;
+			endif
+		endwhile
+	endif
+endprogram

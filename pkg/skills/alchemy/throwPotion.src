@@ -1,0 +1,125 @@
+use uo;
+use os;
+use util;
+
+include "include/containers";
+include "include/eventID";
+include ":damage:damage";
+
+program throwpotion ( parms )
+
+	var mobile := parms[1];
+	var potion := parms[2];
+	var time := parms[3];
+
+	if( !ReserveItem( potion ) )
+		SendSysMessage( mobile, "You can't use that right now!" );
+		return 0;
+	endif
+
+	var i := 0;
+	var bflag := 0;
+	var loc := Struct;
+	while( time )
+		for( i:=1; i<10; i+=1 )
+			if( time == 40 )
+				PrintTextAbove( potion, "4" );
+			elseif( time == 30 )
+				PrintTextAbove( potion, "3" );
+			elseif( time == 20 )
+				PrintTextAbove( potion, "2" );
+			elseif( time == 10 )
+				PrintTextAbove( potion, "1" );
+			endif
+
+			if( time < 0 )
+				bflag := 1;
+				break;
+			endif
+
+			loc := GetObjProperty( potion, "%Location%" );
+			if( loc.Keys().Size() == 4 ) // should contain X, Y, Z, Realm
+				bflag := 1;
+				break;
+			else
+				SleepMS( 100 );
+				time -= 1;
+			endif
+		endfor
+		if( bflag )
+			break;
+		endif
+	endwhile
+	ReleaseItem( potion );
+
+	var potion_strength, dmg;
+	case( potion.objtype )
+		0x1DC08:	potion_strength := 1; dmg := ( RandomInt( 4 ) + 1 );     //lesser explosion potion
+		0x1DC09:	potion_strength := 2; dmg := ( RandomInt( 4 ) + 6 );     //explosion potion
+		0x1DC07:	potion_strength := 3; dmg := ( RandomInt( 9 ) + 11 );     //greater explosion potion
+	endcase
+
+	if( loc.Keys().Size() == 4 )
+		PlayMovingEffectXYZ( mobile.x, mobile.y, mobile.z+15, loc.x, loc.y, loc.z, 0xF0D, 8, 0, 0, loc.realm );
+		SleepMS( 300 );
+		time -= 2;
+		if( time < 0 )
+			time := 0;
+		endif
+		var lookout := CreateItemAtLocation( loc.x, loc.y, loc.z, potion.objtype, 1, loc.realm );
+		lookout.movable := 0;
+
+		while( time )
+			if( time == 30 )
+				PrintTextAbove( lookout, "3" );
+			elseif( time == 20 )
+				PrintTextAbove( lookout, "2" );
+			elseif( time == 10 )
+				PrintTextAbove( lookout, "1" );
+			endif
+			SleepMS( 100 );
+			time -= 1;
+		endwhile
+		ExplosionThrown( lookout, potion_strength, dmg, mobile );
+	else
+		ReleaseItem( potion );
+		ExplosionNotThrown( potion, potion_strength, dmg, mobile );
+		SubtractAmount( potion, 5 + RandomInt( 10 ) );
+	endif
+	EraseObjProperty( potion, "%Location%" );
+
+	return 1;
+endprogram
+
+function ExplosionThrown( lookout, potion_strength, dmg, mobile )
+
+	PlaySoundEffect( lookout, 0x208 );
+	PlayStationaryEffect( lookout.x, lookout.y, lookout.z, 0x36B0, 1, 13, 1, lookout.realm );
+	foreach critter in ListMobilesNearLocationEx(lookout.x, lookout.y, lookout.z, (potion_strength + 1), LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN, LOOKOUT.realm );
+		SendEvent( critter, Struct{ "source":=mobile, "type":=EVID_ENGAGED } );
+		PlayObjectCenteredEffect( critter, 0x36B0, 1, 13 );
+		ApplyDamageEX( critter, dmg, DMG_FIRE );
+		critter.hidden := 0;
+	endforeach
+	DestroyItem( lookout );
+endfunction
+
+function ExplosionNotThrown( potion, potion_strength, dmg, mobile )
+
+	PlaySoundEffect( potion, 0x208 );
+	var expcenter := GetRootContainerFromItem( potion );
+	if( expcenter ) // Potion is a container/backpack
+		PlaySoundEffect( expcenter, 0x208 );
+	else  // Potion is on the ground
+		PlaySoundEffect( potion, 0x208 );
+		expcenter := potion;
+		PlayStationaryEffect( expcenter.x, expcenter.y, expcenter.z, 0x36B0, 1, 13, 1, expcenter.realm );
+	endif
+
+	foreach critter in ( ListMobilesNearLocationEx( expcenter.x, expcenter.y, expcenter.z, (potion_strength + 1), LISTEX_FLAG_NORMAL+LISTEX_FLAG_HIDDEN, expcenter.realm ) )
+		SendEvent( critter, Struct{ "source":=mobile, "type":=EVID_ENGAGED } );
+		PlayObjectCenteredEffect( critter, 0x36B0, 1, 13 );
+		ApplyDamageEX( critter, dmg, DMG_FIRE );
+		critter.hidden := 0;
+	endforeach
+endfunction

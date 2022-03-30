@@ -112,3 +112,38 @@ function ListRootItemsInContainer(container)
 	return item_list;
 endfunction
 
+/*
+ *
+ * GetRootContainerFromItem( item )
+ *
+ * Parameters:
+ * item - item obj_ref
+ *
+ * Purpose:
+ * Returns the topmost container of an item.
+ *
+ * Author: Dundee
+ *
+ * Return Values:
+ * container item_ref
+ *
+ */
+function GetRootContainerFromItem( byref item )
+
+	var rootcontainer, tmpcontainer;
+
+	tmpcontainer := item.container;
+	if(tmpcontainer)
+		while(tmpcontainer.serial)
+			rootcontainer := tmpcontainer;
+			tmpcontainer := tmpcontainer.container;
+			if(!Hex(tmpcontainer.serial))
+				break;
+			endif
+		endwhile
+	else
+		return 0;
+	endif
+
+	return rootcontainer;
+endfunction
