@@ -45,7 +45,6 @@ function MerchantTrain(me, who, text)
 // for the purpose of training.
 
         var npclevel := AP_GetSkill(me, AP_SkillIDToAttributeName(holder));
-
         if(npclevel == 0)
           npclevel := RandomInt(12) + 22;
           SetBaseSkill(me, holder, npclevel);
@@ -61,7 +60,6 @@ function MerchantTrain(me, who, text)
           return;
         else
           var trainmaxcost := GoldForSkillGain(npclevel, pclevel);
-          Print("trainmaxcost: " + trainmaxcost);
           PrintTextAbovePrivate(me, "I will train thee " + thing + " for " + trainmaxcost + " gold.", who);
           SetObjProperty(who, "TrainMaxCost", trainmaxcost);
           SetObjProperty(who, "TrainSkillID", holder);
@@ -114,7 +112,6 @@ function TrainSkill(me, who, item)
       return;
     endif
     npc_level    := GetAttribute(me, attributeid);
-    pc_level     := GetBaseSkill(who, attributeid);
     pc_level     := GetAttributeBaseValue(who, attributeid) / 10;
     goldreceived := item.amount;
     variance     := npc_level - pc_level;
@@ -139,17 +136,12 @@ function TrainSkill(me, who, item)
         EraseObjProperty( who, "TrainMaxCost" );
         EraseObjProperty( who, "TrainSkillID" );
       else
-        new_level := ((pc_level + CInt((CDbl(variance) * (CDbl(goldreceived) / CDbl(trainmaxcost))))) * 10);
+        new_level := CInt((pc_level + (CDbl(variance) * (CDbl(goldreceived) / CDbl(trainmaxcost)))) * 10.0);
         SetObjProperty( who, "TrainMaxCost", trainmaxcost-goldreceived );
       endif
 
       PrintTextAbovePrivate(me, "Let me show you how it's done.", who);
-      var pid := getprocess(GetObjProperty(who, "cap_pid"));
-      var k := struct;
-      k.+skid   := attributeid;
-      k.+type   := EVID_SKILLCAP;
-      k.+base   := new_level;
-      pid.sendevent(k);
+	  SetAttributeBaseValue(who, attributeid, new_level);
       DoRecalcVitals(who);
       DestroyItem(item);
       SendSysMessage(who, "Your skill increases.");
@@ -164,7 +156,7 @@ function TrainSkill(me, who, item)
 endfunction
 
 function GoldForSkillGain(npc_skill, pc_skill)
-  return Cint((npc_skill - pc_skill) * 10);
+  return CDbl((npc_skill - pc_skill) * 10.0);
 endfunction
 
 function SkillGainForGold(pc_level, goldreceived)
