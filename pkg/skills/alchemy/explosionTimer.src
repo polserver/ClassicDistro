@@ -3,13 +3,11 @@ use os;
 use cfgfile;
 
 program explosion_timer(parms)
-  var potion := parms[1];
-  //var who := parms[2]; // uncomment if needed
-  PrintTextAbove(potion, "3");
-  sleep(1);
-  PrintTextAbove(potion, "2");
-  sleep(1);
-  PrintTextAbove(potion, "1");
-  sleep(1);
+
+  var i := 4;
+  for( i:=4; i>=1; i-=1 )
+    PrintTextAbove( parms[1], CStr( i ) );
+    Sleep( 1 );
+  endfor
   start_script(":alchemy:exploder", parms);
 endprogram
