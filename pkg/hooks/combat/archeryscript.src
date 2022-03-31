@@ -35,8 +35,8 @@ endif
 	if (!CheckToHit(attacker, defender) )
 		return 1;
 	endif
-
-	var damageRoll := FindDamage(attacker, weapon, defender);
+	var damageRoll;
+	damageRoll := FindDamage(attacker, weapon, defender);
 	var hitParams := {
 		attacker,
 		defender,
@@ -88,7 +88,6 @@ function CheckToHit(attacker, defender);
 	var aSkill := GetAttribute(attacker, "Archery");
 	var range := Distance(attacker, defender);
 	var success := CInt(100 - (Sqrt(100.0 - aSkill) * 10.0) );
-
 	if (range > (CInt(weaponElement.maxrange) * 0.66) )
 		success := CInt(success * 0.80);
 	elseif (range < (CInt(weaponElement.maxrange) * 0.33) )
@@ -137,7 +136,6 @@ function CheckToHit(attacker, defender);
 	endif
 
 endfunction
-
 
 // odds for hitting locations:
 //
@@ -222,5 +220,5 @@ function FindDamage(attacker, weapon, defender)
 	endif
 
 	return ({armor, CInt(dRoll), CInt(dRoll - aRoll)});
-
 endfunction
+
