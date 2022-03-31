@@ -101,7 +101,8 @@ set_priority(50);
                                       endif
                                     elseif(ev.text["vendor train"] || ev.text["vendor teach"] || ev.text["merchant train"])
                                       TurnToward(ev.source);
-                                      MerchantTrain(me, ev.source, ev.text);
+                                      // MerchantTrain(me, ev.source, ev.text);
+									  VendorTrain( me, ev.source, ev.text );
                                     endif
                                   endif
         SYSEVENT_MERCHANT_BOUGHT: TurnToward(ev.source);

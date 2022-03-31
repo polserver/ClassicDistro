@@ -1,9 +1,8 @@
-
-
 use uo;
 use cfgfile;
+
 include "include/std";
-include "../../nature";
+include ":nature:nature";
 
 program desolation(who, text)
 

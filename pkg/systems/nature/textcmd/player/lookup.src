@@ -2,11 +2,9 @@
 //   .lookup          - looks up and sees the condition of the sky.
 //
 /////////////////////////////
-
-
 use uo;
 use util;
-include "../../nature";
+include ":nature:nature";
 
 program lookup(who)
 
@@ -58,7 +56,7 @@ program lookup(who)
 			endcase
 		4:
 			var adj := RandomInt(3);
-			if ((month == 1) or (month == 2) or (month == 12))
+			if ((month == 1) || (month == 2) || (month == 12))
 				adj := adj + 3;
 			endif
 			case (adj)

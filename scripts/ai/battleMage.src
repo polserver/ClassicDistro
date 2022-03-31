@@ -65,7 +65,8 @@ program CastleGuard()
                           say(tspeech);
                         elseif(txt[myname] && (txt["train"] || txt["teach"]))
                           TurnToward(ev.source);
-                          MerchantTrain(me, ev.source, ev.text);
+                          // MerchantTrain(me, ev.source, ev.text);
+                          VendorTrain( me, ev.source, ev.text );
                         endif
 		SYSEVENT_ITEM_GIVEN:  TrainSkill(me, ev.source, ev.item);
         SYSEVENT_ENGAGED:    if((ev.source) && (!ev.source.dead))
@@ -295,12 +296,3 @@ function in_combat_event_loop(opponent, loops)
 	return;
   endif
 endfunction
-
-// function GoldForSkillGain( npc_skill, pc_skill, skillid )
-  // var maxskill := npc_skill - pc_skill;
-  // return maxskill*10;
-// endfunction
-
-// function SkillGainForGold(npc_level, pc_level, trainskillid, goldreceived)
-  // return (goldreceived/10) + pc_level;
-// endfunction

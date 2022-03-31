@@ -1,4 +1,3 @@
-
 use uo;
 use os;
 use cfgfile;
@@ -63,7 +62,7 @@ program DNCycle()
       
 
     // Dawn
-    if ((GetTime() >= DAWNTIME) and (GetTime() < (transtime + DAWNTIME)))
+    if ((GetTime() >= DAWNTIME) && (GetTime() < (transtime + DAWNTIME)))
       announce("Dawn approaches.");
       if (DEBUG)
         syslog("Dawn approaches.");
@@ -91,7 +90,7 @@ program DNCycle()
     endif
      
     //Day
-    if ((GetTime() >= (transtime + DAWNTIME)) and (GetTime() < (length/2 + DAWNTIME)))
+    if ((GetTime() >= (transtime + DAWNTIME)) && (GetTime() < (length/2 + DAWNTIME)))
       announce("Day has begun.");
       if (DEBUG)
         syslog("Day has begun.");
@@ -115,7 +114,7 @@ program DNCycle()
     endif
             
     //Dusk
-    if ((GetTime() >= (length/2 + DAWNTIME)) and (GetTime()< (length/2 + transtime + DAWNTIME)))
+    if ((GetTime() >= (length/2 + DAWNTIME)) && (GetTime()< (length/2 + transtime + DAWNTIME)))
       announce("The day has come to an end.");
       if (DEBUG)
         syslog("The day has come to an end.");
@@ -155,7 +154,7 @@ program DNCycle()
     if (DEBUG)
       syslog("GetTime()="+GetTime()+" GetTimeofDay="+GetTimeofDay());
     endif
-    if ((GetTime() >= (length/2 + transtime + DAWNTIME)) or (GetTime() < DAWNTIME))
+    if ((GetTime() >= (length/2 + transtime + DAWNTIME)) || (GetTime() < DAWNTIME))
       nexttrans := length - GetTime();
       if (nexttrans > 0)
         if (DEBUG)
@@ -194,28 +193,28 @@ function incrementCalendar()
     if (!GetGlobalProperty("Desolation"))
       case (calendar[MONTH])
         3: Broadcast("The cold of winter begins to thaw as spring arrives.");
-           if (seasons and (client == 2))
+           if (seasons && (client == 2))
              var everyone := EnumerateOnlineCharacters();
              foreach dude in everyone
                Season(dude, SEASON_SPRING);
              endforeach
            endif
         6: Broadcast("The warmth of summer spreads across the land.");
-           if (seasons and (client == 2))
+           if (seasons && (client == 2))
              var everyone := EnumerateOnlineCharacters();
              foreach dude in everyone
                Season(dude, SEASON_SUMMER);
              endforeach
            endif
         9: Broadcast("The leaves begin to turn as autumn touches the land.");
-           if (seasons and (client == 2))
+           if (seasons && (client == 2))
              var everyone := EnumerateOnlineCharacters();
              foreach dude in everyone
                Season(dude, SEASON_FALL);
              endforeach
            endif
         12: Broadcast("Winter's cold hand is felt throughout the land.");
-            if (seasons and (client == 2))
+            if (seasons && (client == 2))
               var everyone := EnumerateOnlineCharacters();
               foreach dude in everyone
                 if (seasons == 1)

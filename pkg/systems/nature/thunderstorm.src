@@ -1,7 +1,7 @@
-use vitals;
 use uo;
 use os;
 use util;
+use vitals;
 
 include "include/client";
 include ":nature:nature";

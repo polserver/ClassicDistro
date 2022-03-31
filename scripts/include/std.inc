@@ -209,7 +209,7 @@ endfunction
 function GetGoldInContainer (container)
 	var result := {0};
 	foreach item in EnumerateItemsInContainer(container)
-		if (item.objtype = STD_GOLD)
+		if (item.objtype == STD_GOLD)
 			result.append(item);
 			result[1] := result[1]+item.amount;
 		endif
@@ -228,7 +228,7 @@ function GetSpelledTime()
 	var ext;
 	if (hours<11)
 		ext := " in the morning.";
-	elseif (hours>11 and hours<19)
+	elseif (hours>11 && hours<19)
 		ext := " in the afternoon.";
 	else
 		ext := " at night.";
@@ -237,25 +237,25 @@ function GetSpelledTime()
 		hours := hours-12;
 	endif
 	if (minutes<15)
-		if (!hours or hours=12)
+		if (!hours || hours==12)
 			return SpellHour(hours);
 		else
 			return SpellHour(hours)+" o'clock"+ext;
 		endif
-	elseif (minutes > 14 and minutes < 30)
-		if (!hours or hours=12)
+	elseif (minutes > 14 && minutes < 30)
+		if (!hours || hours==12)
 			return "quarter past "+SpellHour(hours);
 		else
 			return "quarter past "+SpellHour(hours)+ext;
 		endif
-	elseif (minutes > 29 and minutes < 45)
-		if (!hours or hours=12)
+	elseif (minutes > 29 && minutes < 45)
+		if (!hours || hours==12)
 			return "half past "+SpellHour(hours);
 		else
 			return "half past "+SpellHour(hours)+ext;
 		endif
 	else
-		if (!hours or hours=12)
+		if (!hours || hours==12)
 			return "quarter to "+SpellHour(hours+1);
 		else
 			return "quarter to "+SpellHour(hours+1)+ext;
@@ -287,7 +287,7 @@ endfunction
 function GetStacksOfTypeInContainer (container, objtype)
 	var result := {0};
 	foreach item in EnumerateItemsInContainer(container)
-		if (item.objtype = objtype)
+		if (item.objtype == objtype)
 			result.append(item);
 			result[1] := result[1]+item.amount;
 		endif
@@ -379,22 +379,19 @@ endfunction
 function MoveItem (item, byref place, flags := MOVEOBJECT_NORMAL)
 	if (place.isa(POLCLASS_CONTAINER))
 		return MoveItemToContainer(item, place);
-	elseif (place=array)
+	elseif (place==array)
 		case (place.size())
 			0:1:
-				var result := error;
-				result.+errortext := "Parameter place has less than 2 elements."
-				return result;
+				return error{ "errortext":="Parameter place has less than 2 elements." };
 			2:
 				place[3] := GetWorldHeight(place[1], place[2], item.realm);
 				continue;
 			default:
 				return MoveObjectToLocation(item, place[1], place[2], place[3], item.realm, flags);
-		endif
+		endcase
 	endif
-	var result := error;
-	result.+errortext := "Invalid place: expected an ContainerRef or Array, got "+place+".";
-	return result;
+
+	return error{ "errortext":="Invalid place: expected an ContainerRef or Array, got "+place+"." };
 endfunction
 
 // HellRaider <zion@uo.com.br> 2001-01-17
@@ -402,7 +399,7 @@ endfunction
 function RandomListInt (tableref)
 	var elem := SplitWords(GetConfigString(tableref, "Elem"+RandomInt(tableref.Count)));
 	elem[1] := CInt(elem[1]);
-	if (elem.Size()=1)
+	if (elem.Size()==1)
 		return elem[1];
 	else
 		return RandomInt(CInt(elem[2])-elem[1])+elem[1];

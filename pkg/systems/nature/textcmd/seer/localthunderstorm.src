@@ -3,8 +3,8 @@ use uo;
 use util;
 use os;
 
-include "setlight";
-include "../../nature";
+include ":nature:setlight";
+include ":nature:nature";
 
 const SOUND_EFFECT_THUNDER:=  0x002a;
 

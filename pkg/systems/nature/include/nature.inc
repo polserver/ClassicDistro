@@ -91,24 +91,22 @@ endfunction
 function set_weather(for_who, weather_id, weather_intensity)
   var weatherid := CStr(weather_id);
   id_len := len(weatherid);
-  if( id_len = 0 )
+  if( id_len == 0 )
     weatherid := "00";
-  elseif( id_len = 1)
+  elseif( id_len == 1)
     weatherid := "0" + weatherid;
   endif 
   var int_len := len(weatherintensity);
-  if( int_len = 0 )
+  if( int_len == 0 )
     weatherintensity := "00";
-  elseif( int_len = 1)
+  elseif( int_len == 1)
     weatherintensity := "0" + weatherintensity;
   endif 
   var packet := "65"+weatherid+""+weatherintensity+"00";
   SendPacket( for_who, packet );
 endfunction
 
-
 // Back to original functions
-
 function FindLight(moonphase)
   case(moonphase)
     0: return 0;

@@ -1,15 +1,15 @@
-function getskilllist(me)
+function GetSkillList( byref me )
   var mytemplate := lower(GetObjProperty(me, "MerchantType"));
   case(mytemplate)
-    "healer":           return { "spiritspeaking", "healing", "anatomy", "camping", "fishing", "forensic evaluation" };
+    "healer":           return { "spirit speak", "healing", "anatomy", "camping", "fishing", "forensic evaluation" };
     "stable":           return { "animal lore", "animal taming", "veterinary" };
-    "shipWright":       return { "wrestling", "tactics" };
+    "shipwright":       return { "wrestling", "tactics" };
     "fisherman":        return { "fishing", "fencing" };
     "innkeeper":        return { "fencing", "tactics" };
     "farmer":           return { "swordsmanship", "animal lore", "herding", "veterinary" };
     "weaponsmith":      return { "swordsmanship", "arms lore", "blacksmithy", "mining", "parrying", "tactics" };
     "blacksmith":       return { "swordsmanship", "arms lore", "blacksmithy", "mining", "parrying", "tactics" };
-    "Armorer":          return { "mace fighting", "arms lore", "blacksmithy", "mining", "parrying", "tactics" };
+    "armorer":          return { "mace fighting", "arms lore", "blacksmithy", "mining", "parrying", "tactics" };
     "barkeep":          return { "mace fighting", "tactics" };
     "barmaid":          return { "fencing", "tactics" };
     "baker":            return { "wrestling", "cooking" };
@@ -19,9 +19,9 @@ function getskilllist(me)
     "cobbler":          return { "swordsmanship", "tailoring" };
     "jeweler":          return { "fencing", "item identification" };
     "mage":             return { "mace fighting", "resisting spells", "inscription", "magery", "meditation", "wrestling" };
-    "wizard":           return { "mace fighting", "resisting spells", "inscription", "wizardry", "meditation", "wrestling" };
+    "wizard":           return { "mace fighting", "resisting spells", "inscription", "magery", "meditation", "wrestling" };
     "necromance":       return { "mace fighting", "resisting spells", "inscription", "necromancy", "meditation", "wrestling" };
-    "Alchemist":        return { "resisting spells", "taste identification", "alchemy", "wrestling" };
+    "alchemist":        return { "resisting spells", "taste identification", "alchemy", "wrestling" };
     "herbalist":        return { "resisting spells", "alchemy", "cooking", "taste identification", "wrestling" };
     "tailor":           return { "tailoring", "fencing" };
     "weaver":           return { "tailoring", "fencing" };
@@ -41,13 +41,13 @@ function getskilllist(me)
     "fighter3":         return { "anatomy", "tactics", "swordsmanship", "arms lore" };
     "fighter4":         return { "anatomy", "tactics", "swordsmanship", "arms lore" };
     "paladin":          return { "anatomy", "tactics", "swordsmanship", "detect hidden", "arms lore" };
-    "assassin":          return { "poisoning", "hiding", "stealth" };
-    "artist":           return {"tailoring", "fencing", "item identification"};
+    "assassin":         return { "poisoning", "hiding", "stealth" };
+    "artist":           return { "tailoring", "fencing", "item identification" };
   endcase
 endfunction
 
-function FindSkillId(name)
-  case(name)
+function FindSkillId( byref name )
+  case( name )
     "alchemy":                  return  0;
     "anatomy":                  return  1;
     "animal lore":              return  2;
@@ -80,7 +80,7 @@ function FindSkillId(name)
     "musicianship":             return 29;
     "poisoning":                return 30;
     "archery":                  return 31;
-    "spiritspeaking":           return 32;
+    "spirit speak":           return 32;
     "stealing":                 return 33;
     "tailoring":                return 34;
     "animal taming":            return 35;
@@ -108,4 +108,3 @@ function FindSkillId(name)
     "throwing":                 return 57;
   endcase
 endfunction
- 

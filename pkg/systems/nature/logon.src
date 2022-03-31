@@ -1,4 +1,3 @@
-
 use cfgfile;
 use uo;
 use os;
@@ -20,7 +19,7 @@ program nature_logon(who)
   endif
 
   if (!GetGlobalProperty("Desolation"))
-    if (seasons and (client == 2))
+    if (seasons && (client == 2))
       var calendar := GetGlobalProperty("Calendar");
       case (calendar[MONTH])
         12:

@@ -1,7 +1,7 @@
 
 use uo;
 
-include "setlight";
+include ":nature:setlight";
 
 program setlocallight(who, text)
 

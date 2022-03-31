@@ -1,4 +1,3 @@
-
 use uo;
 
 program setweather(who, text)

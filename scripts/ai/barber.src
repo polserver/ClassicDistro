@@ -15,7 +15,6 @@ include "include/findCity";
 include "include/dist";
 include "include/begging";
 include ":attributes:attributes";
-include "include/trainSkill";
 
 const MAX_SKILLS      := 48;
 
@@ -84,9 +83,6 @@ program barber()
                                       else
                                         PrintTextAbovePrivate(Self(), "I cannot afford any more of that", ev.source );
                                       endif
-                                    elseif((txt["vendor train"]) || (txt["vendor teach"]) || (txt["merchant train"]) || (txt["merchant teach"]))
-                                      TurnToward(ev.source);
-                                      MerchantTrain(me, ev.source, ev.text);
                                     endif
                                   endif
         SYSEVENT_MERCHANT_BOUGHT: TurnToward(ev.source);
@@ -147,7 +143,7 @@ endprogram
 
 function Lookiehere(who, npc)
   var ev;
-  ev := array;
+  ev := Struct;
   ev.+ type;
   ev.+ source;
   ev.type := SYSEVENT_SPEECH;

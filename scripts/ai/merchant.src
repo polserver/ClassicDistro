@@ -46,7 +46,7 @@ program merchant()
   inv_pb := FindRootItemInStorageArea(storage, spawnname + " PB");
   inv_1c := FindRootItemInStorageArea(storage, spawnname + " 1C");
   inv_rs := FindRootItemInStorageArea(storage, spawnname + " RS");
-  while((!inv_rs) or (!inv_fs) or (!inv_pb) or (!inv_1c))
+  while((!inv_rs) || (!inv_fs) || (!inv_pb) || (!inv_1c))
     sleep(5);
     inv_fs := FindRootItemInStorageArea(storage, spawnname + " FS");
     inv_pb := FindRootItemInStorageArea(storage, spawnname + " PB");
@@ -98,7 +98,8 @@ program merchant()
                                             BuyBag(ev.source);
                                     elseif((txt["vendor train"]) || (txt["vendor teach"]) || (txt["merchant train"]) || (txt["merchant teach"]))
                                       TurnToward(ev.source);
-                                      MerchantTrain(me, ev.source, ev.text);
+                                      VendorTrain( me, ev.source, ev.text );
+                                      // MerchantTrain( me, ev.source, ev.text );
                                     endif
                                   endif
         SYSEVENT_MERCHANT_BOUGHT: TurnToward(ev.source);
@@ -130,7 +131,7 @@ program merchant()
                                   endif
                                   PlaySoundEffect(me, 0x38);
         SYSEVENT_ITEM_GIVEN:    TurnToward (ev.source);
-                                if ( GetObjProperty ( ev.item, "merchant") )
+                                if ( GetObjProperty( ev.item, "merchant") )
                                         PayForJobCompleted ( ev );
 //                                elseif (GetObjProperty (ev.item, "deliverto") and GetObjProperty (ev.item, "deliverto") == me.serial)
 //                                        PayForItemDelivery (ev);
@@ -166,12 +167,10 @@ function Lookiehere(who, npc)
   endforeach
 endfunction
 
-
 ///////////////////
 //  called when someone hands in a job bag
 // Added by Yukiko 04-Oct-2006 from Sanc scripts.
 ///////////////////
-
 function PayForJobCompleted (byref ev)
 	var bag := ev.item;
 	var player := ev.source;
@@ -222,11 +221,9 @@ function PayForJobCompleted (byref ev)
 	SetGlobalProperty ("#jobs_for_account_"+player.acctname, playerjobs);
 endfunction
 
-
 ///////////////////
 //  called by 'sell bag'
 ///////////////////
-
 function BuyBag (byref you)
 	PrintTextAbovePrivate ( me, "What bag of stuff would you like to sell me?", you );
 	var bag := Target (you);
@@ -262,7 +259,7 @@ function BuyBag (byref you)
 			if (elem)
 				itemprice := GetConfigInt (elem, "vendorbuysfor");
 				itemamount := item.amount;
-				if (itemprice and itemamount)
+				if (itemprice && itemamount)
 					if (totalsale + (itemprice * itemamount) < 50000)
 						totalsale := totalsale + (itemprice * itemamount);
 						if( !ReserveItem( item ) )
@@ -295,18 +292,14 @@ function BuyBag (byref you)
 	endif
 endfunction
 
-
-
-
 ///////////////////
 //  called by 'sell all'
 ///////////////////
-
 function BuyAll (byref you)
 
 	PrintTextAbovePrivate (me, "What would you like me to buy all of?", you );
 	var items := Target (you);
-	if ( !items or !Accessible (you, items) )
+	if ( !items || !Accessible (you, items) )
 		PrintTextAbovePrivate (me, "OK, never mind them.", you);
 		return;
 	endif
@@ -348,7 +341,7 @@ function BuyAll (byref you)
 	var itemamount := 0;
 
 	foreach item in ListRootItemsInContainerOfObjtype (items.container, items.objtype)
-		if ( item.color == thecolor and IsBuyableItem (you, item, 0) )
+		if ( item.color == thecolor && IsBuyableItem (you, item, 0) )
 			itemamount := item.amount;
 			if (totalsale + (itemprice * itemamount) < 50000)
 				totalsale := totalsale + (itemprice * itemamount);
@@ -373,14 +366,10 @@ function BuyAll (byref you)
 	endif
 endfunction
 
-
-
-
 ///////////////////
 //  determines if the item is one that can be bought when using 'sell bag', 'sell all', or one of
 //  other others
 ///////////////////
-
 function IsBuyableItem (byref character, byref item, byref from_bag)
 	if ( item.newbie )
 		return 0;
@@ -398,7 +387,7 @@ function IsBuyableItem (byref character, byref item, byref from_bag)
 	elseif (GetObjProperty (item, "slave") )
 		Say (item.desc + " is marked!");
 		return 0;
-	elseif (item.buyprice and item.buyprice < 0)
+	elseif (item.buyprice && item.buyprice < 0)
 		return 0;
 	endif
 
@@ -462,6 +451,3 @@ function IsBuyableItem (byref character, byref item, byref from_bag)
 
 	return 1;
 endfunction
-
-
-

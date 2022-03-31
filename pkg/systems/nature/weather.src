@@ -1,4 +1,3 @@
-
 use uo;
 use os;
 use util;
@@ -63,7 +62,7 @@ program weather()
       if (newweather > 5)
         newweather := 5;
       endif
-      if ((winter) and (newweather == 5))
+      if ((winter) && (newweather == 5))
         newweather := 4;
       endif
     endif
@@ -71,7 +70,7 @@ program weather()
       syslog("Newweather := " + newweather);
       syslog("Current weather := " + wstuff[CURRENTWEATHER]);
     endif
-    if ((newweather != wstuff[CURRENTWEATHER]) or (!doonce))
+    if ((newweather != wstuff[CURRENTWEATHER]) || (!doonce))
       doonce := 1;
       var change := newweather - wstuff[CURRENTWEATHER];
       if (DEBUG)
@@ -82,7 +81,7 @@ program weather()
         default:
         0:
         1: 
-          if ((change < 0) and (newweather == 1))
+          if ((change < 0) && (newweather == 1))
             Broadcast("The skies clear.");
             if (DEBUG)
               syslog("The skies clear.");

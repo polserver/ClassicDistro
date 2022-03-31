@@ -1,3 +1,5 @@
+use uo;
+use os;
 
 function set_light(who, level, radius)
 

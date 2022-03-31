@@ -35,7 +35,7 @@ program spell_ArcaneCircle( params )
     PlayStationaryEffect( mobile.x, mobile.y, mobile.z, 0x3779, 1 );
     CreateArcaneFocus(mobile, number_of_arcanists);
   else
-    PlayStationaryEffect( mobile.x, mobile.y, mobile.z, FX_SMOKE, 1 ); //Graphic needs to be confirmed and updated
+    PlayStationaryEffect( mobile.x, mobile.y, mobile.z, 0x3728, 1 ); //Graphic needs to be confirmed and updated
     PlaySoundEffect(mobile, SFX_SPELL_FAIL);
     SendSysMessage(mobile, "You fail to create an Arcane Focus.");
     return 0;
@@ -82,8 +82,8 @@ endfunction
 function CreateArcaneFocus(mobile, number_of_arcanists)
 
   SendSysMessageCL(mobile, 1072740); // An arcane focus appears in your backpack.
-  
+
   SendSysMessageCL(mobile, 1072828);  // Your arcane focus is renewed.
-  
+
 
 endfunction
