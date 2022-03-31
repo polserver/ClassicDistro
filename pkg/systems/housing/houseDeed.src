@@ -179,14 +179,14 @@ function CreatehouseKeysAndBuiltDeed2(character, housetype, where, deed)
 		DestroyItem(builtdeed);
 		return;
 	endif
-	var result array;
+	var result := struct;
 	result .+ packkey := packkey;
 	result .+ bankkey := bankkey;
 	result .+ builtdeed := builtdeed;
 	result .+ house := house;
 	result .+ footage := footage;
 	return result;
-endfunction 
+endfunction
 
 function CreatehouseKeysAndBuiltDeed(who, housetype, where, deed)
   var bankbox := FindBankBox(who);
@@ -230,7 +230,7 @@ function CreatehouseKeysAndBuiltDeed(who, housetype, where, deed)
     DestroyItem(builtdeed);
     return;
   endif
-  var result array;
+  var result := struct;
   result .+ packkey := packkey;
   result .+ bankkey := bankkey;
   result .+ builtdeed := builtdeed;

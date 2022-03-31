@@ -9,7 +9,7 @@ function summon_creature( caster, circle := 8, npctemplate, cast_loc, gate)
   var thecritter;
   var magery := AP_GetSkill(caster, MAGERY);
   var duration := 20 + (magery * 2);
-  var parms := {};
+  var parms := struct;
   parms .+ script := "tamed";
   Detach();
   sleep(2);

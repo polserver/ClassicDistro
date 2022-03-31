@@ -70,7 +70,7 @@ program guardnode(itm)
         SYSEVENT_SPEECH: if(lower(ev.text)["guard"])
                            var crims := CrimCheck(ev.source);
                            if(len(crims) != 0)
-                             var evnt     := array;
+                             var evnt     := struct;
                              evnt.+type   := EVID_NODE;
                              evnt.+crims  := crims;
                              foreach mobile in npclist

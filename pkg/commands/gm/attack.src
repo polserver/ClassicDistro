@@ -15,7 +15,7 @@ program bard_provoke(character)
   endif
   SendSysMessage(character, "Select the target");
   var newtarg := Target(character);
-  var ev := array;
+  var ev := struct;
   ev.+ type;
   ev.+ source;
   ev.type := EVID_PEACEMADE;

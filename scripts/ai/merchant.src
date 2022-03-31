@@ -156,7 +156,7 @@ endprogram
 
 function Lookiehere(who, npc)
   var ev;
-  ev := array;
+  ev := struct;
   ev.+ type;
   ev.+ source;
   ev.type := SYSEVENT_SPEECH;
@@ -236,7 +236,7 @@ function BuyBag (byref you)
 		PrintTextAbovePrivate (me, "But that's not even a bag!", you);
 		return;
 	endif
-	
+
 	if (bag != you.backpack)
 		if (!InInventory (you.backpack, bag) )
 			PrintTextAbovePrivate (me, "That bag isn't in your inventory.", you);

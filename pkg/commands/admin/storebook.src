@@ -8,7 +8,7 @@ program textcmd_storebook(who)
     return;
   endif
   var cfg := ReadConfigFile("::bookstorage");
-  var elem := {};
+  var elem := struct;
   var maxint;
   elem.+pname;
   elem.+pvalue;

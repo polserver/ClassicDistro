@@ -45,7 +45,7 @@ program dispel ( parms )
       var element := npccfg[cast_on.npctemplate].elemental;
       if(element == "undead")
         PlayStationaryEffect( cast_on.x, cast_on.y, cast_on.z, FX_HEAL_EFFECT, 0xa, 0xa, 0, cast_on.realm );
-        var ev := array;
+        var ev := struct;
         ev.+ type;
         ev.+ source;
         ev.type := EVID_PEACEMADE;

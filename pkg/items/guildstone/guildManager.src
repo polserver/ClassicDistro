@@ -61,7 +61,7 @@ function GuildDisband(ev)
   if(!guilds)
     guilds := {};
   endif
-  ev.type := "gmbcast";
+  ev.+type := "gmbcast";
   ev.+src := "ScriptManager";
   ev.+msg := "Guild Manager: guild [" + name + ", [" + abbv + "]]  has been disbanded.";
   stafflist.SendEvent(ev);
@@ -81,7 +81,7 @@ function GuildCreated(ev)
   if(!guilds)
     guilds := {};
   endif
-  ev.type    := "gmbcast";
+  ev.+type    := "gmbcast";
   ev.+src := "GuildManager";
   ev.+msg    := "Guild Manager: guild [" + ev.name + ", [" + ev.abbv + "]]  has been created.";
   stafflist.sendevent(ev);

@@ -31,7 +31,7 @@ function main_AI_loop()
           SYSEVENT_ENTEREDAREA: if((!(ev.source).npctemplate) ||(((ev.source).script == "employed") ||((ev.source).script == "tamed")))
                                   foreach mobile in ListMobilesInLineOfSight(me, 10);
                                     if(mobile.npctemplate == me.npctemplate)
-                                      var evnt := array;
+                                      var evnt := struct;
                                       evnt.+ type;
                                       evnt.+ source;
 	                                  evnt.source := ev.source;
@@ -44,7 +44,7 @@ function main_AI_loop()
           SYSEVENT_ENGAGED:
           SYSEVENT_DAMAGED:     foreach mobile in ListMobilesInLineOfSight(me, 10);
                                   if(mobile.npctemplate == me.npctemplate)
-                                    var evnt := array;
+                                    var evnt := struct;
                                     evnt.+ type;
                                     evnt.+ source;
 	                                evnt.source := ev.source;
@@ -65,7 +65,7 @@ function look_around()
     if((!npc.npctemplate) ||(npc.script == "tamed") ||(npc.script == "employed"))
       foreach mobile in ListMobilesInLineOfSight(me, 10);
         if(mobile.npctemplate == me.npctemplate)
-          var evnt := array;
+          var evnt := struct;
           evnt.+ type;
           evnt.+ source;
 	      evnt.source := npc;
@@ -91,7 +91,7 @@ endfunction
 
 function get_help(opponent)
     var inev;
-    var ev array;
+    var ev := struct;
     ev.+type := EVID_ALL_ATTACK_CMD;
     ev.+source := opponent;
     foreach critter in ListMobilesNearLocation(me.x, me.y, me.z, 4, me.realm)

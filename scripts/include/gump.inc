@@ -183,7 +183,7 @@ const BKGND_STONE       := 0x13EC;  // Marble stone, rounded edge
 
 // Global variables
 /////////////////////////////////////////////////////////////////
-var GFref := { };		// X- and Y-offsets for gump operations
+var GFref := struct;		// X- and Y-offsets for gump operations
     GFref.+x := 0;
     GFref.+y := 0;
 
@@ -668,14 +668,14 @@ endfunction
 //		.rad	= Copy of GFradid
 //
 function GFStoreGump()
-	var idx := { };
+	var idx := struct;
 	idx.+dt := GFdtidx;
 	idx.+txt := GFtxtid;
 	idx.+but := GFbutid;
 	idx.+cbx := GFcbxid;
 	idx.+rad := GFradid;
 
-	var ret := { };
+	var ret := struct;
 	ret.+layout := GFlayout;
 	ret.+data := GFdata;
 	ret.+indexes := idx;
@@ -761,7 +761,7 @@ endfunction
 //  rvsl.keyid;	// ...KeyID allocated / other data (eg. page#)
 //
 function XGFRetVal( lytidx := -1, dtidx := -1, keyid := -1 )
-	var rvsl := { };
+	var rvsl := struct;
 	if ( lytidx > -1 )
 		rvsl.+lytidx := lytidx;
 	endif
@@ -784,7 +784,7 @@ endfunction
 
 // Constants
 /////////////////////////////////////////////////////////////////
-Global aGFTlength:={ };
+Global aGFTlength:=struct;
        aGFTlength.+charsf:=   // Space as Filler is not allowed
          "||||||||||||||"+ //  2
          "`',.;:::::::::"+ //  3

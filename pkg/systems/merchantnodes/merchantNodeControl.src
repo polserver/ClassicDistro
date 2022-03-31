@@ -25,7 +25,7 @@ program merchantnode(itm)
 	sleep(RandomInt(1));
 
 // if all nodes are globally disabled, we sleep until they are enabled again.
-	if(GetGlobalProperty("nomerchants"))											
+	if(GetGlobalProperty("nomerchants"))
 		SetNodeName("globally disabled");
 		SetObjProperty(item, "#wait", 2);
 		while(GetGlobalProperty("nomerchants"))
@@ -33,7 +33,7 @@ program merchantnode(itm)
 		endwhile
 	endif
 
-// 
+//
 	SetNodeName("enabled");
 	EraseObjProperty(item, "#wait");
 	rng := CInt(GetObjProperty(item, "Range"));
@@ -144,13 +144,13 @@ program merchantnode(itm)
 			endif
 			DespawnAll();
 			ValidateSpawns();
-			
+
 			// hang out here until it gets turned back on again.
 			while((GetObjProperty(item, "Status") == "off") or (GetGlobalProperty("nomerchants")))
 				var ev := os::wait_for_event(120);
 				ev := ev;
 			endwhile
-			
+
 			// Things have turned back on, so this stuff gets moving
 			SpawnAll(item.realm);
 			ValidateSpawns();
@@ -261,7 +261,7 @@ function ProcessBankerText(ev)
 	var text := lower(ev.text);
 	var who := ev.source;
 	var npc;
-	var evnt := array;
+	var evnt := struct;
 	evnt.+ type;
 	evnt.+ source;
 	evnt.+ text;
@@ -290,7 +290,7 @@ function ProcessMerchantText(ev)
 	var who := ev.source;
 	var npc;
 	var pass := 0;
-	var evnt := array;
+	var evnt := struct;
 	evnt.+ type;
 	evnt.+ source;
 	evnt.+ text;
@@ -298,10 +298,10 @@ function ProcessMerchantText(ev)
 	if (text["appraise"] || text["stable"] || text["showinventory"] || text["showrestock"])
 		pass := 1;
 	endif
-	
+
 	// If the character wants to do something with a vendor:
 	if (text["buy"] || text["sell"] || text["job"] || text["train"] || text["teach"] || (pass))
-		
+
 		// Just pick the nearest vendor if the player isn't specific.
 		if( text["merchant"] || text["vendor"] || (pass) )
 			var dis := 7;

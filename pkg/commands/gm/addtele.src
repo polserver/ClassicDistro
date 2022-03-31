@@ -3,7 +3,7 @@ use cfgfile;
 
 
 program addteleporter(who)
-  var elem := {};
+  var elem := struct;
   var cfg, maxint, origin_realm, where_to_realm;
   elem.+pname;
   elem.+pvalue;

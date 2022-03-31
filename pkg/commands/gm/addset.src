@@ -1,9 +1,9 @@
 use uo;
 use cfgfile;
 
- 
+
 program makeset( who )
-  var prop2 := array;
+  var prop2 := struct;
   var props2 := array;
   prop2.+ name;
   prop2.+ value;
@@ -11,7 +11,7 @@ program makeset( who )
   var numprops2 := 1;
   var numthings := 0;
   var things := array;
-  var theitem:= array;
+  var theitem:= struct;
   var ttype;
   sendsysmessage(who, "Select the center of the set area:");
   var wherecenter := targetcoordinates(who);
@@ -39,52 +39,52 @@ program makeset( who )
   foreach thing in stuff
     if (!thing.IsA(POLCLASS_ITEM))
       continue;
-    endif          
+    endif
     theitem.objtype := thing.objtype;
-    numthings := numthings + 1;                
+    numthings := numthings + 1;
     theitem.x := wherecenter.x - thing.x;
     theitem.y := wherecenter.y - thing.y;
     theitem.z := lowerz - thing.z;
     theitem.color := thing.color;
     things[numthings] := theitem;
   endforeach
-  var intkey := GetConfigMaxIntKey( cfg);      
-  intkey := intkey + 1;      
-  foreach item in things   
-    var prop := array;
+  var intkey := GetConfigMaxIntKey( cfg);
+  intkey := intkey + 1;
+  foreach item in things
+    var prop := struct;
     var props := array;
     prop.+ name;
     prop.+ value;
-    var num_props := 1;    
+    var num_props := 1;
     prop.name := "objtype";
     prop.value := item.objtype;
     props[num_props] := prop;
-    num_props := num_props + 1;            
+    num_props := num_props + 1;
     prop.name := "x";
     prop.value := item.x;
     props[num_props] := prop;
-    num_props := num_props + 1;     
+    num_props := num_props + 1;
     prop.name := "y";
     prop.value := item.y;
     props[num_props] := prop;
-    num_props := num_props + 1; 
+    num_props := num_props + 1;
     prop.name := "z";
     prop.value := item.z;
     props[num_props] := prop;
-    num_props := num_props + 1;  
+    num_props := num_props + 1;
     prop.name := "color";
     prop.value := item.color;
     props[num_props] := prop;
-    num_props := num_props + 1;  
-    ttype := "setitem";  
+    num_props := num_props + 1;
+    ttype := "setitem";
     AppendConfigFileElem( "sets", ttype, intkey, props );
-    item.key := intkey;           
+    item.key := intkey;
     prop2.name := "item";
     prop2.value := intkey;
     intkey := intkey + 1;
     props2[numprops2] := prop2;
-    numprops2 := numprops2 + 1; 
-  endforeach      
+    numprops2 := numprops2 + 1;
+  endforeach
   AppendConfigFileElem( "sets", "set", thesetname, props2 );
   unloadconfigfile("sets");
 endprogram

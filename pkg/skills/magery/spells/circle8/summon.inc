@@ -10,8 +10,8 @@ function summon_creature( caster, circle := 8, npctemplate, cast_loc, controldif
     var magery := GetAttribute(caster, MAGERY);
     var duration := 20 + (magery * 2);
     var attributelist := { "None" };
-    var parms := {}, totem, totemtype;
-  
+    var parms := struct, totem, totemtype;
+
 	SendSysMessage(caster, "Select a Totem to summon from, press <ESC> to summon unbound.", color := 88);
 	totem := Target(caster);
 	totemtype := GetObjProperty(totem, "Totem");

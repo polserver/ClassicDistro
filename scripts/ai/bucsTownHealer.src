@@ -181,7 +181,7 @@ function Lookiehere(who)
                 break;
               else
 		        if(mobile.npctemplate == "townguard")
-		          var ev := array;
+		          var ev := struct;
                   ev.+ type;
                   ev.+ source;
                   ev.type := EVID_PEACEMADE;
@@ -201,7 +201,7 @@ function Lookiehere(who)
 	  if(npc.criminal && (timer < ReadGameClock() || timer.errortext))
         foreach mobile in ListMobilesNearLocation(me.x, me.y, me.z, 15, me.realm)
 		  if(mobile.npctemplate == "townguard")
-		    var ev := array;
+		    var ev := struct;
             ev.+ type;
             ev.+ source;
             ev.type := EVID_PEACEMADE;

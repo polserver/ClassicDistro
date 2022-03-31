@@ -443,7 +443,7 @@ endfunction
 
 function AddOreSpot(locvalue, neworetype, thefile)
     var props:= array;
-    var prop:= array;
+    var prop:= struct;
     prop .+ pname;
     prop .+ pvalue;
     prop.pname := "OreType";

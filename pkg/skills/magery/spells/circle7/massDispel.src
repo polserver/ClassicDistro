@@ -55,7 +55,7 @@ program mass_dispel ( parms )
         var element := npccfg[mobile.npctemplate].elemental;
         if(element == "undead")
           PlayStationaryEffect( mobile.x, mobile.y, mobile.z, FX_HEAL_EFFECT, 0xa, 0xa, 0, mobile.realm );
-          var ev := array;
+          var ev := struct;
           ev.+ type;
           ev.+ source;
           ev.type := EVID_PEACEMADE;

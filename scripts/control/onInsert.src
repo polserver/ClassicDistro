@@ -71,7 +71,7 @@ program on_insert(who, container, movetype, inserttype, adding_item, existing_st
     endforeach
   endif
   item.movable := 0;
-  var ev := array;
+  var ev := struct;
   ev.+type := EVID_ITEM_GIVEN;
   ev.+source := who;
   ev.+item := item;

@@ -135,7 +135,7 @@ program tame( who )
     orneriness := orneriness * 5;
     if(((RandomInt(99) + 1) + orneriness) > AP_GetSkill(who, TAMING))
       SendSysMessage(who, "You seem to have upset the beast!");
-      var ev := array;
+      var ev := struct;
       ev.+ type;
       ev.+ source;
       ev.type := EVID_PEACEMADE;

@@ -31,7 +31,7 @@ function Fight( opponent )
     case (ev.type)
       SYSEVENT_DAMAGED:    foreach mobile in ListMobilesInLineOfSight(me, 10);
                              if(mobile.npctemplate == me.npctemplate)
-                               var evnt := array;
+                               var evnt := struct;
                                evnt.+ type;
                                evnt.+ source;
                                evnt.source := ev.source;
@@ -47,7 +47,7 @@ function Fight( opponent )
       SYSEVENT_ENGAGED:    if (ev.source)
                              foreach mobile in ListMobilesInLineOfSight(me, 10);
                                if(mobile.npctemplate == me.npctemplate)
-                                 var evnt := array;
+                                 var evnt := struct;
                                  evnt.+ type;
                                  evnt.+ source;
                                  evnt.source := ev.source;

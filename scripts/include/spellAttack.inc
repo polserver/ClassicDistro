@@ -1,5 +1,5 @@
 function send_attack(ttarget, source, spellid := 0)
-  var ev := array;
+  var ev := struct;
   ev.+type;
   ev.+source;
   ev.type := 0x0002;

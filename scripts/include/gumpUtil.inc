@@ -58,7 +58,7 @@
 
 var c34:=CChr(34);
 
-var length:={ };
+var length:=struct;
        length.+chars:={
          "",                   // Dummy (for Speed...)
          "|",                  //  2

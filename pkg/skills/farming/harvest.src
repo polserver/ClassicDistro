@@ -126,7 +126,7 @@ function DestroyPlant(me, plant);
         0x0d9e:         //peach tree top
         0x0da4:         //pear tree
         0x0da6:         //pear tree top
-        
+
 		return;
 	default:
 		if (YesNo(me,"Destroy it?"))
@@ -216,8 +216,8 @@ endfunction
 ///////////////////
 
 function AppendLog(who, themessage)
-	var log := {};
-	var prop := {};
+	var log := array;
+	var prop := struct;
 	prop.+pname := "";
 	prop.+pvalue := "";
 	foreach line in themessage

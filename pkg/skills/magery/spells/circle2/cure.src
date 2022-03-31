@@ -27,7 +27,7 @@ program cast_cure( parms )
     if ( !MS_MobileCheck(caster, cast_on) )
         return 0;
     endif
-    
+
 
   PlaySoundEffect(caster, SFX_SPELL_CURE);
   PlayObjectCenteredEffect( cast_on, FX_BLESS_EFFECT, 10,10);
@@ -35,7 +35,7 @@ program cast_cure( parms )
   if(cast_on.isA(POLCLASS_NPC))
     var element := npccfg[cast_on.npctemplate].elemental;
     if(element == "poison")
-      var ev := array;
+      var ev := struct;
       ev.+ type;
       ev.+ source;
       ev.type := EVID_PEACEMADE;
@@ -51,7 +51,7 @@ program cast_cure( parms )
   if (ListPoisonsByType(cast_on, "defaultPoison").size() > 0)
     CurePoison(cast_on, 120, "defaultPoison", potency);
     if (ListPoisonsByType(cast_on, "defaultPoison").size() > 0)
-      SendSysMessage(caster, "You cure some poison.");  
+      SendSysMessage(caster, "You cure some poison.");
       SendSysMessage(cast_on, caster.name + " has partially cured you!");
     else
       SendSysMessage(caster, cast_on.name + " cured.");

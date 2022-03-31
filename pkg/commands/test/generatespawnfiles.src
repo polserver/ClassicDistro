@@ -13,7 +13,7 @@ program generatespawnfiles(who)
   foreach thing in (spawngroups.Keys())
     elem := spawngroups.FindElement(thing);
     var props:= array;
-    var prop:= array;
+    var prop:= struct;
     prop .+ pname;
     prop .+ pvalue;
     npc  := elem.GetProp("npc");
@@ -30,7 +30,7 @@ program generatespawnfiles(who)
     elem := spawnregions.FindElement(thing);
     rect  := elem.GetProp("rect");
     var props:= array;
-    var prop:= array;
+    var prop:= struct;
     prop .+ pname;
     prop .+ pvalue;
     gps   := elem.PropNames();
@@ -48,4 +48,4 @@ program generatespawnfiles(who)
     AppendConfigFileElem("::spawnregions", "region", thing, props );
     UnloadConfigFile("::spawngroups");
   endforeach
-endprogram 
+endprogram

@@ -20,7 +20,7 @@ program dblclickself( me )
     EraseObjProperty(animal,"mounted");
     EraseObjProperty(animal,"mounted_on");
 	animal.facing := me.facing;
-	var ev := array;
+	var ev := struct;
     ev.+ type;
     ev.+ source;
     ev.type := EVID_WAKEUP;

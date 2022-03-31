@@ -14,7 +14,7 @@ program on_insert(who, backpack, item, amtadded, movetype)
     endif
   else
     var vendor := SystemFindObjectBySerial(vendorserial);
-    var ev := array;
+    var ev := struct;
     ev.+ type;
     ev.+ source;
     ev.+ item;

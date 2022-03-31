@@ -8,7 +8,7 @@ program textcmd_grabnodes(who)
   foreach thing in ListObjectsInBox(0, 0, -100, 6143, 4095, 100, who.realm)
     if(thing.objtype == 0x1887a)
       var data := array;
-      var holder := array;
+      var holder := struct;
       holder.+pname  := "x";
       holder.+pvalue := thing.x;
       data.append(holder);
@@ -26,7 +26,7 @@ program textcmd_grabnodes(who)
           t.append(GetObjProperty(thing, entry));
           tmp.append(t);
         endif
-      endforeach    
+      endforeach
       holder.pname  := "data";
       holder.pvalue := pack(tmp);
       data.append(holder);
@@ -35,7 +35,7 @@ program textcmd_grabnodes(who)
       DestroyItem(thing);
     elseif(thing.objtype == 0x1887b)
       var data := array;
-      var holder := array;
+      var holder := struct;
       holder.+pname  := "x";
       holder.+pvalue := thing.x;
       data.append(holder);
@@ -53,7 +53,7 @@ program textcmd_grabnodes(who)
           t.append(GetObjProperty(thing, entry));
           tmp.append(t);
         endif
-      endforeach   
+      endforeach
       holder.pname  := "data";
       holder.pvalue := pack(tmp);
       data.append(holder);

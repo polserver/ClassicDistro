@@ -20,7 +20,7 @@ var locvalue := GetConfigMaxIntKey(locs)+1;
 var elemkey := "" + lower(desc);
 
     var props:= array;
-    var prop:= array;
+    var prop:= struct;
     prop .+ pname;
     prop .+ pvalue;
 

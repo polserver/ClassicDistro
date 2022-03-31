@@ -33,7 +33,7 @@ program textcmd_kill( who )
 		SetObjProperty(mob, "guardkill", 1);
 	else
 		var prop := { };
-		var log := { };
+		var log := struct;
 		prop .+ pname := who.acctname + " " + who.name + " used the kill command!";
 		prop .+ pvalue := "and " + mob.acctname + " " + mob.name + " got killed!";
 		var elemkey := who.name + "(" + who.acctname + ")";

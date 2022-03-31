@@ -6,7 +6,7 @@ function ask_for_help(opponent)
 var range := CInt(GetHp(me)/10);
 
 
-var ev := array;
+var ev := struct;
 ev.+ type;
 ev.+source;
 ev.+buddy;
@@ -26,4 +26,3 @@ endfunction
 
 
 
-              
