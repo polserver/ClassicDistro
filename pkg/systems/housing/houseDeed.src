@@ -25,10 +25,12 @@ program usehousedeed(who, deed)
   if(!can_access(who, deed))
     return;
   endif
-  if(!CanBuildHere(who)&& !who.cmdlevel)
-      SendSysMessage(who, "You are not authorized to build a house here.", color := 33);
-      return 0;
-  endif
+  // If you want to restrict placing multi-houses to certain areas, uncomment the following "if" clause.
+  // The format for the valid locations can be found in buildlocs.cfg in the main config folder.
+  // if(!CanBuildHere(who)&& !who.cmdlevel)
+      // SendSysMessage(who, "You are not authorized to build a house here.", color := 33);
+      // return 0;
+  // endif
   EraseObjProperty(who, "IsMeditating");
   if(deed.movable == 0)
     SendSysMessage(who, "You cannot use that.");
