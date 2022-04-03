@@ -6,6 +6,7 @@ include "include/client";
 include ":attributes:attributes";
 
 program track(who)
+
   EraseObjProperty(who, "IsMeditating");
   EraseObjProperty(who, "HealTimer");
   UnloadConfigFile(":tracking:tracking");
@@ -21,17 +22,14 @@ program track(who)
     endif
     var track_list := CreateMenu("Select a category.");
     var track_menu := CreateMenu("Select a creature.");
-    var critter_ids := array;
-    var menucount := 0;
+    var critter_ids := Array;
     var config := ReadConfigFile("tracking");
-//    var typearray := {};
-    var animal, creature, person, tiletype;
+    var animal, creature, person;
     foreach mobile in nearby
       if((mobile != who) && (!mobile.dead))
         var elem := FindConfigElem(config, mobile.graphic);
         if(elem)
-          tiletype := GetConfigString(elem, "type");
-          case(tiletype)
+          case( GetConfigString( elem, "type" ) )
             "Animal"  : animal   := 1;
             "Monster" : creature := 1;
             "Person"  : person   := 1;
@@ -50,7 +48,7 @@ program track(who)
     endif
     var thetarget := SelectMenuItem2(who, track_list);
     var listtype := {};
-    case(thetarget[1])
+    case(thetarget.graphic)
       8454: listtype := "Person";
       8399: listtype := "Animal";
       8409: listtype := "Monster";
@@ -62,15 +60,13 @@ program track(who)
         if(elem)
           ttype := GetConfigString(elem, "type");
           if(ttype == listtype)
-            menucount := menucount + 1;
-            critter_ids[menucount] := mobile;
-            tiletype := GetConfigInt(elem, "tile");
-            AddMenuItem(track_menu, tiletype, mobile.name);
+            critter_ids.Append( mobile );
+            AddMenuItem( track_menu, GetConfigInt( elem, "tile" ), mobile.name );
           endif
         endif
       endif
     endforeach
-    if(menucount > 0)
+    if( critter_ids.Size() )
       thetarget := SelectMenuItem2(who, track_menu);
       if(!thetarget)
         SendSysMessage(who, "Targetting cancelled.");
