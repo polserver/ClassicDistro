@@ -5,7 +5,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/spellAttack";
 
 program cast_curse( parms )
@@ -22,7 +21,7 @@ program cast_curse( parms )
   if ( !CheckLosAt(caster, cast_on.x, cast_on.y, cast_on.z) )
         return 0;
   endif
-  
+
   PlaySoundEffect(caster, SFX_SPELL_MASS_CURSE);
   var magery := GetAttribute(caster, MAGERY);
   var mod_amount := GetModAmount( magery );

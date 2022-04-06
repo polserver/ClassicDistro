@@ -5,7 +5,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 program cast_heal(parms)
     var caster := parms[1];
@@ -24,10 +23,10 @@ program cast_heal(parms)
     endif
   PlayObjectCenteredEffect(cast_on, FX_SPARK_EFFECT, 7, 0x10);
   PlaySoundEffect(cast_on, SFX_SPELL_HEAL);
-    
+
 	// Amount healed: ((Magery / 10) + (1 to 10))
 	var points := (CInt(AP_GetSkill(caster, MAGERY)) / 10) + RandomDiceRoll("1d10");
-	
+
 //	MS_PlaySpellSFX(info.spell_id, cast_on);
 //	MS_PlaySpellGFX(info.spell_id, cast_on, caster);
 
@@ -36,11 +35,11 @@ program cast_heal(parms)
 	healed := AP_GetVital(cast_on, HITS) - healed;
 
 	SendSysMessage(caster, "You healed "+healed+" hit points of damage.");
-	
+
 	if ( caster.serial != cast_on.serial )
 		SendSysMessage(cast_on, "You have had "+healed+" hit points of damage healed.");
 	endif
-	
+
 	return 1;
 /*
   var healed := CInt(GetAttribute(caster, MAGERY) / 20) + 5;

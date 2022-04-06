@@ -5,7 +5,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 program cast_WEAKEN( parms )
     var caster := parms[1];
@@ -25,7 +24,7 @@ program cast_WEAKEN( parms )
   SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "weaken" });
   PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
   PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7,7);
-    
+
   if(Reflected(cast_on))
 	SendSysMessage (caster, "The spell was reflected back onto you!!!", color := 33);
 	cast_on := caster;

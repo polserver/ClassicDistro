@@ -3,7 +3,6 @@ use uo;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 program mana_drain ( parms )
     var caster := parms[1];

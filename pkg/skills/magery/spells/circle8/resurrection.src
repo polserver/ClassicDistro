@@ -5,7 +5,6 @@ include "include/eventID";
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/res";
 include "include/resPenalty";
 include ":damage:damage";

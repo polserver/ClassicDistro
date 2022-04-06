@@ -5,7 +5,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 program cast_FEEBLEMIND( parms )
     var caster := parms[1];
@@ -23,7 +22,7 @@ program cast_FEEBLEMIND( parms )
         return 0;
     endif
   SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "feeblemind" });
-    
+
   PlaySoundEffect(cast_on, SFX_SPELL_FEEBLEMIND);
   PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7, 7 );
         SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "feeblemind" });

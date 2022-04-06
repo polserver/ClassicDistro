@@ -5,7 +5,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 program cast_CUNNING( parms )
     var caster := parms[1];
@@ -24,7 +23,7 @@ program cast_CUNNING( parms )
     endif
   PlaySoundEffect(cast_on, SFX_SPELL_CUNNING);
   PlayObjectCenteredEffect( cast_on, FX_BLESS_EFFECT, 7,7);
-    
+
   if (!CanMod(cast_on, "int"))
 	SendSysMessage(caster,"Already under the influence!");
 	return;

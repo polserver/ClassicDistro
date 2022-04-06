@@ -5,7 +5,6 @@ use cfgfile;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 var npccfg := ReadConfigFile("npcdesc");
 
@@ -25,7 +24,7 @@ program cast_poison(parms)
     if ( !MS_MobileCheck(caster, cast_on) )
         return 0;
     endif
-    
+
 
   if(Reflected(cast_on))
     cast_on := caster;

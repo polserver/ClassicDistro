@@ -6,7 +6,6 @@ use cfgfile;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/spellAttack";
 include ":damage:damage";
 
@@ -44,9 +43,9 @@ program cast_explosion( parms )
 	var damage := MS_GetSpellDamage(caster, cast_on, base_damage);
 
 	ApplyRawSpellDamageEX(cast_on, damage, info.damage_type, caster);
-	
+
 	return 1;
-	
+
 /*
   var dmg;
   if(Reflected(cast_on))

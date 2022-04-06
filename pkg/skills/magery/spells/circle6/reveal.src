@@ -8,7 +8,6 @@ use uo;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 
 
 program reveal_hider ( parms )
@@ -25,7 +24,7 @@ program reveal_hider ( parms )
   if ( !CheckLosAt(caster, cast_on.x, cast_on.y, cast_on.z) )
         return 0;
   endif
-  
+
   var range := ( GetAttribute( caster, MAGERY  )/10 ) - 5;
   if (range < 1)
 	range := 1;

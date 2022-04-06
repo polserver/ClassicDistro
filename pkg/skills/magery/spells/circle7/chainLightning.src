@@ -6,7 +6,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/spellAttack";
 include ":damage:damage";
 
@@ -25,7 +24,7 @@ program cast_chainlightning( parms )
   if ( !CheckLosAt(caster, cast_on.x, cast_on.y, cast_on.z) )
         return 0;
   endif
-/////////////////////// Distro 0.97 stuff here /////////////////////////////////  
+/////////////////////// Distro 0.97 stuff here /////////////////////////////////
 
 	// Base damage is a decimal number in between min and max damage
 	var min_damage := CInt(GetConfigInt(info.spell_config, "MinBaseDamage"));

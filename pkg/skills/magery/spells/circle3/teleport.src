@@ -3,14 +3,13 @@ use os;
 
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/isValidLoc";
 
 program cast_teleport( parms )
   var caster := parms[1];
   var info := parms[2];
   var interdiction;
-  
+
   var cast_on := MS_TargetCoordinates(caster, info.targ, "Select a target.");
       if (!cast_on) // If no cast_on then get cast_on from parms[4]. Used mostly for NPC casting.
         cast_on := parms[4];
@@ -28,7 +27,7 @@ program cast_teleport( parms )
     SendSysMessage(caster, "You cannot teleport there.");
     return;
   endif
-  
+
 // Start Interdiction
   interdiction := ListItemsNearLocationOfType(caster.x, caster.y, caster.z, 20, 0xaa07, caster.realm);
   foreach i in interdiction
@@ -49,8 +48,8 @@ program cast_teleport( parms )
   DestroyItem(j);
 // End Interdiction
 
-  
-  var sx := caster.x, sy := caster.y, sz := caster.z; 
+
+  var sx := caster.x, sy := caster.y, sz := caster.z;
   var multicheck := CreateItemAtLocation(cast_on.x, cast_on.y, cast_on.z, 0xeed, 1, caster.realm);
   multicheck.hidden := 1;
   if (multicheck.multi.serial != error)

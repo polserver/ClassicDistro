@@ -4,8 +4,6 @@ use uo;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
-//include "include/spellAttack";
 include ":damage:damage";
 
 program cast_meteor( parms )
@@ -55,7 +53,7 @@ program cast_meteor( parms )
                 SetObjProperty(vtarg, "LastHit", {caster.name, caster.serial, "meteor swarm"});
 		ApplyRawSpellDamageEX(vtarg, damage, info.damage_type, caster, info.Circle);
 	endforeach
-        
+
 	return 1;
 
 

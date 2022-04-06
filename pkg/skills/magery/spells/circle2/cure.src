@@ -7,7 +7,6 @@ include ":poisonwatcher:poisons";
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include ":damage:damage";
 
 var npccfg := ReadConfigFile("npcdesc");

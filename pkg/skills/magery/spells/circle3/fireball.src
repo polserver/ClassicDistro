@@ -5,7 +5,6 @@ use cfgfile;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include ":damage:damage";
 
 program cast_fireball(parms)
@@ -26,7 +25,7 @@ program cast_fireball(parms)
   SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "fireball"});
   PlayMovingEffect(caster, cast_on, FX_FIREBALL, 5, 1);
   PlaySoundEffect(caster, 0x15f);
-    
+
 	// Base damage is a decimal number in between min and max damage
 	var min_damage := CInt(GetConfigInt(info.spell_config, "MinBaseDamage"));
 	var max_damage := CInt(GetConfigInt(info.spell_config, "MaxBaseDamage"));

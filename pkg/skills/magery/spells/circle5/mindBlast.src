@@ -4,7 +4,6 @@ use uo;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include ":damage:damage";
 
 program cast_mind_blast( parms )
@@ -22,7 +21,7 @@ program cast_mind_blast( parms )
     if ( !MS_MobileCheck(caster, cast_on) )
         return 0;
     endif
-    
+
   SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "mind blast" });
   PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
   PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 7,0x10);
@@ -38,7 +37,7 @@ program cast_mind_blast( parms )
             cast_on := caster;
         endif
 	ApplyRawSpellDamageEX(cast_on, damage, info.damage_type, caster, info.Circle);
-	
+
 	return 1;
 /*
   var my_int := CInt(GetIntelligence(caster));

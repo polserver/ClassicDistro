@@ -4,7 +4,6 @@ use os;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/fields";
 
 program dispel_field( parms )

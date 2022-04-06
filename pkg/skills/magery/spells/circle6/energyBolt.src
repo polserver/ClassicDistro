@@ -6,7 +6,6 @@ use util;
 include ":attributes:attributes";
 include ":magery:spells";
 include "include/client";
-include "include/sounds";
 include "include/spellAttack";
 include ":damage:damage";
 
@@ -52,7 +51,7 @@ program chrcast_ebolt( parms )
         endif
 
 	ApplyRawSpellDamageEX(cast_on, damage, info.damage_type, caster, info.Circle);
-	
+
 	return 1;
 /*
   if(Reflected(cast_on))

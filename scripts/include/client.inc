@@ -631,6 +631,7 @@ const SFX_MUSIC_TAMBORINE_GOOD      :=  SFX_53;
 const SFX_MUSIC_TAMBORINE_FAIL      :=  SFX_54;
 
 // * spells & magic sounds *
+const SFX_SPELL_FAIL				:=	SFX_5D;
 const SFX_SPELL_CLUMSY              :=  SFX_1E0;
 const SFX_SPELL_CREATE_FOOD         :=  SFX_1E3;
 const SFX_SPELL_FEEBLEMIND          :=  SFX_1E5;
