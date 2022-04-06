@@ -6,7 +6,7 @@ include ":damage:damage";
 
 program cast_reflect( parms )
   var caster := parms[1];
-  
+
 ///////////////////////////////////////////////////////////////////////////
 // I am going to add the new system here and  leave the old one in place //
 // as well until I can implement the new system in all scripts.          //
@@ -32,7 +32,7 @@ program cast_reflect( parms )
 	PlayObjectCenteredEffect( caster, FX_SPARK_EFFECT, 10,10);
 	SetObjProperty(caster, "mr","1");
   else
-    PlaySoundEffect(caster,0x005d);
+    // PlaySoundEffect(caster,0x005d);
     PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
     SendSysMessage(caster,"Removing protection.", color := 33);
     EraseObjProperty (caster, "mr");
@@ -52,7 +52,7 @@ endfunction
 
 function RemoveMagicReflection(caster)
 	var points := GetObjProperty(caster, "MagicReflection");
-	
+
 	ModifyResistance(caster, DMG_PHYSICAL, points);
 	ModifyResistance(caster, DMG_FIRE, -10);
 	ModifyResistance(caster, DMG_COLD, -10);

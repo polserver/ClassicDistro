@@ -25,7 +25,7 @@ program cast_FEEBLEMIND( parms )
 
   PlaySoundEffect(cast_on, SFX_SPELL_FEEBLEMIND);
   PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7, 7 );
-        SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "feeblemind" });
+
   if (Reflected(cast_on))
 	SendSysMessage (caster, "The spell was reflected back onto you!!!", color := 33);
 	cast_on := caster;

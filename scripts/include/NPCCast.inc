@@ -50,7 +50,7 @@ function GetSpellID(spellname)
     "archprot"      : spellid := 26;
     "curse"         : spellid := 27;
     "firefield"     : spellid := 28;
-    "greaterHeal"   : spellid := 29;
+    "greaterheal"   : spellid := 29;
     "lightning"     : spellid := 30;
     "manadrain"     : spellid := 31;
     "bladespirit"   : spellid := 33;
@@ -61,15 +61,15 @@ function GetSpellID(spellname)
     "poisonfield"   : spellid := 39;
     "summoncreature": spellid := 40;
     "dispel"        : spellid := 41;
-    "energyBolt"    :  spellid := 42;
+    "energybolt"    :  spellid := 42;
     "explosion"     : spellid := 43;
     "invisibility"  : spellid := 44;
     "masscurse"     : spellid := 46;
-    "paralyzeField" : spellid := 47;
+    "paralyzefield" : spellid := 47;
     "reveal"        : spellid := 48;
     "chainlightning": spellid := 49;
     "energyfield"   : spellid := 50;
-    "flameStrike"   : spellid := 51;
+    "flamestrike"   : spellid := 51;
     "manavamp"      : spellid := 53;
     "massdispel"    : spellid := 54;
     "meteorswarm"   : spellid := 55;
