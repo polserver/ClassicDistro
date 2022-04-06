@@ -6,7 +6,6 @@ use cfgfile;
 include ":attributes:attributes";
 include ":timedScripts:timedScripts";
 include ":magery:spells";
-include ":virtue:virtue";
 
 program cast_incognito(parms)
 	var caster := parms[1];
@@ -19,7 +18,6 @@ program cast_incognito(parms)
 	// Duration: ((Eval / 5) + 1) * 6
 	var duration := AP_GetSkill(caster, MAGERY) * 1.2;
 	TS_StartTimer(caster, "Incognito", duration, 0, caster);
-	VS_AdjustVirtue(caster, "Honesty", -1, 100);
 
 	return 1;
 endprogram
