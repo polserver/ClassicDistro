@@ -1,0 +1,108 @@
+use uo;
+use os;
+
+include ":attributes:attributes";
+include ":timedScripts:timedScripts";
+include ":damage:damage";
+
+program TimedScript_DefaultPoison(params)
+	var defender := params[1];
+	var attacker := params[2];
+	var level := CInt(params[3]);
+	var duration := CInt(params[4]);
+
+	if ( !level )
+		level := 1;
+	endif
+
+	if ( attacker )
+		SetScriptController(attacker);
+	endif
+
+	var dmg := 0;
+	var stam := 0;
+	var poisonedmsg := "";
+	var viewermsg := "";
+	var time := 15;
+	case ( level )
+		default:
+		1: dmg := Cint(AP_GetVitalMaximumValue(defender, "Hits") / 40);
+		   if (dmg < 3 )
+			dmg := 3;
+		   endif
+		   poisonedmsg := "You feel a bit nauseous.";
+		   viewermsg := "* - "+defender.name+" looks ill. - *";
+		   break;
+
+		2: dmg := Cint(AP_GetVitalMaximumValue(defender, "Hits") / 32);
+		   if ( dmg < 5 )
+			dmg := 5;
+  		   endif
+		   poisonedmsg := "You feel disoriented and nauseous.";
+		   viewermsg := "* - "+defender.name+" looks extremely ill. - *";
+		   time := 12;
+		   break;
+
+		3: dmg := Cint(AP_GetVitalMaximumValue(defender, "Hits") / 16);
+		   if ( dmg < 7 )
+			dmg := 7;
+		   endif
+		   stam := Cint(AP_GetVitalMaximumValue(defender, "Stamina") / 30);
+		   poisonedmsg := "You begin to feel pain throughout your body.";
+		   viewermsg := "* - "+defender.name+" stumbles around in confusion and pain. - *";
+		   time := 10;
+		   break;
+
+		4: dmg := Cint(AP_GetVitalMaximumValue(defender, "Hits") / 8);
+		   if ( dmg < 6 )
+			dmg := 6;
+		   endif
+		   stam := Cint(AP_GetVitalMaximumValue(defender, "Stamina") / 20);
+		   poisonedmsg := "You feel extremely weak and are in severe pain!";
+		   viewermsg := "* - "+defender.name+" is wracked with extreme pain! - *";
+		   time := 5;
+		   break;
+
+		5: dmg := Cint(AP_GetVitalMaximumValue(defender, "Hits") / 4);
+		   if ( dmg < 12 )
+			dmg := 12;
+		   endif
+		   stam := Cint(AP_GetVitalMaximumValue(defender, "Stamina") / 10);
+		   poisonedmsg := "You are in extreme pain, and require immediate aid!";
+		   viewermsg := "* - "+defender.name+" begins to spasm uncontrollably! - *";
+		   time := 5;
+		   break;
+	endcase
+	var cliloc_string := CStr(dmg) + "\t" + CStr(time);
+	var cfg_elem := TS_GetCfgElem("DefaultPoison");
+    var buff_icon := CInt( cfg_elem.BuffIcon );
+	defender.addbuff(buff_icon, duration, 1017383, 1075633, cliloc_string);
+	defender.poisoned := 1;
+
+	while(1)
+
+		PrintTextAbovePrivate(defender, poisonedmsg, defender);
+		foreach mobile in ( ListMobilesInLineOfSight(defender, 8) )
+			if( mobile.ip && mobile != defender )
+				PrintTextAbovePrivate(defender, viewermsg, mobile);
+			endif
+			SleepMS(10);
+		endforeach
+
+		ApplyRawDamageEX(defender, dmg, DMG_POISON, attacker);
+		Set_Critical(1);
+		var curr := CInt(AP_GetVital(defender, "Stamina"));
+		if ( curr >= stam )
+			AP_SetVital(defender, "Stamina", (curr-stam));
+		else
+			AP_SetVital(defender, "Stamina", 0);
+		endif
+		Set_Critical(0);
+
+		Sleep(time);
+
+	endwhile
+
+	return 1;
+endprogram
+

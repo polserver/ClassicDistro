@@ -1,0 +1,16 @@
+//////////////////////////////////////////////////
+// This script ONLY removes a buff icon from
+// the staff member using the command.
+// It does NOT stop any timed scripts.
+//////////////////////////////////////////////////
+
+
+
+use uo;
+
+program debuff_char(who, text)
+
+	who.Delbuff(CInt(text));
+	who.poisoned := 0;
+
+endprogram

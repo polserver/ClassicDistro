@@ -1,0 +1,36 @@
+/*
+ * $Id: agility.src 1013 2007-03-05 22:46:11Z tekproxy $
+ *
+ */
+use uo;
+use os;
+
+include ":attributes:attributes";
+include ":timedScripts:timedScripts";
+
+program TimedScript_Agility(params)
+	var defender := params[1];
+	var percent := params[3];
+	var duration := params[4];
+
+	var cfg_elem := TS_GetCfgElem("Agility");
+    var buff_icon := CInt( cfg_elem.BuffIcon );
+    var cliloc_name :=  CInt(cfg_elem.cliloc_name);
+    var cliloc_desc :=  CInt(cfg_elem.cliloc_desc);
+	params := {};
+	
+	// Prevents mod from being applied twice.
+	if ( GetObjProperty(defender, "AgilityMod") )
+		return 0;
+	endif
+	
+	var true_percent := CDbl(percent) / 100;
+	var points := struct;
+	points.+dex := CInt(AP_GetTrueStat(defender, DEXTERITY) * true_percent);
+	AP_ModifyStatMod(defender, DEXTERITY, points.dex);
+	defender.addBuff(buff_icon, duration, cliloc_name, cliloc_desc, CStr(percent));
+	SetObjProperty(defender, "AgilityMod", points);
+	
+	return 1;
+endprogram
+
