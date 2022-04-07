@@ -17,12 +17,13 @@ use math;
  * mid_x:	X coordinate of the middle of the square.
  * mid_y:	Y coordinate of the middle of the square.
  * radius:	Size of the square
+ * outline:	Only outline of the square (default 0)
  *
  * Return value
  * Array of structs (.x, .y)
  *
  */
-function GetCoordsInSquare(mid_x, mid_y, radius)
+function GetCoordsInSquare(mid_x, mid_y, radius, outline:=0)
 	var x_row := CInt(mid_x)-CInt(radius);
 	var y_col := CInt(mid_y)-CInt(radius);
 	var stop_x := CInt(mid_x)+CInt(radius);
@@ -33,16 +34,19 @@ function GetCoordsInSquare(mid_x, mid_y, radius)
 
 	for ( x_row:=(mid_x-radius); x_row<=stop_x; x_row+=1 )
 		for ( y_col:=(mid_y-radius); y_col<=stop_y; y_col+=1 )
-			coord.x := x_row;
-			coord.y := y_col;
-			point_list.Append(coord);
-			SleepMS(2);
+            if((outline<=0) || ((y_col - 1) < (mid_y-radius) || (y_col) > (mid_y+radius - 1) || (x_row - 1) < (mid_x-radius) || (x_row) > (mid_x+radius - 1)))
+                coord.x := x_row;
+                coord.y := y_col;
+                point_list.Append(coord);
+                SleepMS(2);
+            endif
 		endfor
 		SleepMS(2);
 	endfor
 
 	return point_list;
 endfunction
+
 
 /*
  * GetCoordsInRect(x1, y1, x2, y2)
@@ -55,12 +59,13 @@ endfunction
  * y1:	Y coordinate
  * x2:	X coordinate
  * y2:	Y coordinate
+ * outline:	Only outline of the rect (default 0)
  *
  * Return value
  * Array of structs (.x, .y)
  *
  */
-function GetCoordsInRect(x1, y1, x2, y2)
+function GetCoordsInRect(x1, y1, x2, y2, outline:=0)
 	var point_list := array{};
 	var coord := struct{"x", "y"};
 
@@ -81,10 +86,12 @@ function GetCoordsInRect(x1, y1, x2, y2)
 	var sx, sy;
 	for ( sx:=x1; sx<=x2; sx+=1 )
 		for ( sy:=y1; sy<=y2; sy+=1 )
-			coord.x := Abs(sx);
-			coord.y := ABs(sy);
-			point_list.Append(coord);
-			SleepMS(2);
+            if((outline<=0) || ((sy - 1) < y1) || ((sx - 1) < x1) || (sx > (x2 - 1)) || (sy > (y2 - 1)))
+                coord.x := Abs(sx);
+                coord.y := ABs(sy);
+                point_list.Append(coord);
+                SleepMS(2);
+            endif
 		endfor
 		SleepMS(2);
 	endfor
