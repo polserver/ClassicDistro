@@ -1,0 +1,15 @@
+use uo;
+use os;
+
+program destroyTimer(chest)
+    var at := CInt(GetObjProperty(chest,"DestroyAt"));
+    Detach();
+
+    while(1)
+        if(ReadGameClock() > at)
+            DestroyItem(chest);
+        endif
+        sleep(1);
+    endwhile
+
+endprogram
