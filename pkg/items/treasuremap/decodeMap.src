@@ -83,6 +83,9 @@ function SetTreasureCoords( map );
   endif
   map.xeast := x+265;
   map.ysouth := y+260;
+  if(map.ysouth >= 4096)
+    map.ysouth := 4095;
+  endif
   map.gumpwidth := 200;
   map.gumpheight := 200;
   map.AppendPin(x,y);

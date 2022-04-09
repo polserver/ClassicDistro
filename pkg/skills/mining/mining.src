@@ -261,14 +261,20 @@ program use_picktool(who, tool)
       var rand;
       var template;
       i := 1;
+      var guardianList := {};
       for( i := 1; i <= limit; i := i + 1 )
         rand := RandomInt( num ) + 1;
         template := GetConfigString( elem, ("creature" + rand) );
-        CreateGuardian( chest, template );
+        var npc := CreateGuardian( chest, template );
+        if(npc)
+            guardianList.append(npc.serial);
+        endif
       endfor
+      SetObjProperty(chest, "#guardianList", guardianList);
       UnloadConfigFile(":treasuremap:guardians");
       SendSysMessage( who, "You unleash the treasure's guardians!" );
       ReleaseItem(tool);
+      ReleaseItem(map);
       Detach();
       sleep(1800);
       DestroyItem(chest);
@@ -319,6 +325,7 @@ function CreateGuardian( chest, template )
   if( nasty == "<error>" )
     CreateGuardian( chest, template );
   endif
+  return nasty;
 endfunction
 
 function is_minable(theobj, othertype)

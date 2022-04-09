@@ -274,7 +274,7 @@ function DisplayDamage(damaged, amount, source:=0)
 
 	dmg_packet.SetInt32(0x01, damaged.serial);
 
-	if ( source.acctname )
+	if ( source.acctname != damaged.acctname )
 		dmg_packet.SendPacket(source);
 	endif
 

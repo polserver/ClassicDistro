@@ -99,6 +99,17 @@ endfunction
 
 function PickTreasureChest(me, lockpick, chest)
   var lvl := GetObjProperty(chest,"level");
+
+    var guardians := GetObjProperty(chest,"#guardianList" );
+    foreach guard in guardians
+      if(SystemFindObjectBySerial(guard))
+        SendSysMessage(me,"You need to kill all the guards");
+        return;
+      endif
+    endforeach
+    EraseObjProperty(chest, "#guardianList");
+
+
   if(!lvl)
     SendSysMessage(me, "You cannot pick that.");
     return;
@@ -114,6 +125,9 @@ function PickTreasureChest(me, lockpick, chest)
     PlaySoundEffect(chest,SFX_200);
     PrintTextAbovePrivate(chest,"*Unlocked!*",me);
     chest.locked := 0;
+    SetObjProperty(chest,"DestroyAt", (ReadGameClock() + DESTROY_TREASURE_CHEST));
+    start_script(":treasuremap:destroyTimer", chest);
+    PrintTextAbove(chest,"The chest will collapse after "+(DESTROY_TREASURE_CHEST / 60)+" minutes");
   else
     PrintTextAbovePrivate(chest,"You fail to pick the lock.",me);
     if(diff < 10)
