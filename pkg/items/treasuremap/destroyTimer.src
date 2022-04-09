@@ -5,7 +5,7 @@ program destroyTimer(chest)
     var at := CInt(GetObjProperty(chest,"DestroyAt"));
     Detach();
 
-    while(1)
+    while(chest)
         if(ReadGameClock() > at)
             DestroyItem(chest);
         endif
