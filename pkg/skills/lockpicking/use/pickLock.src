@@ -125,6 +125,7 @@ function PickTreasureChest(me, lockpick, chest)
     PlaySoundEffect(chest,SFX_200);
     PrintTextAbovePrivate(chest,"*Unlocked!*",me);
     chest.locked := 0;
+	chest.movable := 1;
     SetObjProperty(chest,"DestroyAt", (ReadGameClock() + DESTROY_TREASURE_CHEST));
     start_script(":treasuremap:destroyTimer", chest);
     PrintTextAbove(chest,"The chest will collapse after "+(DESTROY_TREASURE_CHEST / 60)+" minutes");
